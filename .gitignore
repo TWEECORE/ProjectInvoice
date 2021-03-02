@@ -1,0 +1,7 @@
+.snapshots/
+app/.vscode/
+test/.vscode/
+app/.alpackages/
+test/.alpackages/
+app/.snapshots/
+test/.snapshots/
