@@ -17,7 +17,7 @@
 		}
 	],
 	"settings": {
-			"CRS.ObjectNamePrefix": "TWE ",
+			"CRS.ObjectNamePrefix": "TWE",
 			"CRS.OnSaveAlFileAction": "Rename",
 			"CRS.FileNamePattern": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
 			"CRS.FileNamePatternExtensions": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",

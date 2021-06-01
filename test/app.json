@@ -1,25 +1,26 @@
 {
     "id":  "00000000-0000-0000-0000-000000000002",
-    "name":  "TWEECORE FORK Test",
-    "publisher":  "TWEECORE by HEPTACOM GmbH",
+    "name":  "Default Test App Name",
+    "publisher":  "HEPTACOM GmbH",
     "brief":  "",
     "description":  "",
     "version":  "1.0.0.0",
-    "privacyStatement":  "",
-    "EULA":  "",
-    "help":  "",
-    "url":  "",
+    "privacyStatement":  "https://www.tweecore.de",
+    "EULA":  "https://www.tweecore.de",
+    "help":  "https://www.tweecore.de",
+    "url":  "https://www.tweecore.de",
+    "contextSensitiveHelpUrl": "https://www.tweecore.de",
     "logo":  "",
     "dependencies":  [
                          {
                              "id":  "23de40a6-dfe8-4f80-80db-d70f83ce8caf",
                              "publisher":  "Microsoft",
                              "name":  "Test Runner",
-                             "version":  "17.0.0.0"
+                             "version":  "18.0.0.0"
                          },
                          {
                             "id":  "00000000-0000-0000-0000-000000000001",
-                            "publisher":  "TWEECORE by HEPTACOM GmbH",
+                            "publisher":  "HEPTACOM GmbH",
                             "name":  "TWEECORE FORK",
                             "version":  "1.0.0.0"
                          }
@@ -27,8 +28,8 @@
     "screenshots":  [
 
                     ],
-    "application":  "17.0.0.0",
-    "platform":  "17.0.0.0",
+    "application":  "18.0.0.0",
+    "platform":  "18.0.0.0",
     "idRanges":  [
                      {
                          "from":  50100,

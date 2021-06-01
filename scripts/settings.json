@@ -10,8 +10,11 @@
     "installPerformanceToolkit": false,
     "doNotSignApps": true,
     "enableCodeCop": false,
-    "enableAppSourceCop": false,
-    "enablePerTenantExtensionCop": true,
+    "enableAppSourceCop": true,
+    "appSourceCopMandatoryAffixes": [
+        "TWE"
+    ],
+    "enablePerTenantExtensionCop": false,
     "enableUICop": true,
     "bcContainerHelperVersion": "preview",
     "additionalCountries": "",
@@ -19,7 +22,7 @@
     "versions": [
         {
             "version": "ci",
-            "artifact": "//17.0.17126.17791/de",
+            "artifact": "///de/Current",
             "cacheImage": true,
             "CreateRuntimePackages": true
         },
