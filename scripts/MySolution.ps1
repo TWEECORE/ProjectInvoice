@@ -8,19 +8,18 @@ $replaceObjectIds = @{
     "50149" = 80149
 }
 $replaceValues = @{
-    "00000000-0000-0000-0000-000000000001" = [Guid]::NewGuid().ToString()
-    "00000000-0000-0000-0000-000000000002" = [Guid]::NewGuid().ToString()
-    "00000000-0000-0000-0000-000000000003" = [Guid]::NewGuid().ToString()
-    "HelloWorld" = "MyApp"
-    "Default Publisher" = "My Name"
-    "Default App Name" = "My App"
-    "Default Base App Name" = "My Base App"
-    "Default Test App Name" = "My Test App"
-    "2.0.0.0" = "1.0.0.0"
+    "00000000-0000-0000-0000-000000000001"                                 = [Guid]::NewGuid().ToString()
+    "00000000-0000-0000-0000-000000000002"                                 = [Guid]::NewGuid().ToString()
+    "00000000-0000-0000-0000-000000000003"                                 = [Guid]::NewGuid().ToString()
+    "HelloWorld"                                                           = "MyApp"
+    "Default Base App Name"                                                = "My Base App"
+    "Default Test App Name"                                                = "My Test App"
+    "2.0.0.0"                                                              = "1.0.0.0"
     "https://businesscentralapps.azureedge.net/helloworld/latest/apps.zip" = ""
 } + $replaceObjectIds
 
-function ReplaceProperty { Param ($object, $property)
+function ReplaceProperty {
+    Param ($object, $property)
     if ($object.PSObject.Properties.name -eq $property) {
         $str = "$($object."$property")"
         if ($replaceValues.ContainsKey($str)) {
@@ -30,8 +29,9 @@ function ReplaceProperty { Param ($object, $property)
     }
 }
 
-function ReplaceObject { Param($object)
-    "id", "appId", "name", "publisher", "version", "previousApps", "appSourceCopMandatoryAffixes", "appSourceCopSupportedCountries","from","to" | ForEach-Object {
+function ReplaceObject {
+    Param($object)
+    "id", "appId", "name", "publisher", "version", "previousApps", "appSourceCopMandatoryAffixes", "appSourceCopSupportedCountries", "from", "to" | ForEach-Object {
         ReplaceProperty -object $object -property $_
     }
 }
