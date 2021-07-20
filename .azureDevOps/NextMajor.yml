@@ -26,8 +26,20 @@ jobs:
     appBuild: 2147483647
     appRevision: 0
     skipComponentGovernanceDetection: True
+    
 
   steps:
+
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '59147b6e-02af-4f8c-8bb9-01d6b9c65756'
+      pipeline: '17'
+      buildVersionToDownload: 'latest'
+      downloadType: 'specific'
+      itemPattern: 'output/Apps/HEPTACOM GmbH_TWEECORE Base_*.app'
+      downloadPath: '.'
+
   - task: PowerShell@2
     displayName: 'Run Pipeline'
     env:

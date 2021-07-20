@@ -1,11 +1,12 @@
 {
-    "name": "HelloWorld",
+    "name": "AppSource Base",
     "memoryLimit": "6G",
-    "installApps": "",
+    "installApps": "output/output/Apps/", <-- wenn BaseApp = Dependency 
+    "installApps": "", <-- Pipelines anpassen, wenn BaseApp <> Dependency
     "appFolders": "app",
     "testFolders": "test",
     "installTestRunner": true,
-    "installTestFramework": false,
+    "installTestFramework": true,
     "installTestLibraries": false,
     "installPerformanceToolkit": false,
     "doNotSignApps": true,
@@ -16,8 +17,8 @@
     ],
     "enablePerTenantExtensionCop": false,
     "enableUICop": true,
+    "appSourceCopSupportedCountries": "de",
     "bcContainerHelperVersion": "preview",
-    "additionalCountries": "",
     "vaultNameForLocal": "BuildVariables",
     "versions": [
         {

@@ -1,6 +1,6 @@
 trigger:
-- master
-
+ - master
+ 
 pool:
   name: BCServer
   demands:
@@ -29,6 +29,16 @@ jobs:
       targetType: inline
       script: 'Write-Host "##vso[build.updatebuildnumber]$(appVersion).$(appBuild).$(appRevision)"'
 
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '59147b6e-02af-4f8c-8bb9-01d6b9c65756'
+      pipeline: '17'
+      buildVersionToDownload: 'latest'
+      downloadType: 'specific'
+      itemPattern: 'output/Apps/HEPTACOM GmbH_TWEECORE Base_*.app'
+      downloadPath: '.'
+      
   - task: PowerShell@2
     displayName: 'Run Pipeline'
     env:
@@ -48,7 +58,7 @@ jobs:
     inputs:
       testResultsFormat: JUnit
       testResultsFiles: '$(testResults)'
-      failTaskOnFailedTests: true
+      failTaskOnFailedTests: false
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'
@@ -64,3 +74,4 @@ jobs:
       filePath: 'scripts\Cleanup.ps1'
       arguments: '-environment "AzureDevOps"'
       failOnStderr: false
+
