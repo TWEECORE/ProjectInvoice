@@ -19,9 +19,9 @@
                              "version":  "18.0.0.0"
                          },
                          {
-                            "id":  "00000000-0000-0000-0000-000000000001",
+                            "id":  "b8d935bb-62ab-47b7-8871-27d8bbdda57b",
+                            "name":  "Project Invoice",
                             "publisher":  "HEPTACOM GmbH",
-                            "name":  "TWEECORE FORK",
                             "version":  "1.0.0.0"
                          }
                      ],

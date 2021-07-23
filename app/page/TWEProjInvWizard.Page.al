@@ -1,7 +1,7 @@
-page 50000 "TWE AssistedSetupWizard"
+page 70704951 "TWE Proj Inv. Wizard"
 {
     PageType = NavigatePage;
-    SourceTable = '';
+    SourceTable = "TWE Proj. Inv. Setup";
     SourceTableTemporary = true;
     Caption = 'Assisted Setup';
 
@@ -33,48 +33,30 @@ page 50000 "TWE AssistedSetupWizard"
             group(Step1)
             {
                 Visible = (CurrentStep = 0);
-                Caption = 'Welcome to your <AppName> Setup.';
-                InstructionalText = 'You have successfully installed <AppName> extension. Please follow the instruction on the next pages ....';
+                Caption = 'Welcome to your Project Invoice Setup.';
+                InstructionalText = 'You have successfully installed the Project Invoice extension. Please follow the instruction on the next pages ....';
             }
 
             group(Step2)
             {
                 Visible = (CurrentStep = 1);
-                group(FirstFillingPage)
+                group(General)
                 {
-                    InstructionalText = 'Please fill the first page information.';
-                    group(FirstFillingPageGroup)
-                    {
-                        ShowCaption = false;
-                        group(AppsPart)
-                        {
-                            ShowCaption = false;
-                            part(Pagepart; "TWE Subpart")
-                            {
-                                ApplicationArea = All;
-                            }
-                        }
-                    }
-                }
-            }
-
-            group(Step3)
-            {
-                Visible = (CurrentStep = 2);
-                group(SecondFillingPage)
-                {
-                    Caption = 'Second Filling Page';
-                    InstructionalText = 'Please give us all your money';
-                    field(Name; rec.Name)
+                    InstructionalText = 'Please fill the information below.';
+                    field(GLAccount; Rec."G/L Account")
                     {
                         ApplicationArea = All;
-                        ShowMandatory = true;
-                        ToolTip = 'Customer Name';
+                        ToolTip = 'G/L Account No. that should be used to invoice project hours';
+                    }
+                    field(NoSeries; Rec."No. Series for Import")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'No. Series for Imported project data';
                     }
                 }
             }
-
-            group(StepX)
+            //TODO: More Setupfields ?
+            group(Step3)
             {
                 Visible = (CurrentStep = 5);
                 group(FinishPage)
@@ -157,8 +139,8 @@ page 50000 "TWE AssistedSetupWizard"
     local procedure SetControls()
     begin
         ActionBackAllowed := CurrentStep > 1;
-        ActionNextAllowed := (CurrentStep < X);
-        ActionFinishAllowed := (CurrentStep > (X - 1));
+        ActionNextAllowed := (CurrentStep < 3);
+        ActionFinishAllowed := (CurrentStep = 3);
     end;
 
     local procedure TakeStep(Step: Integer)
@@ -175,7 +157,7 @@ page 50000 "TWE AssistedSetupWizard"
 
     local procedure StoreRecordVar();
     var
-        RecordVar: Record "SourceTableRecord";
+        RecordVar: Record "TWE Proj. Inv. Setup";
     begin
         if not RecordVar.Get() then begin
             RecordVar.Init();

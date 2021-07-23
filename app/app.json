@@ -1,10 +1,10 @@
 {
-    "id":  "00000000-0000-0000-0000-000000000001",
-    "name":  "AppSource Base",
+    "id":  "b8d935bb-62ab-47b7-8871-27d8bbdda57b",
+    "name":  "Project Invoice",
     "publisher":  "HEPTACOM GmbH",
-    "brief":  "",
-    "description":  "",
-    "version":  "1.0.0.0",
+    "brief":  "Management project data & invoicing",
+    "description":  "Project Invoice is an extension for managing and accounting work hours for multiple projects.",
+    "version":  "1.0.0.1",
     "privacyStatement":  "https://www.tweecore.de",
     "EULA":  "https://www.tweecore.de",
     "help":  "https://www.tweecore.de",
@@ -12,7 +12,12 @@
     "contextSensitiveHelpUrl": "https://www.tweecore.de",
     "logo":  "./app/assets/tweecore.png",
     "dependencies":  [
-        
+        {
+            "id": "8f062a5b-7f0e-4fd4-86a0-36151ebc2c32",
+            "name": "TWEECORE Base",
+            "publisher": "HEPTACOM GmbH",
+            "version": "1.2.0.17"
+        }   
                      ],
     "screenshots":  [
 
@@ -21,8 +26,8 @@
     "platform":  "18.0.0.0",
     "idRanges":  [
                      {
-                         "from":  70704575,
-                         "to":  70704599
+                         "from":  70704950,
+                         "to":  70704959
                      }
                  ],
     "features": [
