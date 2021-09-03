@@ -1,19 +1,18 @@
 /// <summary>
-/// Page TWE Proj. Inv. Projects (ID 70704954).
+/// Page TWE Proj. Inv. Project Card (ID 70704958).
 /// </summary>
-page 70704954 "TWE Proj. Inv. Projects"
+page 70704958 "TWE Proj. Inv. Project Card"
 {
-    ApplicationArea = All;
-    Caption = 'Project Invoice Projects';
-    PageType = List;
+
+    Caption = 'Proj. Inv. Project Card';
+    PageType = Card;
     SourceTable = "TWE Proj. Inv. Project";
-    UsageCategory = Lists;
 
     layout
     {
         area(content)
         {
-            repeater(General)
+            group(General)
             {
                 field(ID; Rec.ID)
                 {
@@ -25,14 +24,14 @@ page 70704954 "TWE Proj. Inv. Projects"
                     ToolTip = 'Specifies the value of the Name field';
                     ApplicationArea = All;
                 }
-                field("Related to Customer No."; Rec."Related to Customer No.")
-                {
-                    ToolTip = 'Specifies the value of the Related to Customer No. field';
-                    ApplicationArea = All;
-                }
                 field("Related to Customer Name"; Rec."Related to Customer Name")
                 {
                     ToolTip = 'Specifies the value of the Related to Customer Name field';
+                    ApplicationArea = All;
+                }
+                field("Related to Customer No."; Rec."Related to Customer No.")
+                {
+                    ToolTip = 'Specifies the value of the Related to Customer No. field';
                     ApplicationArea = All;
                 }
                 field("Total Work Hours"; Rec."Total Work Hours")
@@ -50,6 +49,9 @@ page 70704954 "TWE Proj. Inv. Projects"
                     ApplicationArea = All;
                     ToolTip = 'No. of object to be invoiced';
                 }
+            }
+            group(Invoicing)
+            {
                 field("Use Standard Hourly Rate"; rec."Use Standard Hourly Rate")
                 {
                     ApplicationArea = All;
@@ -60,26 +62,42 @@ page 70704954 "TWE Proj. Inv. Projects"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the standard hourly rate';
                 }
-
+            }
+            group("Work Hours")
+            {
+                part(RelatedHours; "TWE Proj. Inv. Hours Subpart")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
 
-    trigger OnAfterGetRecord()
-    begin
-        GetTotalHours();
-    end;
+    actions
+    {
+        area(Navigation)
+        {
+            group(Invoice)
+            {
+                action(InvoiceOpenHours)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Process Project Times';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    Image = CheckJournal;
+                    ToolTip = 'Process Project Times';
 
-    local procedure GetTotalHours()
-    var
-        ticket: Record "TWE Proj. Inv. Ticket";
-    begin
-        ticket.SetRange("Project ID", Rec.ID);
-        if ticket.FindSet() then begin
-            ticket.CalcFields("Total Hours");
-            rec."Total Work Hours" := ticket."Total Hours";
-            rec.Modify();
-        end;
-    end;
+                    trigger OnAction()
+                    var
+                        projInvProcessingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
+                    begin
+                        projInvProcessingMgt.InvoiceUnprocessedProjectHours(Rec);
+                    end;
+                }
+            }
+        }
 
+    }
 }

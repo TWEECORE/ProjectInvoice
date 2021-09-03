@@ -1,3 +1,6 @@
+/// <summary>
+/// Codeunit TWE Proj Inv. Integration (ID 70704951).
+/// </summary>
 codeunit 70704951 "TWE Proj Inv. Integration"
 {
     var

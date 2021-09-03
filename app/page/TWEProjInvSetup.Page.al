@@ -1,5 +1,9 @@
+/// <summary>
+/// Page TWE Proj. Inv. Setup (ID 70704950).
+/// </summary>
 page 70704950 "TWE Proj. Inv. Setup"
 {
+    Caption = 'Project Invoice Setup';
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = Administration;
@@ -9,12 +13,17 @@ page 70704950 "TWE Proj. Inv. Setup"
     {
         area(Content)
         {
-            group(GroupName)
+            group(General)
             {
-                field("GL Account"; rec."G/L Account")
+                field("Invoice Type"; rec."Invoice Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'G/L Account No. that should be used to invoice project hours';
+                    ToolTip = 'Invoice Type that should be used to invoice project hours';
+                }
+                field("No."; rec."No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'No. of object to be invoiced';
                 }
                 field("No. Series for Import"; rec."No. Series for Import")
                 {

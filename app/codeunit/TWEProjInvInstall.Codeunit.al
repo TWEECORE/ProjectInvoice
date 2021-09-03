@@ -1,3 +1,6 @@
+/// <summary>
+/// Codeunit TWE Proj. Inv. Install (ID 70704950).
+/// </summary>
 codeunit 70704950 "TWE Proj. Inv. Install"
 {
     Subtype = Install;
@@ -16,9 +19,8 @@ codeunit 70704950 "TWE Proj. Inv. Install"
     begin
         NavApp.GetCurrentModuleInfo(myAppInfo);
 
-
         if myAppInfo.DataVersion = Version.Create(0, 0, 0, 0) then
-            BaseMgt.InstallApp("TWE Apps"::"Mollie", Format(myAppInfo.AppVersion))
+            BaseMgt.InstallApp("TWE Apps"::"Project Invoice", Format(myAppInfo.AppVersion))
         else
             handleReInstall();
 

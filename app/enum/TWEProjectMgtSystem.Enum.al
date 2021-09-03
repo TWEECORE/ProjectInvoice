@@ -1,3 +1,6 @@
+/// <summary>
+/// Enum TWE Project Mgt. System (ID 70704950).
+/// </summary>
 enum 70704950 "TWE Project Mgt. System"
 {
     Extensible = true;

@@ -1,6 +1,9 @@
+/// <summary>
+/// Table TWE Proj. Inv. Import Header (ID 70704952).
+/// </summary>
 table 70704952 "TWE Proj. Inv. Import Header"
 {
-    Caption = 'Import Header';
+    Caption = 'Project Invoice Import Header';
     DataClassification = CustomerContent;
 
     fields
@@ -30,7 +33,7 @@ table 70704952 "TWE Proj. Inv. Import Header"
         {
             Caption = 'Total Hourse';
             FieldClass = FlowField;
-
+            Editable = false;
             CalcFormula = sum("TWE Proj. Inv. Import Line".Hours where("Import Header ID" = field("Entry No.")));
         }
         field(10; "Import Date"; Date)
@@ -56,6 +59,7 @@ table 70704952 "TWE Proj. Inv. Import Header"
             Caption = 'User ID';
             DataClassification = CustomerContent;
             TableRelation = User;
+            Editable = false;
         }
     }
     keys
@@ -84,13 +88,24 @@ table 70704952 "TWE Proj. Inv. Import Header"
         if Confirm(StrSubstNo(ValidateDeleteLbl, Rec."Entry No.")) then begin
             importLine.SetRange("Import Header ID", "Entry No.");
             if importLine.FindSet() then
-                DeleteAll(true);
+                importLine.DeleteAll(true);
         end;
     end;
 
     trigger OnRename()
     begin
 
+    end;
+
+    /// <summary>
+    /// GetLastEntryNo.
+    /// </summary>
+    /// <returns>Return value of type Integer.</returns>
+    procedure GetLastEntryNo(): Integer;
+    var
+        FindRecordManagement: Codeunit "Find Record Management";
+    begin
+        exit(FindRecordManagement.GetLastEntryIntFieldValue(Rec, FieldNo("Entry No.")))
     end;
 
 }
