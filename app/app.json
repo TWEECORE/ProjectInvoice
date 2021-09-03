@@ -10,13 +10,13 @@
     "help":  "https://www.tweecore.de",
     "url":  "https://www.tweecore.de",
     "contextSensitiveHelpUrl": "https://www.tweecore.de",
-    "logo":  "./app/assets/tweecore.png",
+    "logo":  "assets/tweecore.png",
     "dependencies":  [
         {
             "id": "8f062a5b-7f0e-4fd4-86a0-36151ebc2c32",
             "name": "TWEECORE Base",
             "publisher": "HEPTACOM GmbH",
-            "version": "1.2.0.17"
+            "version": "1.2.0.20"
         }   
                      ],
     "screenshots":  [

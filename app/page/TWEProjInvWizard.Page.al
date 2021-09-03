@@ -1,10 +1,14 @@
+/// <summary>
+/// Page TWE Proj Inv. Wizard (ID 70704951).
+/// </summary>
 page 70704951 "TWE Proj Inv. Wizard"
 {
     PageType = NavigatePage;
     SourceTable = "TWE Proj. Inv. Setup";
     SourceTableTemporary = true;
-    Caption = 'Assisted Setup';
+    Caption = 'Project Invoice Setup';
 
+    //TODO: Application OAuth Einrichtung
     layout
     {
         area(Content)
@@ -43,10 +47,15 @@ page 70704951 "TWE Proj Inv. Wizard"
                 group(General)
                 {
                     InstructionalText = 'Please fill the information below.';
-                    field(GLAccount; Rec."G/L Account")
+                    field("Invoice Type"; rec."Invoice Type")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'G/L Account No. that should be used to invoice project hours';
+                        ToolTip = 'Invoice Type that should be used to invoice project hours';
+                    }
+                    field("No."; rec."No.")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'No. of object to be invoiced';
                     }
                     field(NoSeries; Rec."No. Series for Import")
                     {

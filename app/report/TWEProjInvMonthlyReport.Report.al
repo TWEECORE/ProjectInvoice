@@ -1,8 +1,8 @@
-report 70704951 "TWE Project Invoice"
+/// <summary>
+/// Report TWE Proj. Inv. Monthly Report (ID 70704952).
+/// </summary>
+report 70704952 "TWE Proj. Inv. Monthly Report"
 {
-    UsageCategory = Administration;
-    ApplicationArea = All;
-
     //TODO: Report
     /*
     dataset

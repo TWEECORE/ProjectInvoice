@@ -1,3 +1,6 @@
+/// <summary>
+/// Page TWE Proj. Inv. Import Lines (ID 70704953).
+/// </summary>
 page 70704953 "TWE Proj. Inv. Import Lines"
 {
     ApplicationArea = All;
@@ -14,7 +17,7 @@ page 70704953 "TWE Proj. Inv. Import Lines"
         {
             repeater(General)
             {
-                field(ID; Rec.ID)
+                field(LineNo; Rec."Line No")
                 {
                     ToolTip = 'Specifies the value of the ID field';
                     ApplicationArea = All;
@@ -34,7 +37,7 @@ page 70704953 "TWE Proj. Inv. Import Lines"
                     ToolTip = 'Specifies the value of the Project Name field';
                     ApplicationArea = All;
                 }
-                field("Project Description"; Rec."Project Description")
+                field("Project Description"; Rec."Project Mgt. System")
                 {
                     ToolTip = 'Specifies the value of the Project Description field';
                     ApplicationArea = All;
@@ -49,14 +52,39 @@ page 70704953 "TWE Proj. Inv. Import Lines"
                     ToolTip = 'Specifies the value of the Ticket Name field';
                     ApplicationArea = All;
                 }
-                field("Ticket Status"; Rec."Ticket Status")
+                field("Ticket Created at"; Rec."Ticket Created at")
                 {
-                    ToolTip = 'Specifies the value of the Ticket Status field';
+                    ToolTip = 'Specifies the creation date of the ticket';
+                    ApplicationArea = All;
+                }
+                field("WorkItem ID"; Rec."WorkItem ID")
+                {
+                    ToolTip = 'Specifies the ID of the WorkItem';
+                    ApplicationArea = All;
+                }
+                field("WorkItem Description"; Rec."WorkItem Description")
+                {
+                    ToolTip = 'Specifies the description of the WorkItem';
+                    ApplicationArea = All;
+                }
+                field("WorkItem Created at"; Rec."WorkItem Created at")
+                {
+                    ToolTip = 'Specifies the creation date of th work item';
                     ApplicationArea = All;
                 }
                 field(Hours; Rec.Hours)
                 {
                     ToolTip = 'Specifies the value of the Hours field';
+                    ApplicationArea = All;
+                }
+                field(Agent; Rec.Agent)
+                {
+                    ToolTip = 'Specifies the value of the agent field';
+                    ApplicationArea = All;
+                }
+                field("Ticket Creator"; Rec."Ticket Creator")
+                {
+                    ToolTip = 'Specifies the value of the ticket creator field';
                     ApplicationArea = All;
                 }
                 field(Imported; Rec.Imported)

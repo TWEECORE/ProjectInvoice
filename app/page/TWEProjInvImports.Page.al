@@ -1,16 +1,19 @@
+/// <summary>
+/// Page TWE Proj. Inv. Imports (ID 70704952).
+/// </summary>
 page 70704952 "TWE Proj. Inv. Imports"
 {
     PageType = list;
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "TWE Proj. Inv. Import Header";
-    Caption = 'Project Invoice Import';
+    Caption = 'Project Invoice Imports';
 
     layout
     {
         area(Content)
         {
-            group(GroupName)
+            repeater(General)
             {
                 field(EntryNo; Rec."Entry No.")
                 {
@@ -60,10 +63,10 @@ page 70704952 "TWE Proj. Inv. Imports"
     {
         area(Processing)
         {
-            action(ImportProjectData)
+            action(GetProjMgtData)
             {
                 ApplicationArea = All;
-                Caption = 'Import Project Data';
+                Caption = 'Get Project Mgt. System Data';
                 ToolTip = 'Imports project data from defined project management system';
 
                 trigger OnAction()
@@ -71,6 +74,23 @@ page 70704952 "TWE Proj. Inv. Imports"
                     Report.Run(Report::"TWE Proj. Inv. Import");
                 end;
             }
+
+            action(ImportProjectData)
+            {
+                ApplicationArea = All;
+                Caption = 'Create BC Project Invoive Data';
+                ToolTip = 'Creates imported Project Mgt. System data in Business Central';
+
+                trigger OnAction()
+                var
+                    ProjInvProcessing: Codeunit "TWE Proj. Inv. Processing Mgt";
+                begin
+                    //Todo: Record abfiltern
+                    ProjInvProcessing.TransferImportedData(Rec);
+                end;
+            }
+
+
         }
     }
 }

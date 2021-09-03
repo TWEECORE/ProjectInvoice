@@ -1,6 +1,9 @@
+/// <summary>
+/// Table TWE Proj. Inv. Setup (ID 70704950).
+/// </summary>
 table 70704950 "TWE Proj. Inv. Setup"
 {
-    Caption = 'PI Setup';
+    Caption = 'Project Invoice Setup';
     DataClassification = CustomerContent;
 
     fields
@@ -11,11 +14,22 @@ table 70704950 "TWE Proj. Inv. Setup"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(10; "G/L Account"; Code[20])
+        field(5; "Invoice Type"; Enum "TWE Proj. Inv. Invoice Type")
         {
-            Caption = 'G/L Account';
-            DataClassification = AccountData;
-            TableRelation = "G/L Account"."No.";
+            Caption = 'Invoice Type';
+            DataClassification = CustomerContent;
+        }
+        field(10; "No."; Code[20])
+        {
+            Caption = 'No.';
+            DataClassification = CustomerContent;
+            TableRelation = IF ("Invoice Type" = CONST("G/L Account")) "G/L Account" WHERE("Direct Posting" = CONST(true),
+                                                                                               "Account Type" = CONST(Posting),
+                                                                                               Blocked = CONST(false))
+            ELSE
+            IF ("Invoice Type" = CONST(Resource)) Resource
+            ELSE
+            IF ("Invoice Type" = CONST(Item)) Item WHERE(Blocked = CONST(false), "Sales Blocked" = CONST(false));
         }
         field(100; "No. Series for Import"; Code[20])
         {
@@ -50,6 +64,17 @@ table 70704950 "TWE Proj. Inv. Setup"
     trigger OnRename()
     begin
 
+    end;
+
+    /// <summary>
+    /// GetSetup.
+    /// </summary>
+    procedure GetSetup()
+    begin
+        if not FindFirst() then begin
+            Init();
+            Insert();
+        end;
     end;
 
 }

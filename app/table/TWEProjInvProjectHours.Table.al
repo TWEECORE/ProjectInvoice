@@ -1,27 +1,41 @@
-table 70704956 "TWE Project Hours"
+/// <summary>
+/// Table TWE Project Hours (ID 70704956).
+/// </summary>
+table 70704956 "TWE Proj. Inv. Project Hours"
 {
     DataClassification = CustomerContent;
-    Caption = 'Project Hours';
+    Caption = 'Project Invoice Project Hours';
 
     fields
     {
-        field(1; ID; Integer)
+        field(1; ID; Code[50])
         {
             DataClassification = CustomerContent;
             Caption = 'ID';
             Editable = false;
         }
-        field(2; "Project ID"; Code[10])
+        field(2; "Project ID"; Code[50])
         {
             DataClassification = CustomerContent;
             Caption = 'Project ID';
             Editable = false;
         }
-        field(5; "Ticket No."; Text[30])
+        field(5; "Ticket ID"; Text[50])
         {
             DataClassification = CustomerContent;
-            Caption = 'Ticket No.';
+            Caption = 'Ticket ID';
             Editable = false;
+        }
+        field(6; "Ticket Name"; Text[100])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Ticket Name';
+            Editable = false;
+        }
+        field(7; "Work Description"; Text[150])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Work Description';
         }
         field(10; Hours; Decimal)
         {
@@ -33,6 +47,11 @@ table 70704956 "TWE Project Hours"
             DataClassification = CustomerContent;
             Caption = 'Agent';
             Editable = false;
+        }
+        field(20; Invoiced; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Invoiced';
         }
     }
 

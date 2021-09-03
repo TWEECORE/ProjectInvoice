@@ -1,17 +1,20 @@
-table 70704955 "TWE Project Ticket"
+/// <summary>
+/// Table TWE Project Ticket (ID 70704955).
+/// </summary>
+table 70704955 "TWE Proj. Inv. Ticket"
 {
     DataClassification = CustomerContent;
-    Caption = 'Project Ticket';
+    Caption = 'Project Invoice Project Ticket';
 
     fields
     {
-        field(1; "Ticket No."; Code[30])
+        field(1; "No."; Code[50])
         {
             DataClassification = CustomerContent;
             Caption = 'Ticket No.';
             Editable = false;
         }
-        field(2; "Project ID"; Code[10])
+        field(2; "Project ID"; Code[50])
         {
             DataClassification = CustomerContent;
             Caption = 'Project ID';
@@ -23,22 +26,31 @@ table 70704955 "TWE Project Ticket"
             Caption = 'Ticket Name';
             Editable = false;
         }
-        field(5; "Ticket Status"; Enum "TWE Proj. Ticket Status")
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Ticket Status';
-            Editable = false;
-        }
         field(10; "Total Hours"; Decimal)
         {
-            DataClassification = CustomerContent;
             Caption = 'Total Hours';
+            FieldClass = FlowField;
+            Editable = false;
+            DecimalPlaces = 2;
+
+            CalcFormula = sum("TWE Proj. Inv. Project Hours".Hours where("Ticket ID" = field("No.")));
+        }
+        field(15; "Created At"; Date)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Created At';
+        }
+        field(20; "Created from"; Text[50])
+        {
+            Caption = 'Created from';
+            DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 
     keys
     {
-        key(PK; "Ticket No.")
+        key(PK; "No.")
         {
             Clustered = true;
         }
@@ -56,9 +68,10 @@ table 70704955 "TWE Project Ticket"
 
     trigger OnDelete()
     var
-        projectHours: Record "TWE Project Hours";
+        projectHours: Record "TWE Proj. Inv. Project Hours";
     begin
-        projectHours.SetRange("Ticket No.", "Ticket No.");
+        //TODO prüfen
+        projectHours.SetRange("Ticket ID", "No.");
         if projectHours.FindSet() then
             projectHours.DeleteAll(true);
     end;

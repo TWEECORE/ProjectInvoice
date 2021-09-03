@@ -1,15 +1,12 @@
 /// <summary>
-/// Page TWE Proj. Inv. Hours (ID 70704956).
+/// Page TWE Proj. Inv. Hours Subpart (ID 70704955).
 /// </summary>
-page 70704956 "TWE Proj. Inv. Hours"
+page 70704955 "TWE Proj. Inv. Hours Subpart"
 {
-    ApplicationArea = All;
     Caption = 'Proj. Inv. Hours';
-    PageType = List;
+    PageType = ListPart;
     SourceTable = "TWE Proj. Inv. Project Hours";
-    UsageCategory = Lists;
 
-    //TODO: ToolTips anpassen
     layout
     {
         area(content)
@@ -23,7 +20,7 @@ page 70704956 "TWE Proj. Inv. Hours"
                 }
                 field("Ticket ID"; Rec."Ticket ID")
                 {
-                    ToolTip = 'Specifies the value of the Ticket No. field';
+                    ToolTip = 'Specifies the value of the Ticket ID field';
                     ApplicationArea = All;
                 }
                 field("Ticket Name"; Rec."Ticket Name")
@@ -31,9 +28,9 @@ page 70704956 "TWE Proj. Inv. Hours"
                     ToolTip = 'Specifies the value of the Ticket Name field';
                     ApplicationArea = All;
                 }
-                field("Project ID"; Rec."Project ID")
+                field("Work Description"; Rec."Work Description")
                 {
-                    ToolTip = 'Specifies the value of the Project ID field';
+                    ToolTip = 'Specifies the value of the Work Description field';
                     ApplicationArea = All;
                 }
                 field(Hours; Rec.Hours)
@@ -44,6 +41,11 @@ page 70704956 "TWE Proj. Inv. Hours"
                 field(Agent; Rec.Agent)
                 {
                     ToolTip = 'Specifies the value of the Agent field';
+                    ApplicationArea = All;
+                }
+                field(Invoiced; Rec.Invoiced)
+                {
+                    ToolTip = 'Specifies the value of the Invoiced field';
                     ApplicationArea = All;
                 }
             }
