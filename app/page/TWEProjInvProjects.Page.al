@@ -8,6 +8,7 @@ page 70704954 "TWE Proj. Inv. Projects"
     PageType = List;
     SourceTable = "TWE Proj. Inv. Project";
     UsageCategory = Lists;
+    CardPageID = "TWE Proj. Inv. Project Card";
 
     layout
     {

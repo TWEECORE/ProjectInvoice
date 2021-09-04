@@ -6,6 +6,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
     var
         ProjInvSetup: Record "TWE Proj. Inv. Setup";
+        SalesSetup: Record "Sales & Receivables Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
 
     /// <summary>
     /// TransferImportedData.
@@ -20,6 +22,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         projectHour: Record "TWE Proj. Inv. Project Hours";
         customer: Record Customer;
         noLinesToImportLbl: Label 'There is no new data to import for Import Header = %1', Comment = '%1=Import Header';
+        AllImportedLbl: Label 'The project management data was successfully imported';
     begin
         importLine.SetRange("Import Header ID", ImportHeader."Entry No.");
         importLine.SetRange(Imported, false);
@@ -34,10 +37,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     customer.SetRange(Name, importLine."Project Name");
                     if customer.FindSet() then
                         if customer.Count = 1 then
-                            project."Related to Customer No." := customer."No.";
+                            project.Validate("Related to Customer No.", customer."No.");
                     project.Insert();
                 end;
-
                 if not ticket.Get(importLine."Ticket No.") then begin
                     ticket.Init();
                     ticket."No." := importLine."Ticket No.";
@@ -57,10 +59,12 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     projectHour."Work Description" := importLine."WorkItem Description";
                     projectHour.Hours := importLine.Hours;
                     projectHour.Agent := importLine.Agent;
+                    projectHour.Insert();
                 end;
                 importLine.Imported := true;
                 importLine.Modify();
             until importLine.Next() = 0;
+            Message(AllImportedLbl);
             success := true;
         end else
             Message(noLinesToImportLbl, ImportHeader."Entry No.");
@@ -89,68 +93,152 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
     /// <returns>Return variable success of type Boolean.</returns>
     procedure InvoiceUnprocessedProjectHours(Project: Record "TWE Proj. Inv. Project") success: Boolean
     var
-        salesInvHeader: Record "Sales Invoice Header";
-        salesInvLine: Record "Sales Invoice Line";
+        salesHeader: Record "Sales Header";
+        salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         projectLbl: Label 'Project: ';
         noUnprocessedProjectHoursLbl: Label 'There were no unprocessed work hours found for project %1', Comment = '%1=Project Name';
+        invoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
     begin
+        SalesSetup.Get();
+        projectHours.SetRange("Project ID", Project.ID);
+        projectHours.SetRange(Invoiced, false);
+        if projectHours.FindSet() then begin
+            salesHeader.Init();
+            salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
+            salesHeader."No." := NoSeriesMgt.GetNextNo(SalesSetup."Invoice Nos.", WorkDate(), true);
+            salesHeader.Insert();
+
+            salesHeader."Document Date" := Today;
+            salesHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
+            salesHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
+            salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
+            workDescriptionOutStream.Write(projectLbl + Project.Name);
+            salesHeader.Modify();
+            LineNo := 0;
+
+            repeat
+                salesLine.Init();
+                salesLine."Document No." := salesHeader."No.";
+                salesLine."Document Type" := salesHeader."Document Type";
+                LineNo += 10000;
+                salesLine."Line No." := LineNo;
+                salesLine.Insert();
+
+                if Project."Invoice Type" = Project."Invoice Type"::" " then begin
+                    ProjInvSetup.GetSetup();
+                    case ProjInvSetup."Invoice Type" of
+                        "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                            salesLine.Type := salesLine.Type::"G/L Account";
+                        "TWE Proj. Inv. Invoice Type"::Item:
+                            salesLine.Type := salesLine.Type::Item;
+                        "TWE Proj. Inv. Invoice Type"::Resource:
+                            salesLine.Type := salesLine.Type::Resource;
+                    end;
+                    salesLine."No." := ProjInvSetup."No.";
+                end else begin
+                    case Project."Invoice Type" of
+                        "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                            salesLine.Type := salesLine.Type::"G/L Account";
+                        "TWE Proj. Inv. Invoice Type"::Item:
+                            salesLine.Type := salesLine.Type::Item;
+                        "TWE Proj. Inv. Invoice Type"::Resource:
+                            salesLine.Type := salesLine.Type::Resource;
+                    end;
+                    salesLine."No." := Project."No.";
+                end;
+
+                salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
+                salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
+                salesLine.Quantity := projectHours.Hours;
+                if Project."Use Standard Hourly Rate" then
+                    salesLine."Unit Price" := Project."Standard Hourly Rate";
+                salesLine.Modify();
+
+            until projectHours.Next() = 0;
+            success := true;
+        end else
+            Message(noUnprocessedProjectHoursLbl, Project.Name);
+
+
+        Message(invoicesCreatedLbl, Format(1));
+    end;
+
+    procedure InvoiceUnprocessedProjectHoursCustomer(Project: Record "TWE Proj. Inv. Project") success: Boolean
+    var
+        salesHeader: Record "Sales Header";
+        salesLine: Record "Sales Line";
+        projectHours: Record "TWE Proj. Inv. Project Hours";
+        workDescriptionOutStream: OutStream;
+        LineNo: Integer;
+        counter: integer;
+        projectLbl: Label 'Project: ';
+        noUnprocessedProjectHoursLbl: Label 'There were no unprocessed work hours found for project %1', Comment = '%1=Project Name';
+        invoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
+    begin
+        counter := 0;
         repeat
             projectHours.SetRange("Project ID", Project.ID);
             projectHours.SetRange(Invoiced, false);
             if projectHours.FindSet() then begin
-                salesInvHeader.Init();
-                salesInvHeader."Document Date" := Today;
-                salesInvHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
-                salesInvHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
-                salesInvHeader."Work Description".CreateOutStream(workDescriptionOutStream);
+                salesHeader.Init();
+                salesHeader."Document Date" := Today;
+                salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
+                salesHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
+                salesHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
+                salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
                 workDescriptionOutStream.Write(projectLbl + Project.Name);
-                salesInvHeader.Insert();
+                salesHeader.Insert();
                 LineNo := 0;
 
                 repeat
-                    salesInvLine.Init();
-                    salesInvLine."Document No." := salesInvHeader."No.";
+                    salesLine.Init();
+                    salesLine."Document No." := salesHeader."No.";
+                    salesLine."Document Type" := salesHeader."Document Type";
                     LineNo += 10000;
-                    salesInvLine."Line No." := LineNo;
-                    salesInvLine.Insert();
+                    salesLine."Line No." := LineNo;
+                    salesLine.Insert();
 
                     if Project."Invoice Type" = Project."Invoice Type"::" " then begin
                         ProjInvSetup.GetSetup();
                         case ProjInvSetup."Invoice Type" of
                             "TWE Proj. Inv. Invoice Type"::"G/L Account":
-                                salesInvLine.Type := salesInvLine.Type::"G/L Account";
+                                salesLine.Type := salesLine.Type::"G/L Account";
                             "TWE Proj. Inv. Invoice Type"::Item:
-                                salesInvLine.Type := salesInvLine.Type::Item;
+                                salesLine.Type := salesLine.Type::Item;
                             "TWE Proj. Inv. Invoice Type"::Resource:
-                                salesInvLine.Type := salesInvLine.Type::Resource;
+                                salesLine.Type := salesLine.Type::Resource;
                         end;
-                        salesInvLine."No." := ProjInvSetup."No.";
+                        salesLine."No." := ProjInvSetup."No.";
                     end else begin
                         case Project."Invoice Type" of
                             "TWE Proj. Inv. Invoice Type"::"G/L Account":
-                                salesInvLine.Type := salesInvLine.Type::"G/L Account";
+                                salesLine.Type := salesLine.Type::"G/L Account";
                             "TWE Proj. Inv. Invoice Type"::Item:
-                                salesInvLine.Type := salesInvLine.Type::Item;
+                                salesLine.Type := salesLine.Type::Item;
                             "TWE Proj. Inv. Invoice Type"::Resource:
-                                salesInvLine.Type := salesInvLine.Type::Resource;
+                                salesLine.Type := salesLine.Type::Resource;
                         end;
-                        salesInvLine."No." := Project."No.";
+                        salesLine."No." := Project."No.";
                     end;
 
-                    salesInvLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesInvLine.Description));
-                    salesInvLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesInvLine."Description 2"));
-                    salesInvLine.Amount := projectHours.Hours;
+                    salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
+                    salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
+                    salesLine.Amount := projectHours.Hours;
                     if Project."Use Standard Hourly Rate" then
-                        salesInvLine."Unit Price" := Project."Standard Hourly Rate";
-                    salesInvLine.Modify();
+                        salesLine."Unit Price" := Project."Standard Hourly Rate";
+                    salesLine.Modify();
 
                 until projectHours.Next() = 0;
+
+                counter += 1;
                 success := true;
             end else
                 Message(noUnprocessedProjectHoursLbl, Project.Name);
         until Project.Next() = 0;
+
+        Message(invoicesCreatedLbl, counter);
     end;
 }

@@ -4,9 +4,11 @@
 codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 {
     var
+        ImportHeader: Record "TWE Proj. Inv. Import Header";
         ErrDataReceiveFailedLbl: Label 'Could not receive data.';
         MsgNoProjectDataFoundLbl: Label 'No new project data available.';
-
+        testyoutrackWorkitemArgumentsLbl: Label '/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
+        FirstLine: Boolean;
     /// <summary>
     /// GetProjectMgtSystemDataByDate.
     /// </summary>
@@ -22,73 +24,80 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     local procedure requestProjectData(requestFromDate: Date; requestToDate: Date) success: Boolean
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
+        importLine: Record "TWE Proj. Inv. Import Line";
+        noDataToImportLbl: Label 'There are no new project hours to import';
     begin
         success := false;
 
         oAuthApp.SetRange("TWEProject Mgt System", true);
         if oAuthApp.FindSet() then
-            repeat
-                createImportHeader();
-                if oAuthApp."TWE Use Permanent Token" then begin
-                    if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
-                        case oAuthApp.Code of
-                            Format("TWE Project Mgt. System"::YoutTrack):
-                                requestDataViaPermToken("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
-                            Format("TWE Project Mgt. System"::JIRA):
-                                requestDataViaPermToken("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
-                        end
-                    else
-                        Message('TODO:Fehlermeldung Permtoken nicht da');
-                end else
+            createImportHeader(ImportHeader);
+        repeat
+            if oAuthApp."TWE Use Permanent Token" then begin
+                if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
                     case oAuthApp.Code of
                         Format("TWE Project Mgt. System"::YoutTrack):
-                            requestDataViaOAuth("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
+                            begin
+                                FirstLine := false;
+                                requestDataViaPermToken("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
+                            end;
                         Format("TWE Project Mgt. System"::JIRA):
+                            begin
+                                FirstLine := false;
+                                requestDataViaPermToken("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
+                            end;
+                    end
+                else
+                    Message('TODO:Fehlermeldung Permtoken nicht da');
+            end else
+                case oAuthApp.Code of
+                    Format("TWE Project Mgt. System"::YoutTrack):
+                        begin
+                            FirstLine := false;
+                            requestDataViaOAuth("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
+                        end;
+                    Format("TWE Project Mgt. System"::JIRA):
+                        begin
+                            FirstLine := false;
                             requestDataViaOAuth("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
-                    end;
-            until oAuthApp.Next() = 0;
+                        end;
+                end;
+        until oAuthApp.Next() = 0;
+
+        importline.SetRange("Import Header ID", ImportHeader."Entry No.");
+        if importLine.IsEmpty() then begin
+            Message(noDataToImportLbl);
+            ImportHeader.Delete();
+        end;
+
         success := true;
     end;
 
     local procedure requestDataViaPermToken(ProjMgtSystem: Enum "TWE Project Mgt. System"; RequestFromDate: Date; RequestToDate: Date) success: Boolean
     var
         tempArguments: Record "TWE RESTWebServiceArguments" temporary;
+        jsonMethods: Codeunit "TWE JSONMethods";
         response: JsonObject;
         issueObject: JsonObject;
-        projectObject: JsonObject;
         workItemObject: JsonObject;
+        jToken: JsonToken;
+        workItemArray: JsonArray;
     begin
         success := false;
         case ProjMgtSystem of
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, '/issues?', "TWE Project Mgt. System"::YoutTrack);
+                    initArgumentsPermToken(tempArguments, StrSubstNo(testyoutrackWorkitemArgumentsLbl, RequestFromDate, RequestToDate), "TWE Project Mgt. System"::YoutTrack);
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    issueObject := response;
-
-                    tempArguments.Reset();
-                    tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, '/projects?', "TWE Project Mgt. System"::YoutTrack);
-                    if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
-                        Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
-
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    projectObject := response;
-
-                    tempArguments.Reset();
-                    tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, '/workItems?', "TWE Project Mgt. System"::YoutTrack);
-                    if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
-                        Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
-
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    workItemObject := response;
-
-                    createImportLinesYoutrack(projectObject, issueObject, workItemObject, requestFromDate, requestToDate);
+                    workItemArray.ReadFrom(tempArguments.GetResponseContentAsText());
+                    foreach jToken in workItemArray do begin
+                        workItemObject := jToken.AsObject();
+                        jsonMethods.SetJsonObject(workItemObject);
+                        createImportLinesYoutrack(workItemObject, requestFromDate, requestToDate);
+                    end;
                 end;
             ProjMgtSystem::JIRA:
                 begin
@@ -108,10 +117,10 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
                     response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    projectObject := response;
+                    //projectObject := response;
 
                     //TODO: WorklogAusgabe für Datumsbestimmung prüfen
-                    createImportLinesJIRA(projectObject, workItemObject, requestFromDate, requestToDate);
+                    //createImportLinesJIRA(projectObject, workItemObject, requestFromDate, requestToDate);
                     addIssueDataToImportLine(issueObject, workItemObject);
                 end;
         end;
@@ -122,42 +131,26 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     var
         tempArguments: Record "TWE RESTWebServiceArguments" temporary;
         oAuthApp: Record "TWE OAuth 2.0 Application";
-        response: JsonObject;
-        issueObject: JsonObject;
-        projectObject: JsonObject;
+        jsonnMethods: Codeunit "TWE JSONMethods";
         workItemObject: JsonObject;
+        jToken: JsonToken;
+        workItemArray: JsonArray;
     begin
         success := false;
         case ProjMgtSystem of
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArguments(tempArguments, '/issues?', oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
+                    initArguments(tempArguments, StrSubstNo(testyoutrackWorkitemArgumentsLbl, RequestFromDate, RequestToDate), oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    issueObject := response;
-
-                    tempArguments.Reset();
-                    tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArguments(tempArguments, '/projects?', oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
-                    if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
-                        Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
-
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    projectObject := response;
-
-                    tempArguments.Reset();
-                    tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArguments(tempArguments, '/issueWorkItems?', oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
-                    if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
-                        Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
-
-                    response.ReadFrom(tempArguments.GetResponseContentAsText());
-                    workItemObject := response;
-
-                    createImportLinesYoutrack(projectObject, issueObject, workItemObject, requestFromDate, requestToDate);
+                    workItemArray.ReadFrom(tempArguments.GetResponseContentAsText());
+                    foreach jToken in workItemArray do begin
+                        workItemObject := jToken.AsObject();
+                        jsonnMethods.SetJsonObject(workItemObject);
+                        createImportLinesYoutrack(workItemObject, requestFromDate, requestToDate);
+                    end;
                 end;
             ProjMgtSystem::JIRA:
                 Message('TODO:JIRA');
@@ -165,71 +158,58 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         success := true;
     end;
 
-    local procedure createImportHeader() success: Boolean
-    var
-        importHeader: Record "TWE Proj. Inv. Import Header";
+    local procedure createImportHeader(ImportHeader: Record "TWE Proj. Inv. Import Header") success: Boolean
     begin
-        importHeader.Init();
-        importHeader."Entry No." := importHeader.GetLastEntryNo() + 1;
-        importHeader.Insert();
+        ImportHeader.Init();
+        ImportHeader."Entry No." := importHeader.GetLastEntryNo() + 1;
+        ImportHeader.Insert();
 
-        importHeader."Import Date" := Today;
-        importHeader."Import Time" := Time;
-        importHeader."User ID" := CopyStr(UserId(), 1, MaxStrLen(importHeader."User ID"));
-        importHeader.Modify();
+        ImportHeader."Import Date" := Today;
+        ImportHeader."Import Time" := Time;
+        ImportHeader."User ID" := CopyStr(UserId(), 1, MaxStrLen(importHeader."User ID"));
+        ImportHeader.Modify();
 
         success := true;
     end;
 
-    local procedure createImportLinesYoutrack(projectDataObject: JsonObject; issueDataObject: JsonObject; workItemDataObject: JsonObject; FromDate: Date; ToDate: Date) success: Boolean
+    local procedure createImportLinesYoutrack(workItemDataObject: JsonObject; FromDate: Date; ToDate: Date) success: Boolean
     var
         tempImportLine: Record "TWE Proj. Inv. Import Line" temporary;
         importLine: Record "TWE Proj. Inv. Import Line";
         importHeader: Record "TWE Proj. Inv. Import Header";
-        jsonMethods: Codeunit "TWE JSONMethods";
-        workItemToken: JsonToken;
-        workItemArray: JsonArray;
-        workItemObjectLocal: JsonObject;
-        lineNo: Integer;
+        projectHours: Record "TWE Proj. Inv. Project Hours";
     begin
         success := false;
-        lineNo := 0;
-        workItemDataObject.Get('issueWorkItems', workItemToken);
-        workItemArray := workItemToken.AsArray();
 
-        foreach workItemToken in workItemArray do begin
-            workItemObjectLocal := workItemToken.AsObject();
-            jsonMethods.SetJsonObject(workItemObjectLocal);
-
-            tempImportLine.Init();
-            tempImportLine."Import Header ID" := importHeader.GetLastEntryNo();
-            lineNo += 10000;
-            tempImportLine."Line No" := lineNo;
-            tempImportLine."Project Mgt. System" := "TWE Project Mgt. System"::YoutTrack;
-            tempImportLine.Insert();
-
-            tempImportLine.PopulateFromJsonYoutrack(workItemObjectLocal, "TWE Proj. Inv. ProjMgt. Objects"::workItem);
-            tempImportLine.PopulateFromJsonYoutrack(issueDataObject, "TWE Proj. Inv. ProjMgt. Objects"::issue);
-            tempImportLine.PopulateFromJsonYoutrack(projectDataObject, "TWE Proj. Inv. ProjMgt. Objects"::project);
-
-            tempImportLine.Modify();
+        tempImportLine.Init();
+        tempImportLine."Import Header ID" := importHeader.GetLastEntryNo();
+        if FirstLine then
+            tempImportLine."Line No" := importLine.GetLastLineNo(tempImportLine."Import Header ID") + 10000
+        else begin
+            tempImportLine."Line No" := 10000;
+            FirstLine := true;
         end;
+        tempImportLine."Project Mgt. System" := "TWE Project Mgt. System"::YoutTrack;
+        tempImportLine.Insert();
 
-        repeat
-            if (tempImportLine."WorkItem Created at" >= FromDate) and (tempImportLine."WorkItem Created at" <= ToDate) then
-                if not importLine.IsEmpty() then begin
-                    importLine.SetRange("WorkItem ID", tempImportLine."WorkItem ID");
-                    if importLine.IsEmpty() then begin
-                        importLine := tempImportLine;
-                        importLine.Insert();
-                    end;
-                    importLine.Reset();
-                end else begin
-                    importLine.Init();
+        tempImportLine.PopulateFromJsonYoutrack(workItemDataObject);
+
+        tempImportLine.Modify();
+
+        if (tempImportLine."WorkItem Created at" >= FromDate) and (tempImportLine."WorkItem Created at" <= ToDate) then
+            if not projectHours.IsEmpty() then begin
+                projectHours.SetRange(ID, tempImportLine."WorkItem ID");
+                if projectHours.IsEmpty() then begin
                     importLine := tempImportLine;
                     importLine.Insert();
                 end;
-        until tempImportLine.Next() = 0;
+                projectHours.Reset();
+            end else begin
+                importLine.Init();
+                importLine := tempImportLine;
+                importLine.Insert();
+            end;
+
         success := true;
     end;
 
@@ -260,8 +240,8 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             tempImportLine."Project Mgt. System" := "TWE Project Mgt. System"::YoutTrack;
             tempImportLine.Insert();
 
-            tempImportLine.PopulateFromJsonYoutrack(workItemObjectLocal, "TWE Proj. Inv. ProjMgt. Objects"::workItem);
-            tempImportLine.PopulateFromJsonYoutrack(projectDataObject, "TWE Proj. Inv. ProjMgt. Objects"::project);
+            tempImportLine.PopulateFromJsonJIRA(workItemObjectLocal, "TWE Proj. Inv. ProjMgt. Objects"::workItem);
+            tempImportLine.PopulateFromJsonJIRA(projectDataObject, "TWE Proj. Inv. ProjMgt. Objects"::project);
 
             tempImportLine.Modify();
         end;
@@ -381,7 +361,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         EXIT(ResponseMessage.IsSuccessStatusCode());
     end;
 
-    local procedure addIssueDataToImportLine(IssueObject: JsonObject; WorklogObject: JsonObject)
+    local procedure addIssueDataToImportLine(IssueObject: JsonObject; WorkItemObject: JsonObject)
     var
         tempArguments: Record "TWE RESTWebServiceArguments" temporary;
         jsonMethods: Codeunit "TWE JSONMethods";
@@ -391,7 +371,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         jsonObjArray: JsonArray;
         idList: text;
     begin
-        WorklogObject.Get('ChangedWorkLogs', jToken);
+        WorkItemObject.Get('ChangedWorkLogs', jToken);
         jsonObjArray := jToken.AsArray();
         foreach jToken in jsonObjArray do begin
             itemObject := jToken.AsObject();
@@ -409,31 +389,20 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     /// </summary>
     /// <param name="DateTimeText">Text.</param>
     /// <returns>Return value of type Date.</returns>
-    procedure ConvertTextToDateTime(DateTimeText: Text): Date
+    procedure getDateFromUnixTimeStamp(unixTime: Text): Date
     var
-        day: Integer;
-        month: Integer;
-        year: Integer;
-        theTime: Time;
-        convertedDateTime: DateTime;
-        convertedDate: Date;
-        dateTimeString: Text;
-        charPos: Integer;
+        unixTimeInt: Integer;
+        unixStartDate: Date;
+        noOfDays: Integer;
+        endDate: Date;
     begin
-        dateTimeString := DelChr(DateTimeText, '=', '-T:.Z');
-        if dateTimeString.Contains('+') then begin
-            charPos := StrPos(dateTimeString, '+');
-            charPos -= 1;
-            dateTimeString := CopyStr(dateTimeString, 1, charPos);
-        end;
+        unixTime := DelStr(unixTime, 11);
+        Evaluate(unixTimeInt, unixTime);
+        unixStartDate := 19700101D;
+        NoOfDays := unixTimeInt DIV 86400;
 
-        Evaluate(year, CopyStr(dateTimeString, 1, 4));
-        Evaluate(month, CopyStr(dateTimeString, 5, 2));
-        Evaluate(day, CopyStr(dateTimeString, 7, 2));
-        Evaluate(theTime, CopyStr(dateTimeString, 9));
+        endDate := unixStartDate + NoOfDays;
 
-        convertedDateTime := CreateDateTime(DMY2Date(day, month, year), theTime);
-        convertedDate := DT2Date(convertedDateTime);
-        exit(convertedDate);
+        Exit(endDate);
     end;
 }
