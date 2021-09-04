@@ -24,14 +24,14 @@ page 70704958 "TWE Proj. Inv. Project Card"
                     ToolTip = 'Specifies the value of the Name field';
                     ApplicationArea = All;
                 }
-                field("Related to Customer Name"; Rec."Related to Customer Name")
-                {
-                    ToolTip = 'Specifies the value of the Related to Customer Name field';
-                    ApplicationArea = All;
-                }
                 field("Related to Customer No."; Rec."Related to Customer No.")
                 {
                     ToolTip = 'Specifies the value of the Related to Customer No. field';
+                    ApplicationArea = All;
+                }
+                field("Related to Customer Name"; Rec."Related to Customer Name")
+                {
+                    ToolTip = 'Specifies the value of the Related to Customer Name field';
                     ApplicationArea = All;
                 }
                 field("Total Work Hours"; Rec."Total Work Hours")

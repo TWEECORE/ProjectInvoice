@@ -14,7 +14,7 @@ report 70704950 "TWE Proj. Inv. Import"
             var
                 projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
             begin
-                projInvImportMgt.GetProjectMgtSystemDataByDate(FromDate, Today);
+                projInvImportMgt.GetProjectMgtSystemDataByDate(FromDate, toDate);
             end;
         }
     }
@@ -33,6 +33,12 @@ report 70704950 "TWE Proj. Inv. Import"
                         Caption = 'From date';
                         ToolTip = 'Select a start date for the SumUp import';
                     }
+                    field(EndDate; ToDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'To date';
+                        ToolTip = 'Select a start date for the SumUp import';
+                    }
                 }
             }
         }
@@ -41,4 +47,5 @@ report 70704950 "TWE Proj. Inv. Import"
 
     var
         FromDate: Date;
+        ToDate: Date;
 }

@@ -26,7 +26,7 @@ table 70704956 "TWE Proj. Inv. Project Hours"
             Caption = 'Ticket ID';
             Editable = false;
         }
-        field(6; "Ticket Name"; Text[100])
+        field(6; "Ticket Name"; Text[150])
         {
             DataClassification = CustomerContent;
             Caption = 'Ticket Name';
