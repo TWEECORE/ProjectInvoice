@@ -26,6 +26,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         oAuthApp: Record "TWE OAuth 2.0 Application";
         importLine: Record "TWE Proj. Inv. Import Line";
         noDataToImportLbl: Label 'There are no new project hours to import';
+        noPermTokenFoundLbl: Label 'There is no Permanent Token defined for Application "%1"', Comment = '%1=ProjectMgtSystem';
     begin
         success := false;
 
@@ -48,7 +49,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                             end;
                     end
                 else
-                    Message('TODO:Fehlermeldung Permtoken nicht da');
+                    Message(noPermTokenFoundLbl, Format(oAuthApp.Description));
             end else
                 case oAuthApp.Code of
                     Format("TWE Project Mgt. System"::YoutTrack):
@@ -88,7 +89,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, StrSubstNo(testyoutrackWorkitemArgumentsLbl, RequestFromDate, RequestToDate), "TWE Project Mgt. System"::YoutTrack);
+                    initArgumentsPermToken(tempArguments, testyoutrackWorkitemArgumentsLbl, "TWE Project Mgt. System"::YoutTrack);
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
@@ -141,7 +142,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArguments(tempArguments, StrSubstNo(testyoutrackWorkitemArgumentsLbl, RequestFromDate, RequestToDate), oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
+                    initArguments(tempArguments, testyoutrackWorkitemArgumentsLbl, oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
