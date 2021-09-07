@@ -368,6 +368,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectData - NamedType noDataToImportLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2207169053 - Method 3451030824 - NamedType 983392856" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There is no Permanent Token defined for Application "%1"</source>
+          <note from="Developer" annotates="general" priority="2">%1=ProjectMgtSystem</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectData - NamedType noPermTokenFoundLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 1857099294 - NamedType 2726611525" size-unit="char" translate="yes" xml:space="preserve">
           <source>No projects found for customer: "%1"</source>
           <note from="Developer" annotates="general" priority="2">%1=Customer Name</note>
