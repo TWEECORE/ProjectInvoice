@@ -64,6 +64,30 @@ page 70704954 "TWE Proj. Inv. Projects"
 
             }
         }
+
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(GetProjects)
+            {
+                ApplicationArea = All;
+                Caption = 'Import Projects';
+                ToolTip = 'Imports projects from project management systems';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    ProjInvProcessingMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+                begin
+                    Report.Run(Report::"TWE Proj. Inv. Import");
+                end;
+            }
+        }
     }
 
     trigger OnAfterGetRecord()
@@ -82,5 +106,7 @@ page 70704954 "TWE Proj. Inv. Projects"
             rec.Modify();
         end;
     end;
+
+
 
 }

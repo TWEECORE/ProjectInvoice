@@ -5,10 +5,17 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 {
     var
         ImportHeader: Record "TWE Proj. Inv. Import Header";
+        BaseMgt: Codeunit "TWE Base Mgt";
         ErrDataReceiveFailedLbl: Label 'Could not receive data.';
         MsgNoProjectDataFoundLbl: Label 'No new project data available.';
-        testyoutrackWorkitemArgumentsLbl: Label '/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
+        youtrackWorkitemArgumentsLbl: Label '/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
+        jiraWorkLogArgumentsLbl: Label '/worklog/updated?since=';
+        noPermTokenFoundLbl: Label 'There is no Permanent Token defined for Application "%1"', Comment = '%1=ProjectMgtSystem';
+        noDataToImportLbl: Label 'There are no new project hours to import';
+
         FirstLine: Boolean;
+
+
     /// <summary>
     /// GetProjectMgtSystemDataByDate.
     /// </summary>
@@ -25,52 +32,50 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
         importLine: Record "TWE Proj. Inv. Import Line";
-        noDataToImportLbl: Label 'There are no new project hours to import';
-        noPermTokenFoundLbl: Label 'There is no Permanent Token defined for Application "%1"', Comment = '%1=ProjectMgtSystem';
     begin
         success := false;
 
-        oAuthApp.SetRange("TWEProject Mgt System", true);
-        if oAuthApp.FindSet() then
+        oAuthApp.SetRange("TWE Use Project Mgt. System", true);
+        if oAuthApp.FindSet() then begin
             createImportHeader(ImportHeader);
-        repeat
-            if oAuthApp."TWE Use Permanent Token" then begin
-                if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
+            repeat
+                if oAuthApp."TWE Use Permanent Token" then begin
+                    if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
+                        case oAuthApp.Code of
+                            Format("TWE Project Mgt. System"::YoutTrack):
+                                begin
+                                    FirstLine := false;
+                                    requestDataViaPermToken("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
+                                end;
+                            Format("TWE Project Mgt. System"::JIRA):
+                                begin
+                                    FirstLine := false;
+                                    requestDataViaPermToken("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
+                                end;
+                        end
+                    else
+                        Message(noPermTokenFoundLbl, Format(oAuthApp.Description));
+                end else
                     case oAuthApp.Code of
                         Format("TWE Project Mgt. System"::YoutTrack):
                             begin
                                 FirstLine := false;
-                                requestDataViaPermToken("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
+                                requestDataViaOAuth("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
                             end;
                         Format("TWE Project Mgt. System"::JIRA):
                             begin
                                 FirstLine := false;
-                                requestDataViaPermToken("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
+                                requestDataViaOAuth("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
                             end;
-                    end
-                else
-                    Message(noPermTokenFoundLbl, Format(oAuthApp.Description));
-            end else
-                case oAuthApp.Code of
-                    Format("TWE Project Mgt. System"::YoutTrack):
-                        begin
-                            FirstLine := false;
-                            requestDataViaOAuth("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
-                        end;
-                    Format("TWE Project Mgt. System"::JIRA):
-                        begin
-                            FirstLine := false;
-                            requestDataViaOAuth("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
-                        end;
-                end;
-        until oAuthApp.Next() = 0;
+                    end;
+            until oAuthApp.Next() = 0;
 
-        importline.SetRange("Import Header ID", ImportHeader."Entry No.");
-        if importLine.IsEmpty() then begin
-            Message(noDataToImportLbl);
-            ImportHeader.Delete();
+            importline.SetRange("Import Header ID", ImportHeader."Entry No.");
+            if importLine.IsEmpty() then begin
+                Message(noDataToImportLbl);
+                ImportHeader.Delete();
+            end;
         end;
-
         success := true;
     end;
 
@@ -89,7 +94,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, testyoutrackWorkitemArgumentsLbl, "TWE Project Mgt. System"::YoutTrack);
+                    initArgumentsPermToken(tempArguments, youtrackWorkitemArgumentsLbl, "TWE Project Mgt. System"::YoutTrack);
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
@@ -103,13 +108,19 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             ProjMgtSystem::JIRA:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, '/worklog/updated', "TWE Project Mgt. System"::YoutTrack);
-                    //TODO: UserDaten (email:apitoken) mitsenden
+                    initArgumentsPermToken(tempArguments, jiraWorkLogArgumentsLbl + Format(BaseMgt.getUnixTimeStampFromDate(RequestFromDate)), "TWE Project Mgt. System"::JIRA);
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
                     response.ReadFrom(tempArguments.GetResponseContentAsText());
                     workItemObject := response;
+
+                    workItemArray.ReadFrom(tempArguments.GetResponseContentAsText());
+                    foreach jToken in workItemArray do begin
+                        workItemObject := jToken.AsObject();
+                        jsonMethods.SetJsonObject(workItemObject);
+                        createImportLinesYoutrack(workItemObject, requestFromDate, requestToDate);
+                    end;
 
                     tempArguments.Reset();
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
@@ -142,7 +153,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             ProjMgtSystem::YoutTrack:
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArguments(tempArguments, testyoutrackWorkitemArgumentsLbl, oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
+                    initArguments(tempArguments, youtrackWorkitemArgumentsLbl, oAuthApp.Code, oAuthApp."TWE Proj. Inv. Endpoint");
                     if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
@@ -177,7 +188,6 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     var
         tempImportLine: Record "TWE Proj. Inv. Import Line" temporary;
         importLine: Record "TWE Proj. Inv. Import Line";
-        importHeader: Record "TWE Proj. Inv. Import Header";
         projectHours: Record "TWE Proj. Inv. Project Hours";
     begin
         success := false;
@@ -218,7 +228,6 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     var
         tempImportLine: Record "TWE Proj. Inv. Import Line" temporary;
         importLine: Record "TWE Proj. Inv. Import Line";
-        importHeader: Record "TWE Proj. Inv. Import Header";
         jsonMethods: Codeunit "TWE JSONMethods";
         workItemToken: JsonToken;
         workItemArray: JsonArray;
@@ -277,7 +286,12 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     local procedure initArgumentsPermToken(var RESTArguments: Record "TWE RESTWebServiceArguments" temporary; Method: Text; ProjMgtSystem: Enum "TWE Project Mgt. System")
     begin
         RESTArguments.URL := getEndpoint(Format(ProjMgtSystem)) + Method;
-        RESTArguments.UserName := CopyStr(getPermToken(Format(ProjMgtSystem)), 1, MaxStrLen(RESTArguments.UserName));
+        case ProjMgtSystem of
+            ProjMgtSystem::YoutTrack:
+                RESTArguments.UserName := CopyStr(getPermToken(Format(ProjMgtSystem)), 1, MaxStrLen(RESTArguments.UserName));
+            ProjMgtSystem::JIRA:
+                RESTArguments.UserName := CopyStr(getJIRAUserName(Format(ProjMgtSystem)) + ':' + getPermToken(Format(ProjMgtSystem)), 1, MaxStrLen(RESTArguments.UserName));
+        end;
     end;
 
     local procedure getPermToken(OAuthAppCode: Code[20]): Text
@@ -288,6 +302,26 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         oAuthApp.TestField("TWE Proj. Inv. PermToken");
 
         exit(oAuthApp."TWE Proj. Inv. PermToken");
+    end;
+
+    local procedure getJIRAUserName(OAuthAppCode: Code[20]): Text
+    var
+        oAuthApp: Record "TWE OAuth 2.0 Application";
+    begin
+        oAuthApp.Get(OAuthAppCode);
+        oAuthApp.TestField("User Name");
+
+        exit(oAuthApp."User Name");
+    end;
+
+    local procedure getPassword(OAuthAppCode: Code[20]): Text
+    var
+        oAuthApp: Record "TWE OAuth 2.0 Application";
+    begin
+        oAuthApp.Get(OAuthAppCode);
+        oAuthApp.TestField(Password);
+
+        exit(oAuthApp.Password);
     end;
 
     local procedure getEndpoint(OAuthAppCode: Code[20]): Text
@@ -308,6 +342,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 
     local procedure callRESTWebService(var Parameters: Record "TWE RESTWebServiceArguments"; ProjMgtSystem: Enum "TWE Project Mgt. System"): Boolean
     var
+        base64Convert: Codeunit "Base64 Convert";
         client: HttpClient;
         headers: HttpHeaders;
         requestMessage: HttpRequestMessage;
@@ -331,16 +366,11 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                 ProjMgtSystem::YoutTrack:
                     authText := StrSubstNo(strSubstBearerAuthorizationLbl, Parameters.UserName);
                 ProjMgtSystem::JIRA:
-                    authText := StrSubstNo(strSubstBasicAuthorizationLbl, Parameters.UserName);
+                    authText := StrSubstNo(strSubstBasicAuthorizationLbl, base64Convert.ToBase64(Parameters.UserName));
             end;
 
             Headers.Add('Authorization', authText);
         end;
-
-        /*
-        if Parameters.ETag <> '' then
-            Headers.Add('If-Match', Parameters.ETag);
-        */
 
         if Parameters.HasRequestContent() then begin
             Parameters.GetRequestContent(content);
@@ -360,6 +390,63 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         Parameters.SetResponseContent(Content);
 
         EXIT(ResponseMessage.IsSuccessStatusCode());
+    end;
+
+    procedure ImportProjects() success: Boolean
+    var
+        oAuthApp: Record "TWE OAuth 2.0 Application";
+    begin
+        success := false;
+
+        oAuthApp.SetRange("TWE Use Project Mgt. System", true);
+        if oAuthApp.FindSet() then begin
+            createImportHeader(ImportHeader);
+            repeat
+                if oAuthApp."TWE Use Permanent Token" then begin
+                    if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
+                        case oAuthApp.Code of
+                            Format("TWE Project Mgt. System"::YoutTrack):
+                                begin
+                                    FirstLine := false;
+                                    requestProjectData("TWE Project Mgt. System"::YoutTrack, true);
+                                end;
+                            Format("TWE Project Mgt. System"::JIRA):
+                                begin
+                                    FirstLine := false;
+                                    requestProjectData("TWE Project Mgt. System"::JIRA, true);
+                                end;
+                        end
+                    else
+                        Message(noPermTokenFoundLbl, Format(oAuthApp.Description));
+                end else
+                    case oAuthApp.Code of
+                        Format("TWE Project Mgt. System"::YoutTrack):
+                            begin
+                                FirstLine := false;
+                                requestProjectData("TWE Project Mgt. System"::YoutTrack, false);
+                            end;
+                        Format("TWE Project Mgt. System"::JIRA):
+                            begin
+                                FirstLine := false;
+                                requestProjectData("TWE Project Mgt. System"::JIRA, false);
+                            end;
+                    end;
+            until oAuthApp.Next() = 0;
+        end;
+        success := true;
+    end;
+
+    local procedure requestProjectData(ProjMgtSystem: Enum "TWE Project Mgt. System"; PermToken: Boolean) success: Boolean
+    var
+        tempArguments: Record "TWE RESTWebServiceArguments" temporary;
+        jsonMethods: Codeunit "TWE JSONMethods";
+        response: JsonObject;
+        issueObject: JsonObject;
+        workItemObject: JsonObject;
+        jToken: JsonToken;
+        workItemArray: JsonArray;
+    begin
+
     end;
 
     local procedure addIssueDataToImportLine(IssueObject: JsonObject; WorkItemObject: JsonObject)
@@ -385,10 +472,11 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         //tempImportLine.Modify();
     end;
 
+
     /// <summary>
-    /// ConvertTextToDateTime.
+    /// getDateFromUnixTimeStamp.
     /// </summary>
-    /// <param name="DateTimeText">Text.</param>
+    /// <param name="unixTime">Text.</param>
     /// <returns>Return value of type Date.</returns>
     procedure getDateFromUnixTimeStamp(unixTime: Text): Date
     var

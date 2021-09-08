@@ -57,17 +57,35 @@ page 70704951 "TWE Proj Inv. Wizard"
                         ApplicationArea = All;
                         ToolTip = 'No. of object to be invoiced';
                     }
-                    field(NoSeries; Rec."No. Series for Import")
+                    field(NoSeries; Rec."No. Series for Proj. Invoices")
                     {
                         ApplicationArea = All;
                         ToolTip = 'No. Series for Imported project data';
                     }
                 }
             }
-            //TODO: More Setupfields ?
             group(Step3)
             {
-                Visible = (CurrentStep = 5);
+                Visible = (CurrentStep = 2);
+                group("Project Management System")
+                {
+                    InstructionalText = 'Please fill the information below.';
+                    field("Proj. Mgt. System Code"; oAuthApp.Code)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'API Application Name';
+                    }
+                    field("Proj. Mgt. System"; oAuthApp."TWE Project Mgt. System")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Project Management System Name';
+                    }
+                }
+            }
+
+            group(Step4)
+            {
+                Visible = (CurrentStep = 3);
                 group(FinishPage)
                 {
                     Caption = 'All done';
@@ -128,6 +146,7 @@ page 70704951 "TWE Proj Inv. Wizard"
         MediaRepositoryDone: Record "Media Repository";
         MediaResourcesStandard: Record "Media Resources";
         MediaResourcesDone: Record "Media Resources";
+        oAuthApp: Record "TWE OAuth 2.0 Application";
         CurrentStep: Integer;
         ActionBackAllowed: Boolean;
         ActionNextAllowed: Boolean;

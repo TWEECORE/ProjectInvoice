@@ -8,6 +8,7 @@ page 70704952 "TWE Proj. Inv. Imports"
     UsageCategory = Administration;
     SourceTable = "TWE Proj. Inv. Import Header";
     Caption = 'Project Invoice Imports';
+    InsertAllowed = false;
 
     layout
     {
@@ -45,7 +46,7 @@ page 70704952 "TWE Proj. Inv. Imports"
                     ApplicationArea = All;
                     ToolTip = 'Time the import was executed';
                 }
-                field(Processed; Rec.Processed)
+                field(Processed; Rec.Imported)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Defines whether all import lines were imported or not';
@@ -66,7 +67,7 @@ page 70704952 "TWE Proj. Inv. Imports"
             action(GetProjMgtData)
             {
                 ApplicationArea = All;
-                Caption = 'Get Project Mgt. System Data';
+                Caption = 'Import Project Data';
                 ToolTip = 'Imports project data from defined project management system';
                 Promoted = true;
                 PromotedIsBig = true;
@@ -107,7 +108,7 @@ page 70704952 "TWE Proj. Inv. Imports"
             action(ImportProjectData)
             {
                 ApplicationArea = All;
-                Caption = 'Create BC Project Invoive Data';
+                Caption = 'Apply Import Data';
                 ToolTip = 'Creates imported Project Mgt. System data in Business Central';
                 Promoted = true;
                 PromotedIsBig = true;

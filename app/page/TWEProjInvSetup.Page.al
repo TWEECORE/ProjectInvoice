@@ -25,7 +25,7 @@ page 70704950 "TWE Proj. Inv. Setup"
                     ApplicationArea = All;
                     ToolTip = 'No. of object to be invoiced';
                 }
-                field("No. Series for Import"; rec."No. Series for Import")
+                field("No. Series for Import"; rec."No. Series for Proj. Invoices")
                 {
                     ApplicationArea = All;
                     ToolTip = 'No. Series for Imported project data';

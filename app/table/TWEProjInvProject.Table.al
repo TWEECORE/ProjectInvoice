@@ -54,7 +54,7 @@ table 70704954 "TWE Proj. Inv. Project"
         field(20; "No."; Code[10])
         {
             DataClassification = CustomerContent;
-            Caption = 'Total Work Hours';
+            Caption = 'No.';
             TableRelation = IF ("Invoice Type" = CONST("G/L Account")) "G/L Account" WHERE("Direct Posting" = CONST(true),
                                                                                                "Account Type" = CONST(Posting),
                                                                                                Blocked = CONST(false))
