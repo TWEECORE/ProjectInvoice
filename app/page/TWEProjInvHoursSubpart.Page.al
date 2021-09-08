@@ -6,6 +6,8 @@ page 70704955 "TWE Proj. Inv. Hours Subpart"
     Caption = 'Proj. Inv. Hours';
     PageType = ListPart;
     SourceTable = "TWE Proj. Inv. Project Hours";
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {

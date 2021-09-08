@@ -11,7 +11,7 @@ enum 70704951 "TWE Proj. Inv. Invoice Type"
     }
     value(1; Item)
     {
-        Caption = 'G/L Account';
+        Caption = 'Item';
     }
     value(2; "G/L Account")
     {

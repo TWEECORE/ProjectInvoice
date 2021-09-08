@@ -48,7 +48,7 @@ table 70704952 "TWE Proj. Inv. Import Header"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(15; Processed; Boolean)
+        field(15; Imported; Boolean)
         {
             Caption = 'Processed';
             DataClassification = CustomerContent;

@@ -8,6 +8,7 @@ page 70704956 "TWE Proj. Inv. Hours"
     PageType = List;
     SourceTable = "TWE Proj. Inv. Project Hours";
     UsageCategory = Lists;
+    InsertAllowed = false;
 
     //TODO: ToolTips anpassen
     layout

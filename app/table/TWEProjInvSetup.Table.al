@@ -31,9 +31,9 @@ table 70704950 "TWE Proj. Inv. Setup"
             ELSE
             IF ("Invoice Type" = CONST(Item)) Item WHERE(Blocked = CONST(false), "Sales Blocked" = CONST(false));
         }
-        field(100; "No. Series for Import"; Code[20])
+        field(100; "No. Series for Proj. Invoices"; Code[20])
         {
-            Caption = 'No. Series for Import';
+            Caption = 'No. Series for Project Invoices';
             DataClassification = CustomerContent;
             TableRelation = "No. Series".Code;
         }

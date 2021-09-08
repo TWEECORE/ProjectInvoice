@@ -127,11 +127,11 @@ table 70704953 "TWE Proj. Inv. Import Line"
 
     end;
 
+
     /// <summary>
     /// PopulateFromJsonYoutrack.
     /// </summary>
     /// <param name="jsonData">JsonObject.</param>
-    /// <param name="ProjMgtObject">Enum "TWE Proj. Inv. Youtrack Objects".</param>
     procedure PopulateFromJsonYoutrack(jsonData: JsonObject)
     var
         jSONMethods: Codeunit "TWE JSONMethods";
@@ -238,6 +238,11 @@ table 70704953 "TWE Proj. Inv. Import Line"
         end;
     end;
 
+    /// <summary>
+    /// GetLastLineNo.
+    /// </summary>
+    /// <param name="ImportHeaderEntryNo">Integer.</param>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetLastLineNo(ImportHeaderEntryNo: Integer): Integer;
     var
         FindRecordManagement: Codeunit "Find Record Management";
@@ -249,7 +254,7 @@ table 70704953 "TWE Proj. Inv. Import Line"
     local procedure convertUmlaute(String: Text[150]) ConvertedString: text[150]
     var
         littleAELbl: Label 'Žñ';
-        bigAELbl: Label '';
+        bigAELbl: Label 'Žä';
         littleUELbl: Label 'Ž‰';
         bigUELbl: Label 'Ž£';
         littleOELbl: Label 'ŽÂ';

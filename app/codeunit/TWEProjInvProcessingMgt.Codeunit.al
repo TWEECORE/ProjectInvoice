@@ -64,6 +64,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                 importLine.Imported := true;
                 importLine.Modify();
             until importLine.Next() = 0;
+            ImportHeader.Imported := true;
+            ImportHeader.Modify();
             Message(AllImportedLbl);
             success := true;
         end else
@@ -157,6 +159,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine."Unit Price" := Project."Standard Hourly Rate";
                 salesLine.Modify();
 
+                projectHours.Invoiced := true;
+                projectHours.Modify();
+
             until projectHours.Next() = 0;
             success := true;
         end else
@@ -230,6 +235,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     if Project."Use Standard Hourly Rate" then
                         salesLine."Unit Price" := Project."Standard Hourly Rate";
                     salesLine.Modify();
+
+                    projectHours.Invoiced := true;
+                    projectHours.Modify();
 
                 until projectHours.Next() = 0;
 

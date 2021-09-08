@@ -28,6 +28,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Header - Field Import Time - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3569846782 - Field 281352744 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Header - Field Imported - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3569846782 - Field 1432930266 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>No. of imported Entries</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -37,11 +42,6 @@
           <source>No. of Entries</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Header - Field No. of Entries - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 3569846782 - Field 3208180638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processed</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Header - Field Processed - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3569846782 - Field 3451779291 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Total Hourse</source>
@@ -64,7 +64,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Line - Method convertUmlaute - NamedType littleAELbl</note>
         </trans-unit>
         <trans-unit id="Table 3814566565 - Method 2265542738 - NamedType 1353914382" size-unit="char" translate="yes" xml:space="preserve">
-          <source></source>
+          <source>Žä</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Import Line - Method convertUmlaute - NamedType bigAELbl</note>
         </trans-unit>
@@ -194,7 +194,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project - Field Name - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 1193288711 - Field 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Total Work Hours</source>
+          <source>No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project - Field No. - Property Caption</note>
         </trans-unit>
@@ -293,10 +293,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field No. - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 3209778417 - Field 556110406 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>No. Series for Import</source>
+        <trans-unit id="Table 3209778417 - Field 1964121464 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. Series for Project Invoices</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field No. Series for Import - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field No. Series for Proj. Invoices - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 431896304 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Project Invoice Project Ticket</source>
@@ -353,15 +353,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType ErrDataReceiveFailedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2207169053 - NamedType 425235817" size-unit="char" translate="yes" xml:space="preserve">
+          <source>/worklog/updated?since=</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType jiraWorkLogArgumentsLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 1667172971" size-unit="char" translate="yes" xml:space="preserve">
           <source>No new project data available.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType MsgNoProjectDataFoundLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 2814772000" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Codeunit 2207169053 - NamedType 1246224078" size-unit="char" translate="yes" xml:space="preserve">
           <source>/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&amp;$skip=0&amp;$top=10000</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType testyoutrackWorkitemArgumentsLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType youtrackWorkitemArgumentsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - Method 3451030824 - NamedType 2931659967" size-unit="char" translate="yes" xml:space="preserve">
           <source>There are no new project hours to import</source>
@@ -452,6 +457,21 @@
           <source>No. Series for Imported project data</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control NoSeries - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1480190087 - Control 1705082853 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Please fill the information below.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Project Management System - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 1480190087 - Control 2995608320 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project Management System Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Proj. Mgt. System - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1480190087 - Control 2462568323 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>API Application Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Proj. Mgt. System Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1480190087 - Control 2534158164 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>Click on Finish to exit the setup and save the data.</source>
@@ -684,7 +704,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action GetProjMgtData - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1410664882 - Action 1630035233 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Get Project Mgt. System Data</source>
+          <source>Import Project Data</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action GetProjMgtData - Property Caption</note>
         </trans-unit>
@@ -694,7 +714,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action ImportProjectData - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1410664882 - Action 696711724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Create BC Project Invoive Data</source>
+          <source>Apply Import Data</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action ImportProjectData - Property Caption</note>
         </trans-unit>
@@ -873,10 +893,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Proj. Inv. PermToken - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="PageExtension 25265406 - Control 3127368212 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
+        <trans-unit id="PageExtension 25265406 - Control 2256180538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
+          <source>Specifies the name of the Project Mgt. System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Project Mgt. System - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 25265406 - Control 759773373 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
           <source>Specifies whether the oAuth data is related to a Project Mgt. System</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Project Mgt System - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Use Project Mgt System - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 25265406 - Control 3093528368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
           <source>Specifies whether the permanent token should be used for authentication</source>
@@ -892,11 +917,6 @@
           <source>Specifies the endpoint used to gain data from a Project Mgt. System</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppList Ext. - Control TWE Proj. Inv. Endpoint - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1315130072 - Control 3127368212 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3304790008">
-          <source>Specifies whether the oAuth data is related to a Project Mgt. System</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppList Ext. - Control TWE Project Mgt System - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 1388328056 - Action 1451207678 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 523354100">
           <source>Opens a page with customer related projects</source>
@@ -928,15 +948,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Proj. Inv. PermToken - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3602750738 - Field 2256180538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
+          <source>Project Mgt. System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Project Mgt. System - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3602750738 - Field 1398563240 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
           <source>Use Permanent Token</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Use Permanent Token - Property Caption</note>
         </trans-unit>
-        <trans-unit id="TableExtension 3602750738 - Field 3537950124 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
-          <source>Project Mgt System</source>
+        <trans-unit id="TableExtension 3602750738 - Field 696377367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
+          <source>Use Project Mgt. System</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWEProject Mgt System - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Use Project Mgt. System - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 2620358043 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source> </source>
@@ -949,7 +974,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Proj. Inv. Invoice Type - EnumValue G/L Account - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 2620358043 - EnumValue 3276313895 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>G/L Account</source>
+          <source>Item</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Proj. Inv. Invoice Type - EnumValue Item - Property Caption</note>
         </trans-unit>
