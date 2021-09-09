@@ -8,8 +8,9 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         BaseMgt: Codeunit "TWE Base Mgt";
         ErrDataReceiveFailedLbl: Label 'Could not receive data.';
         MsgNoProjectDataFoundLbl: Label 'No new project data available.';
-        youtrackWorkitemArgumentsLbl: Label '/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
-        jiraWorkLogArgumentsLbl: Label '/worklog/updated?since=';
+        youtrackWorkitemArgumentsLbl: Label '/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
+        //jiraWorkLogArgumentsLbl: Label '/rest/api/2/issue/BGHU-159/worklog';///worklog/updated?since=';
+        jiraWorkLogArgumentsLbl: Label '/rest/tempo-timesheets/4/worklogs/search?from=2020-01-01';
         noPermTokenFoundLbl: Label 'There is no Permanent Token defined for Application "%1"', Comment = '%1=ProjectMgtSystem';
         noDataToImportLbl: Label 'There are no new project hours to import';
 
@@ -41,31 +42,31 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             repeat
                 if oAuthApp."TWE Use Permanent Token" then begin
                     if oAuthApp."TWE Proj. Inv. PermToken" <> '' then
-                        case oAuthApp.Code of
-                            Format("TWE Project Mgt. System"::YoutTrack):
+                        case oAuthApp."TWE Project Mgt. System" of
+                            "TWE Project Mgt. System"::YoutTrack:
                                 begin
                                     FirstLine := false;
                                     requestDataViaPermToken("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
                                 end;
-                            Format("TWE Project Mgt. System"::JIRA):
+                            "TWE Project Mgt. System"::"JIRA Tempo":
                                 begin
                                     FirstLine := false;
-                                    requestDataViaPermToken("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
+                                    requestDataViaPermToken("TWE Project Mgt. System"::"JIRA Tempo", requestFromDate, requestToDate);
                                 end;
                         end
                     else
                         Message(noPermTokenFoundLbl, Format(oAuthApp.Description));
                 end else
-                    case oAuthApp.Code of
-                        Format("TWE Project Mgt. System"::YoutTrack):
+                    case oAuthApp."TWE Project Mgt. System" of
+                        "TWE Project Mgt. System"::YoutTrack:
                             begin
                                 FirstLine := false;
                                 requestDataViaOAuth("TWE Project Mgt. System"::YoutTrack, requestFromDate, requestToDate);
                             end;
-                        Format("TWE Project Mgt. System"::JIRA):
+                        "TWE Project Mgt. System"::"JIRA Tempo":
                             begin
                                 FirstLine := false;
-                                requestDataViaOAuth("TWE Project Mgt. System"::JIRA, requestFromDate, requestToDate);
+                                requestDataViaOAuth("TWE Project Mgt. System"::"JIRA Tempo", requestFromDate, requestToDate);
                             end;
                     end;
             until oAuthApp.Next() = 0;
@@ -105,11 +106,11 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                         createImportLinesYoutrack(workItemObject, requestFromDate, requestToDate);
                     end;
                 end;
-            ProjMgtSystem::JIRA:
+            ProjMgtSystem::"JIRA Tempo":
                 begin
                     tempArguments.RestMethod := tempArguments.RestMethod::get;
-                    initArgumentsPermToken(tempArguments, jiraWorkLogArgumentsLbl + Format(BaseMgt.getUnixTimeStampFromDate(RequestFromDate)), "TWE Project Mgt. System"::JIRA);
-                    if not callWebService(tempArguments, ProjMgtSystem::YoutTrack) then
+                    initArgumentsPermToken(tempArguments, jiraWorkLogArgumentsLbl /*+ Format(BaseMgt.getUnixTimeStampFromDate(RequestFromDate))*/, "TWE Project Mgt. System"::"JIRA Tempo");
+                    if not callWebService(tempArguments, ProjMgtSystem::"JIRA Tempo") then
                         Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
 
                     response.ReadFrom(tempArguments.GetResponseContentAsText());
@@ -164,7 +165,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                         createImportLinesYoutrack(workItemObject, requestFromDate, requestToDate);
                     end;
                 end;
-            ProjMgtSystem::JIRA:
+            ProjMgtSystem::"JIRA Tempo":
                 Message('TODO:JIRA');
         end;
         success := true;
@@ -285,51 +286,55 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 
     local procedure initArgumentsPermToken(var RESTArguments: Record "TWE RESTWebServiceArguments" temporary; Method: Text; ProjMgtSystem: Enum "TWE Project Mgt. System")
     begin
-        RESTArguments.URL := getEndpoint(Format(ProjMgtSystem)) + Method;
+        RESTArguments.URL := getEndpoint(ProjMgtSystem) + Method;
         case ProjMgtSystem of
             ProjMgtSystem::YoutTrack:
-                RESTArguments.UserName := CopyStr(getPermToken(Format(ProjMgtSystem)), 1, MaxStrLen(RESTArguments.UserName));
-            ProjMgtSystem::JIRA:
-                RESTArguments.UserName := CopyStr(getJIRAUserName(Format(ProjMgtSystem)) + ':' + getPermToken(Format(ProjMgtSystem)), 1, MaxStrLen(RESTArguments.UserName));
+                RESTArguments.UserName := CopyStr(getPermToken(ProjMgtSystem), 1, MaxStrLen(RESTArguments.UserName));
+            ProjMgtSystem::"JIRA Tempo":
+                RESTArguments.UserName := CopyStr(getJIRAUserName(ProjMgtSystem) + ':' + getPermToken(ProjMgtSystem), 1, MaxStrLen(RESTArguments.UserName));
         end;
     end;
 
-    local procedure getPermToken(OAuthAppCode: Code[20]): Text
+    local procedure getPermToken(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
     begin
-        oAuthApp.Get(OAuthAppCode);
-        oAuthApp.TestField("TWE Proj. Inv. PermToken");
+        oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
+        if oAuthApp.FindFirst() then
+            oAuthApp.TestField("TWE Proj. Inv. PermToken");
 
         exit(oAuthApp."TWE Proj. Inv. PermToken");
     end;
 
-    local procedure getJIRAUserName(OAuthAppCode: Code[20]): Text
+    local procedure getJIRAUserName(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
     begin
-        oAuthApp.Get(OAuthAppCode);
-        oAuthApp.TestField("User Name");
+        oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
+        if oAuthApp.FindFirst() then
+            oAuthApp.TestField("User Name");
 
         exit(oAuthApp."User Name");
     end;
 
-    local procedure getPassword(OAuthAppCode: Code[20]): Text
+    local procedure getPassword(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
     begin
-        oAuthApp.Get(OAuthAppCode);
-        oAuthApp.TestField(Password);
+        oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
+        if oAuthApp.FindFirst() then
+            oAuthApp.TestField(Password);
 
         exit(oAuthApp.Password);
     end;
 
-    local procedure getEndpoint(OAuthAppCode: Code[20]): Text
+    local procedure getEndpoint(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
     begin
-        oAuthApp.Get(OAuthAppCode);
-        oAuthApp.TestField("TWE Proj. Inv. Endpoint");
+        oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
+        if oAuthApp.FindFirst() then
+            oAuthApp.TestField("TWE Proj. Inv. Endpoint");
 
         exit(oAuthApp."TWE Proj. Inv. Endpoint");
     end;
@@ -365,7 +370,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             case ProjMgtSystem of
                 ProjMgtSystem::YoutTrack:
                     authText := StrSubstNo(strSubstBearerAuthorizationLbl, Parameters.UserName);
-                ProjMgtSystem::JIRA:
+                ProjMgtSystem::"JIRA Tempo":
                     authText := StrSubstNo(strSubstBasicAuthorizationLbl, base64Convert.ToBase64(Parameters.UserName));
             end;
 
@@ -410,10 +415,10 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                                     FirstLine := false;
                                     requestProjectData("TWE Project Mgt. System"::YoutTrack, true);
                                 end;
-                            Format("TWE Project Mgt. System"::JIRA):
+                            Format("TWE Project Mgt. System"::"JIRA Tempo"):
                                 begin
                                     FirstLine := false;
-                                    requestProjectData("TWE Project Mgt. System"::JIRA, true);
+                                    requestProjectData("TWE Project Mgt. System"::"JIRA Tempo", true);
                                 end;
                         end
                     else
@@ -425,10 +430,10 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                                 FirstLine := false;
                                 requestProjectData("TWE Project Mgt. System"::YoutTrack, false);
                             end;
-                        Format("TWE Project Mgt. System"::JIRA):
+                        Format("TWE Project Mgt. System"::"JIRA Tempo"):
                             begin
                                 FirstLine := false;
-                                requestProjectData("TWE Project Mgt. System"::JIRA, false);
+                                requestProjectData("TWE Project Mgt. System"::"JIRA Tempo", false);
                             end;
                     end;
             until oAuthApp.Next() = 0;

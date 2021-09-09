@@ -30,6 +30,16 @@ page 70704950 "TWE Proj. Inv. Setup"
                     ApplicationArea = All;
                     ToolTip = 'No. Series for Imported project data';
                 }
+                field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Defines whether all invoiced project times should be summarized';
+                }
+                field("Summarized Description"; rec."Summarized Description")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Defines summarized description';
+                }
             }
         }
     }

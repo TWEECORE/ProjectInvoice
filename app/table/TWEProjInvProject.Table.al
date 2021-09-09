@@ -79,6 +79,16 @@ table 70704954 "TWE Proj. Inv. Project"
             DataClassification = CustomerContent;
             Caption = 'Standard Hourly Rate';
         }
+        field(40; "Summarize Times for Invoice"; Boolean)
+        {
+            Caption = 'Invoice Type';
+            DataClassification = CustomerContent;
+        }
+        field(50; "Summarized Description"; Text[100])
+        {
+            Caption = 'Invoice Type';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
