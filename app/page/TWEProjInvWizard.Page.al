@@ -62,6 +62,17 @@ page 70704951 "TWE Proj Inv. Wizard"
                         ApplicationArea = All;
                         ToolTip = 'No. Series for Imported project data';
                     }
+
+                    field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Defines whether all invoiced project times should be summarized';
+                    }
+                    field("Summarized Description"; rec."Summarized Description")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Defines summarized description';
+                    }
                 }
             }
             group(Step3)
@@ -162,6 +173,7 @@ page 70704951 "TWE Proj Inv. Wizard"
     begin
         CurrentStep := 1;
         SetControls();
+        Rec."Summarize Times for Invoice" := true;
     end;
 
     local procedure SetControls()

@@ -33,6 +33,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     project.ID := CopyStr(importLine."Project ID", 1, MaxStrLen(project.ID));
                     project.Name := importLine."Project Name";
                     project."Project Mgt System" := importLine."Project Mgt. System";
+                    project."Summarize Times for Invoice" := true;
 
                     customer.SetRange(Name, importLine."Project Name");
                     if customer.FindSet() then

@@ -354,7 +354,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType ErrDataReceiveFailedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 425235817" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/worklog/updated?since=</source>
+          <source>/rest/tempo-timesheets/4/worklogs/search - "from": "yyyy-MM-dd"</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType jiraWorkLogArgumentsLbl</note>
         </trans-unit>
@@ -363,20 +363,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType MsgNoProjectDataFoundLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 1246224078" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&amp;$skip=0&amp;$top=10000</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType youtrackWorkitemArgumentsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - Method 3451030824 - NamedType 2931659967" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Codeunit 2207169053 - NamedType 2931659967" size-unit="char" translate="yes" xml:space="preserve">
           <source>There are no new project hours to import</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectData - NamedType noDataToImportLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType noDataToImportLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - Method 3451030824 - NamedType 983392856" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Codeunit 2207169053 - NamedType 983392856" size-unit="char" translate="yes" xml:space="preserve">
           <source>There is no Permanent Token defined for Application "%1"</source>
           <note from="Developer" annotates="general" priority="2">%1=ProjectMgtSystem</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectData - NamedType noPermTokenFoundLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType noPermTokenFoundLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2207169053 - NamedType 1246224078" size-unit="char" translate="yes" xml:space="preserve">
+          <source>/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&amp;$skip=0&amp;$top=10000</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType youtrackWorkitemArgumentsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 1857099294 - NamedType 2726611525" size-unit="char" translate="yes" xml:space="preserve">
           <source>No projects found for customer: "%1"</source>
@@ -848,6 +848,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Use Standard Hourly Rate - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 143103090 - Action 3403607284 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imports projects from project management systems</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Action GetProjects - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 143103090 - Action 3403607284 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Import Projects</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Action GetProjects - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3209778417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Project Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -998,10 +1008,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Proj. Inv. ProjMgt. Objects - EnumValue workItem - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 2256180538 - EnumValue 1942196276 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>JIRA</source>
+        <trans-unit id="Enum 2256180538 - EnumValue 1985652389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>JIRA (Tempo Timesheets)</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Project Mgt. System - EnumValue JIRA - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Project Mgt. System - EnumValue JIRA Tempo - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 2256180538 - EnumValue 2534837028 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>YouTrack</source>

@@ -31,6 +31,16 @@ table 70704950 "TWE Proj. Inv. Setup"
             ELSE
             IF ("Invoice Type" = CONST(Item)) Item WHERE(Blocked = CONST(false), "Sales Blocked" = CONST(false));
         }
+        field(20; "Summarize Times for Invoice"; Boolean)
+        {
+            Caption = 'Invoice Type';
+            DataClassification = CustomerContent;
+        }
+        field(30; "Summarized Description"; Text[100])
+        {
+            Caption = 'Invoice Type';
+            DataClassification = CustomerContent;
+        }
         field(100; "No. Series for Proj. Invoices"; Code[20])
         {
             Caption = 'No. Series for Project Invoices';

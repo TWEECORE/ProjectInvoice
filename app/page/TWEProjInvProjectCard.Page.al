@@ -49,6 +49,16 @@ page 70704958 "TWE Proj. Inv. Project Card"
                     ApplicationArea = All;
                     ToolTip = 'No. of object to be invoiced';
                 }
+                field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Defines whether all invoiced project times should be summarized';
+                }
+                field("Summarized Description"; rec."Summarized Description")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Defines summarized description';
+                }
             }
             group(Invoicing)
             {
