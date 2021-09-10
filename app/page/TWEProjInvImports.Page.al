@@ -95,7 +95,7 @@ page 70704952 "TWE Proj. Inv. Imports"
                     errNoLinesLbl: Label 'There are no Lines for %1=%2', Comment = '%1=ImportHeaderIdCaption, %2=HeaderID';
                 begin
                     CurrPage.SetSelectionFilter(importHeader);
-                    if importHeader.FindSet() then;
+                    if importHeader.FindFirst() then;
                     importLine.SetRange("Import Header ID", importHeader."Entry No.");
                     if importLine.FindSet() then begin
                         importLinesPage.SetTableView(importLine);
@@ -121,14 +121,12 @@ page 70704952 "TWE Proj. Inv. Imports"
                     noEntrySelectedErr: Label 'There was no entry selected.';
                 begin
                     CurrPage.SetSelectionFilter(importHeader);
-                    if importHeader.FindSet() then
+                    if importHeader.FindFirst() then
                         ProjInvProcessing.TransferImportedData(importHeader)
                     else
                         Message(noEntrySelectedErr);
                 end;
             }
-
-
         }
     }
 }

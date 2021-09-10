@@ -8,7 +8,6 @@ page 70704951 "TWE Proj Inv. Wizard"
     SourceTableTemporary = true;
     Caption = 'Project Invoice Setup';
 
-    //TODO: Application OAuth Einrichtung
     layout
     {
         area(Content)
@@ -34,14 +33,14 @@ page 70704951 "TWE Proj Inv. Wizard"
                 }
             }
 
-            group(Step1)
+            group(Step0)
             {
                 Visible = (CurrentStep = 0);
                 Caption = 'Welcome to your Project Invoice Setup.';
                 InstructionalText = 'You have successfully installed the Project Invoice extension. Please follow the instruction on the next pages ....';
             }
 
-            group(Step2)
+            group(Step1)
             {
                 Visible = (CurrentStep = 1);
                 group(General)
@@ -75,26 +74,26 @@ page 70704951 "TWE Proj Inv. Wizard"
                     }
                 }
             }
-            group(Step3)
+            group(Step2)
             {
                 Visible = (CurrentStep = 2);
+
+                InstructionalText = 'Please fill your companies Project Mgt. System information.';
                 group("Project Management System")
                 {
-                    InstructionalText = 'Please fill the information below.';
-                    field("Proj. Mgt. System Code"; oAuthApp.Code)
+                    ShowCaption = false;
+                    group(ProjMgtPart)
                     {
-                        ApplicationArea = All;
-                        ToolTip = 'API Application Name';
-                    }
-                    field("Proj. Mgt. System"; oAuthApp."TWE Project Mgt. System")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Project Management System Name';
+                        ShowCaption = false;
+                        part(ProjMgtSystems; "TWE Proj. Mgt. System SubPart")
+                        {
+                            ApplicationArea = All;
+                        }
                     }
                 }
             }
 
-            group(Step4)
+            group(Step3)
             {
                 Visible = (CurrentStep = 3);
                 group(FinishPage)
@@ -157,12 +156,14 @@ page 70704951 "TWE Proj Inv. Wizard"
         MediaRepositoryDone: Record "Media Repository";
         MediaResourcesStandard: Record "Media Resources";
         MediaResourcesDone: Record "Media Resources";
-        oAuthApp: Record "TWE OAuth 2.0 Application";
+        ProjInvSetup: Record "TWE Proj. Inv. Setup";
+        ProjMgtSystemPage: Page "TWE Proj. Mgt. System SubPart";
         CurrentStep: Integer;
         ActionBackAllowed: Boolean;
         ActionNextAllowed: Boolean;
         ActionFinishAllowed: Boolean;
         TopBannerVisible: Boolean;
+        UseOAuth: Boolean;
 
     trigger OnInit()
     begin
@@ -171,9 +172,13 @@ page 70704951 "TWE Proj Inv. Wizard"
 
     trigger OnOpenPage()
     begin
+        ProjInvSetup.GetSetup();
+
         CurrentStep := 1;
         SetControls();
         Rec."Summarize Times for Invoice" := true;
+
+        UseOAuth := false;
     end;
 
     local procedure SetControls()

@@ -33,12 +33,12 @@ table 70704950 "TWE Proj. Inv. Setup"
         }
         field(20; "Summarize Times for Invoice"; Boolean)
         {
-            Caption = 'Invoice Type';
+            Caption = 'Summarize Times for Invoice';
             DataClassification = CustomerContent;
         }
         field(30; "Summarized Description"; Text[100])
         {
-            Caption = 'Invoice Type';
+            Caption = 'Summarize Description';
             DataClassification = CustomerContent;
         }
         field(100; "No. Series for Proj. Invoices"; Code[20])
@@ -86,5 +86,4 @@ table 70704950 "TWE Proj. Inv. Setup"
             Insert();
         end;
     end;
-
 }
