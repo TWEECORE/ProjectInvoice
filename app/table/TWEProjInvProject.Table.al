@@ -81,12 +81,12 @@ table 70704954 "TWE Proj. Inv. Project"
         }
         field(40; "Summarize Times for Invoice"; Boolean)
         {
-            Caption = 'Invoice Type';
+            Caption = 'Summarize Times for Invoice';
             DataClassification = CustomerContent;
         }
         field(50; "Summarized Description"; Text[100])
         {
-            Caption = 'Invoice Type';
+            Caption = 'Summarized Description';
             DataClassification = CustomerContent;
         }
     }

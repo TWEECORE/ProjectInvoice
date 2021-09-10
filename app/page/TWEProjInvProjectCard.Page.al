@@ -104,7 +104,7 @@ page 70704958 "TWE Proj. Inv. Project Card"
                     var
                         projInvProcessingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
                     begin
-                        projInvProcessingMgt.InvoiceUnprocessedProjectHours(Rec);
+                        projInvProcessingMgt.InvoiceProject(Rec);
                     end;
                 }
             }
