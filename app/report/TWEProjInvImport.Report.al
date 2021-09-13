@@ -14,7 +14,7 @@ report 70704950 "TWE Proj. Inv. Import"
             var
                 projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
             begin
-                projInvImportMgt.GetProjectMgtSystemDataByDate(FromDate, toDate);
+                projInvImportMgt.GetProjectDataByDate(FromDate, toDate);
             end;
         }
     }

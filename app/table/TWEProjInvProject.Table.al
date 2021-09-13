@@ -136,4 +136,33 @@ table 70704954 "TWE Proj. Inv. Project"
     begin
         exit(FindRecordManagement.GetLastEntryIntFieldValue(Rec, FieldNo(ID)));
     end;
+
+    procedure PopulateFromJson(jsonData: JsonObject; ProjectMgtSystem: Enum "TWE Project Mgt. System")
+    var
+        customer: Record Customer;
+        ProjInvSetup: Record "TWE Proj. Inv. Setup";
+        jSONMethods: Codeunit "TWE JSONMethods";
+    begin
+        ProjInvSetup.GetSetup();
+        jsonMethods.SetJsonObject(jsonData);
+
+        case ProjectMgtSystem of
+            ProjectMgtSystem::YoutTrack:
+                begin
+                    ID := CopyStr(jSONMethods.GetJsonValue('shortName').AsText(), 1, MaxStrLen(ID));
+                    Name := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name));
+                end;
+            ProjectMgtSystem::"JIRA Tempo":
+                begin
+                    ID := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen(ID));
+                    Name := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name));
+                end;
+        end;
+        "Project Mgt System" := ProjectMgtSystem;
+
+        customer.SetRange(Name, Name);
+        if customer.FindSet() then
+            if customer.Count = 1 then
+                Validate("Related to Customer No.", customer."No.");
+    end;
 }
