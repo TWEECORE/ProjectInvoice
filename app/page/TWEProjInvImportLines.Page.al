@@ -3,11 +3,9 @@
 /// </summary>
 page 70704953 "TWE Proj. Inv. Import Lines"
 {
-    ApplicationArea = All;
     Caption = 'Proj. Inv. Import Lines';
     PageType = List;
     SourceTable = "TWE Proj. Inv. Import Line";
-    UsageCategory = Lists;
     InsertAllowed = false;
 
     //TODO: Tooltips anpassen + Action Button Daten übernehmen

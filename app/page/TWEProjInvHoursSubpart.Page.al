@@ -40,6 +40,11 @@ page 70704955 "TWE Proj. Inv. Hours Subpart"
                     ToolTip = 'Specifies the value of the Hours field';
                     ApplicationArea = All;
                 }
+                field("Hours to Invoice"; Rec."Hours to Invoice")
+                {
+                    ToolTip = 'Specifies the value of the amount of Hours that should be invoiced';
+                    ApplicationArea = All;
+                }
                 field(Agent; Rec.Agent)
                 {
                     ToolTip = 'Specifies the value of the Agent field';

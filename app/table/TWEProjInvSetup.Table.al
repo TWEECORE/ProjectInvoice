@@ -83,6 +83,7 @@ table 70704950 "TWE Proj. Inv. Setup"
     begin
         if not FindFirst() then begin
             Init();
+            "Summarize Times for Invoice" := true;
             Insert();
         end;
     end;

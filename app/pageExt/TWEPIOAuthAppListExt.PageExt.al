@@ -10,6 +10,11 @@ pageextension 70704953 "TWE PI OAuth AppList Ext." extends "TWE OAuth 2.0 Applic
                 ApplicationArea = All;
                 ToolTip = 'Specifies the endpoint used to gain data from a Project Mgt. System';
             }
+            field("TWE Timetracking Endpoint"; rec."TWE PI Timetracking Endpoint")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the endpoint used to gain timetracking data from a Project Mgt. System';
+            }
         }
     }
 }

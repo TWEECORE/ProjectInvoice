@@ -42,6 +42,11 @@ table 70704956 "TWE Proj. Inv. Project Hours"
             DataClassification = CustomerContent;
             Caption = 'Hours';
         }
+        field(12; "Hours to Invoice"; Decimal)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Hours to Invoice';
+        }
         field(15; Agent; Text[50])
         {
             DataClassification = CustomerContent;

@@ -3,7 +3,7 @@
 /// </summary>
 page 70704957 "TWE Proj. Mgt. System SubPart"
 {
-    Caption = 'Project Management Systems';
+    Caption = ' ';
     PageType = ListPart;
     SourceTable = "TWE OAuth 2.0 Application";
 
@@ -30,17 +30,21 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
 
                     trigger OnValidate()
                     begin
-                        if (rec."TWE Project Mgt. System" = rec."TWE Project Mgt. System"::"JIRA Tempo") or
-                            (rec."TWE Project Mgt. System" = rec."TWE Project Mgt. System"::YoutTrack) then
-                            rec.Validate("TWE Use Project Mgt. System", true)
+                        if rec."TWE Project Mgt. System" <> rec."TWE Project Mgt. System"::" " then
+                            rec.Validate("TWE Is Project Mgt. System", true)
                         else
-                            rec.Validate("TWE Use Project Mgt. System", false);
+                            rec.Validate("TWE Is Project Mgt. System", false);
                     end;
                 }
                 field("TWE Proj. Inv. Endpoint"; Rec."TWE Proj. Inv. Endpoint")
                 {
                     ToolTip = 'Specifies the value of the Endpoint field';
                     ApplicationArea = All;
+                }
+                field("TWE Timetracking Endpoint"; rec."TWE PI Timetracking Endpoint")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the endpoint used to gain timetracking data from a Project Mgt. System';
                 }
                 field("User Name"; Rec."User Name")
                 {
@@ -56,6 +60,7 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
                 {
                     ToolTip = 'Specifies the value of the Permanent Token field';
                     ApplicationArea = All;
+                    ExtendedDatatype = Masked;
 
                     trigger OnValidate()
                     begin
@@ -65,54 +70,11 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
                             rec.Validate("TWE Use Permanent Token", false);
                     end;
                 }
-
-                field("Access Token URL"; Rec."Access Token URL")
+                field("TWE PI TimeTrackingPermToken"; rec."TWE PI Timetracking PermToken")
                 {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Access Token URL field';
                     ApplicationArea = All;
-                }
-                field("Authorization URL"; Rec."Authorization URL")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Authorization URL field';
-                    ApplicationArea = All;
-                }
-                field("Auth. URL Parms"; Rec."Auth. URL Parms")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Auth. URL Parms field';
-                    ApplicationArea = All;
-                }
-                field("Client ID"; Rec."Client ID")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Client ID field';
-                    ApplicationArea = All;
-                }
-                field("Client Secret"; Rec."Client Secret")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Client Secret field';
-                    ApplicationArea = All;
-                }
-                field("Expires In"; Rec."Expires In")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Expires In field';
-                    ApplicationArea = All;
-                }
-                field("Redirect URL"; Rec."Redirect URL")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Redirect URL field';
-                    ApplicationArea = All;
-                }
-                field("Grant Type"; Rec."Grant Type")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the Grant Type field';
-                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the registered timetracking permanent token';
+                    ExtendedDatatype = Masked;
                 }
             }
         }

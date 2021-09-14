@@ -17,5 +17,4 @@ enum 70704952 "TWE Proj. Inv. ProjMgt. Objects"
     {
         Caption = 'workItem';
     }
-
 }

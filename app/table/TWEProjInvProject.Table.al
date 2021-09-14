@@ -44,7 +44,8 @@ table 70704954 "TWE Proj. Inv. Project"
             Caption = 'Total Work Hours';
             DecimalPlaces = 2;
             Editable = false;
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = sum("TWE Proj. Inv. Project Hours".Hours where("Project ID" = field(ID)));
         }
         field(15; "Invoice Type"; Enum "TWE Proj. Inv. Invoice Type")
         {
@@ -140,29 +141,43 @@ table 70704954 "TWE Proj. Inv. Project"
     procedure PopulateFromJson(jsonData: JsonObject; ProjectMgtSystem: Enum "TWE Project Mgt. System")
     var
         customer: Record Customer;
-        ProjInvSetup: Record "TWE Proj. Inv. Setup";
+        project: Record "TWE Proj. Inv. Project";
+        projInvSetup: Record "TWE Proj. Inv. Setup";
+        processingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
         jSONMethods: Codeunit "TWE JSONMethods";
+        createProject: Boolean;
     begin
-        ProjInvSetup.GetSetup();
+        createProject := false;
+        projInvSetup.GetSetup();
         jsonMethods.SetJsonObject(jsonData);
 
         case ProjectMgtSystem of
             ProjectMgtSystem::YoutTrack:
-                begin
+                if not project.Get(jSONMethods.GetJsonValue('shortName').AsText()) then begin
+                    Init();
                     ID := CopyStr(jSONMethods.GetJsonValue('shortName').AsText(), 1, MaxStrLen(ID));
-                    Name := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name));
+                    Name := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name)));
+                    createProject := true;
                 end;
-            ProjectMgtSystem::"JIRA Tempo":
-                begin
-                    ID := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen(ID));
-                    Name := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name));
-                end;
+            else
+                if ProjectMgtSystem <> ProjectMgtSystem::" " then
+                    if not project.Get(jSONMethods.GetJsonValue('key').AsText()) then begin
+                        Init();
+                        ID := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen(ID));
+                        Name := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen(Name)));
+                        createProject := true;
+                    end;
         end;
-        "Project Mgt System" := ProjectMgtSystem;
 
-        customer.SetRange(Name, Name);
-        if customer.FindSet() then
-            if customer.Count = 1 then
-                Validate("Related to Customer No.", customer."No.");
+        if createProject then begin
+            "Project Mgt System" := ProjectMgtSystem;
+
+            customer.SetRange(Name, Name);
+            if customer.FindSet() then
+                if customer.Count = 1 then
+                    Validate("Related to Customer No.", customer."No.");
+
+            Insert();
+        end;
     end;
 }

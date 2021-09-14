@@ -5,14 +5,14 @@ pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Applic
         // Adding a new control field 'ShoeSize' in the group 'General'
         addlast(General)
         {
-            field("TWE Use Project Mgt System"; rec."TWE Use Project Mgt. System")
+            field("TWE Is Project Mgt System"; rec."TWE Is Project Mgt. System")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies whether the oAuth data is related to a Project Mgt. System';
 
                 trigger OnValidate()
                 begin
-                    if rec."TWE Use Project Mgt. System" then
+                    if rec."TWE Is Project Mgt. System" then
                         TWEProjMgtSystemEditable := true
                     else
                         TWEProjMgtSystemEditable := false;
@@ -44,6 +44,13 @@ pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Applic
                 ToolTip = 'Specifies the value of the registered permanent token';
                 ExtendedDatatype = Masked;
             }
+            field("TWE PI TimeTrackingPermToken"; rec."TWE PI Timetracking PermToken")
+            {
+                ApplicationArea = All;
+                Editable = TWEPermTokenEditable;
+                ToolTip = 'Specifies the value of the registered timetracking permanent token';
+                ExtendedDatatype = Masked;
+            }
         }
         addlast(Endpoints)
         {
@@ -52,12 +59,17 @@ pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Applic
                 ApplicationArea = All;
                 ToolTip = 'Specifies the endpoint used to gain data from a Project Mgt. System';
             }
+            field("TWE Timetracking Endpoint"; rec."TWE PI Timetracking Endpoint")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the endpoint used to gain timetracking data from a Project Mgt. System';
+            }
         }
     }
 
     trigger OnOpenPage()
     begin
-        if rec."TWE Use Project Mgt. System" then
+        if rec."TWE Is Project Mgt. System" then
             TWEProjMgtSystemEditable := true
         else
             TWEProjMgtSystemEditable := false;

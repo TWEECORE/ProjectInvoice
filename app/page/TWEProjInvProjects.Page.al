@@ -64,7 +64,6 @@ page 70704954 "TWE Proj. Inv. Projects"
 
             }
         }
-
     }
 
     actions
@@ -84,7 +83,7 @@ page 70704954 "TWE Proj. Inv. Projects"
                 var
                     ProjInvProcessingMgt: Codeunit "TWE Proj. Inv. Import Mgt";
                 begin
-                    Report.Run(Report::"TWE Proj. Inv. Import");
+                    ProjInvProcessingMgt.RequestAllProjects();
                 end;
             }
         }
@@ -93,6 +92,11 @@ page 70704954 "TWE Proj. Inv. Projects"
     trigger OnAfterGetRecord()
     begin
         GetTotalHours();
+    end;
+
+    trigger OnOpenPage()
+    begin
+        rec.CalcFields("Total Work Hours");
     end;
 
     local procedure GetTotalHours()
