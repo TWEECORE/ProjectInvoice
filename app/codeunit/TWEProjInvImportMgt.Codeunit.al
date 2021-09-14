@@ -46,7 +46,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
     begin
         success := false;
 
-        oAuthApp.SetRange("TWE Use Project Mgt. System", true);
+        oAuthApp.SetRange("TWE Is Project Mgt. System", true);
         if oAuthApp.FindSet() then
             repeat
                 if oAuthApp."TWE Project Mgt. System" = oAuthApp."TWE Project Mgt. System"::YoutTrack then
@@ -87,7 +87,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         success := false;
         projMgtApiDataFound := false;
 
-        oAuthApp.SetRange("TWE Use Project Mgt. System", true);
+        oAuthApp.SetRange("TWE Is Project Mgt. System", true);
         if oAuthApp.FindSet() then begin
             createImportHeader(GlobalImportHeader);
             if GlobalImportHeader.FindLast() then;

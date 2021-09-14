@@ -76,17 +76,18 @@ page 70704951 "TWE Proj Inv. Wizard"
             group(Step2)
             {
                 Visible = (CurrentStep = 2);
-
-                InstructionalText = 'Please fill your companies Project Mgt. System information.';
-                group("Project Management System")
+                group("API Data")
                 {
-                    ShowCaption = false;
-                    group(ProjMgtPart)
+                    InstructionalText = 'Please fill your companies Project Mgt. System information.';
+                    group("Project Management System")
                     {
-                        ShowCaption = false;
-                        part(ProjMgtSystems; "TWE Proj. Mgt. System SubPart")
+                        group(ProjMgtPart)
                         {
-                            ApplicationArea = All;
+                            ShowCaption = false;
+                            part(ProjMgtSystems; "TWE Proj. Mgt. System SubPart")
+                            {
+                                ApplicationArea = All;
+                            }
                         }
                     }
                 }
@@ -95,7 +96,7 @@ page 70704951 "TWE Proj Inv. Wizard"
             group(Step3)
             {
                 Visible = (CurrentStep = 3);
-                group(FinishPage)
+                group("Finish Setup")
                 {
                     Caption = 'All done';
                     InstructionalText = 'Click on Finish to exit the setup and save the data.';

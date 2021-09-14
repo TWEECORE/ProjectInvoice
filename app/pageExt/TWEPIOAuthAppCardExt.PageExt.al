@@ -5,14 +5,14 @@ pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Applic
         // Adding a new control field 'ShoeSize' in the group 'General'
         addlast(General)
         {
-            field("TWE Use Project Mgt System"; rec."TWE Use Project Mgt. System")
+            field("TWE Use Project Mgt System"; rec."TWE Is Project Mgt. System")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies whether the oAuth data is related to a Project Mgt. System';
 
                 trigger OnValidate()
                 begin
-                    if rec."TWE Use Project Mgt. System" then
+                    if rec."TWE Is Project Mgt. System" then
                         TWEProjMgtSystemEditable := true
                     else
                         TWEProjMgtSystemEditable := false;
@@ -69,7 +69,7 @@ pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Applic
 
     trigger OnOpenPage()
     begin
-        if rec."TWE Use Project Mgt. System" then
+        if rec."TWE Is Project Mgt. System" then
             TWEProjMgtSystemEditable := true
         else
             TWEProjMgtSystemEditable := false;

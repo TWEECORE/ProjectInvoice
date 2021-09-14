@@ -523,20 +523,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Summarized Description - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 1480190087 - Control 2279239964 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1480190087 - Control 2147681516 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>Please fill your companies Project Mgt. System information.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Step2 - Property InstructionalText</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control API Data - Property InstructionalText</note>
         </trans-unit>
-        <trans-unit id="Page 1480190087 - Control 2534158164 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1480190087 - Control 1955653208 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>Click on Finish to exit the setup and save the data.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control FinishPage - Property InstructionalText</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Finish Setup - Property InstructionalText</note>
         </trans-unit>
-        <trans-unit id="Page 1480190087 - Control 2534158164 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1480190087 - Control 1955653208 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>All done</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control FinishPage - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control Finish Setup - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1480190087 - Action 2438272767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Back</source>
@@ -964,7 +964,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Setup - Control Summarized Description - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 908871963 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project Management Systems</source>
+          <source> </source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Mgt. System SubPart - Property Caption</note>
         </trans-unit>
@@ -1103,6 +1103,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE Proj. Inv. Cust. List Ext. - Action TWE Proj. Inv. Customer Projects - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3602750738 - Field 3474728240 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
+          <source>Is Project Mgt. System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Is Project Mgt. System - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3602750738 - Field 3556243394 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
           <source>Timetracking Endpoint</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1132,11 +1137,6 @@
           <source>Use Permanent Token</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Use Permanent Token - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="TableExtension 3602750738 - Field 696377367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
-          <source>Use Project Mgt. System</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - Field TWE Use Project Mgt. System - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 2620358043 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source> </source>

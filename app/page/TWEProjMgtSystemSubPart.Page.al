@@ -3,7 +3,7 @@
 /// </summary>
 page 70704957 "TWE Proj. Mgt. System SubPart"
 {
-    Caption = 'Project Management Systems';
+    Caption = ' ';
     PageType = ListPart;
     SourceTable = "TWE OAuth 2.0 Application";
 
@@ -31,9 +31,9 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
                     trigger OnValidate()
                     begin
                         if rec."TWE Project Mgt. System" <> rec."TWE Project Mgt. System"::" " then
-                            rec.Validate("TWE Use Project Mgt. System", true)
+                            rec.Validate("TWE Is Project Mgt. System", true)
                         else
-                            rec.Validate("TWE Use Project Mgt. System", false);
+                            rec.Validate("TWE Is Project Mgt. System", false);
                     end;
                 }
                 field("TWE Proj. Inv. Endpoint"; Rec."TWE Proj. Inv. Endpoint")
