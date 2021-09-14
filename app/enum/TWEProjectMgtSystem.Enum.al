@@ -13,7 +13,11 @@ enum 70704950 "TWE Project Mgt. System"
     {
         Caption = 'YouTrack';
     }
-    value(2; "JIRA Tempo")
+    value(2; JIRA)
+    {
+        Caption = 'JIRA';
+    }
+    value(3; "JIRA Tempo")
     {
         Caption = 'JIRA (Tempo Timesheets)';
     }

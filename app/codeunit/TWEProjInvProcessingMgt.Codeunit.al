@@ -59,6 +59,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     projectHour."Ticket Name" := importLine."Ticket Name";
                     projectHour."Work Description" := importLine."WorkItem Description";
                     projectHour.Hours := importLine.Hours;
+                    projectHour."Hours to Invoice" := importLine.Hours;
                     projectHour.Agent := importLine.Agent;
                     projectHour.Insert();
                 end;
@@ -146,14 +147,14 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         if Project."Use Standard Hourly Rate" then
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
 
-                        salesLine.Quantity := projectHours.Hours;
+                        salesLine.Quantity := projectHours."Hours to Invoice";
                         salesLine.Modify();
 
                         projectHours.Invoiced := true;
                         projectHours.Modify();
                         FirstLine := false;
                     end else begin
-                        salesLine.Quantity += projectHours.Hours;
+                        salesLine.Quantity += projectHours."Hours to Invoice";
                         salesLine.Modify();
 
                         projectHours.Invoiced := true;
@@ -192,7 +193,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
                     salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                     salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
-                    salesLine.Quantity := projectHours.Hours;
+                    salesLine.Quantity := projectHours."Hours to Invoice";
                     if Project."Use Standard Hourly Rate" then
                         salesLine."Unit Price" := Project."Standard Hourly Rate";
                     salesLine.Modify();
@@ -260,14 +261,14 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             if Project."Use Standard Hourly Rate" then
                                 salesLine."Unit Price" := Project."Standard Hourly Rate";
 
-                            salesLine.Quantity := projectHours.Hours;
+                            salesLine.Quantity := projectHours."Hours to Invoice";
                             salesLine.Modify();
 
                             projectHours.Invoiced := true;
                             projectHours.Modify();
                             FirstLine := false;
                         end else begin
-                            salesLine.Quantity += projectHours.Hours;
+                            salesLine.Quantity += projectHours."Hours to Invoice";
                             salesLine.Modify();
 
                             projectHours.Invoiced := true;
@@ -306,7 +307,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
                         salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                         salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
-                        salesLine.Amount := projectHours.Hours;
+                        salesLine.Amount := projectHours."Hours to Invoice";
                         if Project."Use Standard Hourly Rate" then
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
                         salesLine.Modify();
@@ -323,5 +324,66 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         until Project.Next() = 0;
 
         Message(invoicesCreatedLbl, counter);
+    end;
+
+    procedure convertUmlaute(String: Text[150]) ConvertedString: text[150]
+    var
+        littleAELbl: Label 'Žñ';
+        bigAELbl: Label 'Žä';
+        littleUELbl: Label 'Ž‰';
+        bigUELbl: Label 'Ž£';
+        littleOELbl: Label 'ŽÂ';
+        bigOELbl: Label 'Žû';
+        sZLbl: Label 'Žƒ';
+    begin
+        ConvertedString := String;
+
+        ConvertedString := replaceString(ConvertedString, littleAELbl, 'ä');
+        ConvertedString := replaceString(ConvertedString, bigAELbl, 'Ä');
+        ConvertedString := replaceString(ConvertedString, littleUELbl, 'ü');
+        ConvertedString := replaceString(ConvertedString, bigUELbl, 'Ü');
+        ConvertedString := replaceString(ConvertedString, littleOELbl, 'ö');
+        ConvertedString := replaceString(ConvertedString, bigOELbl, 'Ö');
+        ConvertedString := replaceString(ConvertedString, sZLbl, 'ß');
+    end;
+
+    local procedure replaceString(String: Text[150]; FindWhat: Text[150]; ReplaceWith: Text[150]) NewString: Text[150]
+    begin
+        WHILE STRPOS(String, FindWhat) > 0 DO
+            String := DELSTR(String, STRPOS(String, FindWhat)) + ReplaceWith + COPYSTR(String, STRPOS(String, FindWhat) + STRLEN(FindWhat));
+        NewString := String;
+    end;
+
+    /// <summary>
+    /// getDateFromUnixTimeStamp.
+    /// </summary>
+    /// <param name="unixTime">Text.</param>
+    /// <returns>Return value of type Date.</returns>
+    procedure getDateFromUnixTimeStamp(unixTime: Text): Date
+    var
+        unixTimeInt: Integer;
+        unixStartDate: Date;
+        noOfDays: Integer;
+        endDate: Date;
+    begin
+        unixTime := DelStr(unixTime, 11);
+        Evaluate(unixTimeInt, unixTime);
+        unixStartDate := 19700101D;
+        NoOfDays := unixTimeInt DIV 86400;
+
+        endDate := unixStartDate + NoOfDays;
+
+        Exit(endDate);
+    end;
+
+    procedure getUnixTimeStampFromDate(DateValue: Date): Integer
+    var
+        unixStartDate: Date;
+        noOfDays: Integer;
+    begin
+        unixStartDate := 19700101D;
+        noOfDays := DateValue - unixStartDate;
+
+        exit(noOfDays * 86400);
     end;
 }

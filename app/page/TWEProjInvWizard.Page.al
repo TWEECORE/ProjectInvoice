@@ -5,7 +5,6 @@ page 70704951 "TWE Proj Inv. Wizard"
 {
     PageType = NavigatePage;
     SourceTable = "TWE Proj. Inv. Setup";
-    SourceTableTemporary = true;
     Caption = 'Project Invoice Setup';
 
     layout
@@ -157,13 +156,11 @@ page 70704951 "TWE Proj Inv. Wizard"
         MediaResourcesStandard: Record "Media Resources";
         MediaResourcesDone: Record "Media Resources";
         ProjInvSetup: Record "TWE Proj. Inv. Setup";
-        ProjMgtSystemPage: Page "TWE Proj. Mgt. System SubPart";
         CurrentStep: Integer;
         ActionBackAllowed: Boolean;
         ActionNextAllowed: Boolean;
         ActionFinishAllowed: Boolean;
         TopBannerVisible: Boolean;
-        UseOAuth: Boolean;
 
     trigger OnInit()
     begin
@@ -176,9 +173,6 @@ page 70704951 "TWE Proj Inv. Wizard"
 
         CurrentStep := 1;
         SetControls();
-        Rec."Summarize Times for Invoice" := true;
-
-        UseOAuth := false;
     end;
 
     local procedure SetControls()

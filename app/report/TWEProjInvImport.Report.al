@@ -13,6 +13,7 @@ report 70704950 "TWE Proj. Inv. Import"
             trigger OnPostDataItem()
             var
                 projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+
             begin
                 projInvImportMgt.GetProjectDataByDate(FromDate, toDate);
             end;
@@ -38,6 +39,12 @@ report 70704950 "TWE Proj. Inv. Import"
                         ApplicationArea = All;
                         Caption = 'To date';
                         ToolTip = 'Select a start date for the SumUp import';
+
+                        trigger OnValidate()
+                        begin
+                            if ToDate < FromDate then
+                                Error(ToDateBeforeFromDateLbl);
+                        end;
                     }
                 }
             }
@@ -48,4 +55,5 @@ report 70704950 "TWE Proj. Inv. Import"
     var
         FromDate: Date;
         ToDate: Date;
+        ToDateBeforeFromDateLbl: Label 'The date value in field "to date" can not be a date before the "from date"';
 }

@@ -97,6 +97,12 @@ table 70704953 "TWE Proj. Inv. Import Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(50; "Internal Project ID"; Text[150])
+        {
+            Caption = 'Internal Project ID';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys
@@ -135,7 +141,7 @@ table 70704953 "TWE Proj. Inv. Import Line"
     procedure PopulateFromJsonYoutrack(jsonData: JsonObject)
     var
         jSONMethods: Codeunit "TWE JSONMethods";
-        projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+        processingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
         helperJson: JsonObject;
         projectJson: JsonObject;
         reporterJson: JsonObject;
@@ -145,8 +151,8 @@ table 70704953 "TWE Proj. Inv. Import Line"
 
         "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("WorkItem ID"));
         if not JSONMethods.IsNullValue('text') then
-            "WorkItem Description" := convertUmlaute(CopyStr(jSONMethods.GetJsonValue('text').AsText(), 1, MaxStrLen("WorkItem Description")));
-        "WorkItem Created at" := projInvImportMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('date').AsText());
+            "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('text').AsText(), 1, MaxStrLen("WorkItem Description")));
+        "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('date').AsText());
         jsonData.Get('author', JToken);
         if JToken.IsObject then begin
             helperJson := JToken.AsObject();
@@ -167,8 +173,8 @@ table 70704953 "TWE Proj. Inv. Import Line"
             JSONMethods.SetJsonObject(helperJson);
             "Ticket No." := CopyStr(jSONMethods.GetJsonValue('idReadable').AsText(), 1, MaxStrLen("Ticket No."));
             if not JSONMethods.IsNullValue('summary') then
-                "Ticket Name" := convertUmlaute(CopyStr(jSONMethods.GetJsonValue('summary').AsText(), 1, MaxStrLen("Ticket Name")));
-            "Ticket Created at" := projInvImportMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('created').AsText());
+                "Ticket Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('summary').AsText(), 1, MaxStrLen("Ticket Name")));
+            "Ticket Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('created').AsText());
 
             helperJson.Get('reporter', JToken);
             if JToken.IsObject then begin
@@ -183,7 +189,7 @@ table 70704953 "TWE Proj. Inv. Import Line"
                 JSONMethods.SetJsonObject(projectJson);
                 "Project ID" := CopyStr(jSONMethods.GetJsonValue('shortName').AsText(), 1, MaxStrLen("Project ID"));
                 if not JSONMethods.IsNullValue('name') then
-                    "Project Name" := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project ID"));
+                    "Project Name" := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name"));
             end;
         end;
     end;
@@ -192,47 +198,55 @@ table 70704953 "TWE Proj. Inv. Import Line"
     /// PopulateFromJsonJIRA.
     /// </summary>
     /// <param name="jsonData">JsonObject.</param>
-    procedure PopulateFromJsonJIRA(jsonData: JsonObject; ProjMgtObject: Enum "TWE Proj. Inv. ProjMgt. Objects")
+    procedure PopulateFromJsonJIRA(jsonData: JsonObject; ProjMgtObject: Enum "TWE Proj. Inv. ProjMgt. Objects"; IsWorkItemList: Boolean)
     var
-        importHeader: Record "TWE Proj. Inv. Import Header";
         jSONMethods: Codeunit "TWE JSONMethods";
-        projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+        processingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
         localJsonObject: JsonObject;
-        localToken: JsonToken;
-        localArray: JsonArray;
+        helperJson: JsonObject;
+        jToken: JsonToken;
     begin
+        jsonMethods.SetJsonObject(jsonData);
         case ProjMgtObject of
             "TWE Proj. Inv. ProjMgt. Objects"::workItem:
-                begin
-                    jsonMethods.SetJsonObject(jsonData);
-
+                if IsWorkItemList then begin
+                    "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('worklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
+                    "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('updatedTime').AsText());
+                end else begin
                     "Ticket No." := CopyStr(jSONMethods.GetJsonValue('issueID').AsText(), 1, MaxStrLen("Ticket No."));
-                    "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("WorkItem ID"));
-                    "WorkItem Description" := CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description"));
-                    "WorkItem Created at" := projInvImportMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('started').AsText());
-                    //TODO: Author {displayname}
-                    //Agent := CopyStr(jSONMethods.GetJsonValue('author').AsText(), 1, MaxStrLen(Agent));
-                    Hours := jSONMethods.GetJsonValue('timeSpentseconds').AsInteger() / 3600;
+                    "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
+                    Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;
+
+                    jsonData.Get('author', jToken);
+                    if JToken.IsObject then begin
+                        localJsonObject := jToken.AsObject();
+                        JSONMethods.SetJsonObject(localJsonObject);
+                        Agent := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
+                    end;
                 end;
             "TWE Proj. Inv. ProjMgt. Objects"::issue:
                 begin
-                    jsonData.Get('issues', localToken);
-                    localArray := localToken.AsArray();
+                    "Ticket Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen("Ticket Name")));
 
-                    foreach localToken in localArray do begin
-                        jsonData := localToken.AsObject();
-                        jsonMethods.SetJsonObject(localJsonObject);
+                    localJsonObject.Get('attachement', jToken);
+                    if JToken.IsObject() then begin
+                        helperJson := jToken.AsObject();
+                        helperJson.Get('author', jToken);
+                        if jToken.IsObject() then begin
+                            helperJson := jToken.AsObject();
+                            JSONMethods.SetJsonObject(helperJson);
+                            "Ticket Creator" := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
+                            "Ticket Created at" := DT2Date(jSONMethods.GetJsonValue('created').AsDateTime());
+                        end
+                    end;
 
-                        if jSONMethods.GetJsonValue('ID').AsText() = "Ticket No." then begin
-                            "Ticket Name" := CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen("Ticket Name"));
-                            //TODO: comment{author{Displayname}}
-                            "Ticket Creator" := CopyStr(jSONMethods.GetJsonValue('displayname').AsText(), 1, MaxStrLen("Ticket Creator"));
-                            //TODO: comment{created}
-                            "Ticket Created at" := projInvImportMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('created').AsText());
-                            //TODO: project{id, name}
-                            "Project ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("Project ID"));
-                            "Project Name" := CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name"));
-                        end;
+                    localJsonObject.Get('project', jToken);
+                    if jToken.IsObject then begin
+                        helperJson := jToken.AsObject();
+                        jSONMethods.SetJsonObject(helperJson);
+                        "Internal Project ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("Internal Project ID"));
+                        "Project ID" := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Project ID"));
+                        "Project Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name")));
                     end;
                 end;
         end;
@@ -249,33 +263,5 @@ table 70704953 "TWE Proj. Inv. Import Line"
     begin
         rec.SetRange("Import Header ID", ImportHeaderEntryNo);
         exit(FindRecordManagement.GetLastEntryIntFieldValue(Rec, FieldNo("Line No")))
-    end;
-
-    local procedure convertUmlaute(String: Text[150]) ConvertedString: text[150]
-    var
-        littleAELbl: Label 'Žñ';
-        bigAELbl: Label 'Žä';
-        littleUELbl: Label 'Ž‰';
-        bigUELbl: Label 'Ž£';
-        littleOELbl: Label 'ŽÂ';
-        bigOELbl: Label 'Žû';
-        sZLbl: Label 'Žƒ';
-    begin
-        ConvertedString := String;
-
-        ConvertedString := replaceString(ConvertedString, littleAELbl, 'ä');
-        ConvertedString := replaceString(ConvertedString, bigAELbl, 'Ä');
-        ConvertedString := replaceString(ConvertedString, littleUELbl, 'ü');
-        ConvertedString := replaceString(ConvertedString, bigUELbl, 'Ü');
-        ConvertedString := replaceString(ConvertedString, littleOELbl, 'ö');
-        ConvertedString := replaceString(ConvertedString, bigOELbl, 'Ö');
-        ConvertedString := replaceString(ConvertedString, sZLbl, 'ß');
-    end;
-
-    local procedure replaceString(String: Text[150]; FindWhat: Text[150]; ReplaceWith: Text[150]) NewString: Text[150]
-    begin
-        WHILE STRPOS(String, FindWhat) > 0 DO
-            String := DELSTR(String, STRPOS(String, FindWhat)) + ReplaceWith + COPYSTR(String, STRPOS(String, FindWhat) + STRLEN(FindWhat));
-        NewString := String;
     end;
 }

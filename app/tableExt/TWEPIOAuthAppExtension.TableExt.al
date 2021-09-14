@@ -30,5 +30,15 @@ tableextension 70704950 "TWE PI OAuth App. Extension" extends "TWE OAuth 2.0 App
             Caption = 'Permanent Token';
             DataClassification = CustomerContent;
         }
+        field(70704955; "TWE PI Timetracking PermToken"; Text[150])
+        {
+            Caption = 'Timetracking Permanent Token';
+            DataClassification = CustomerContent;
+        }
+        field(70704956; "TWE PI Timetracking Endpoint"; Text[150])
+        {
+            Caption = 'Timetracking Endpoint';
+            DataClassification = CustomerContent;
+        }
     }
 }
