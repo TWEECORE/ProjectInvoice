@@ -35,6 +35,19 @@ table 70704950 "TWE Proj. Inv. Setup"
         {
             Caption = 'Summarize Times for Invoice';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            var
+                project: Record "TWE Proj. Inv. Project";
+                ChangeAllProjectsLbl: Label 'Apply this change to all Project Invoice projects?';
+            begin
+                if project.FindSet() then
+                    if Confirm(ChangeAllProjectsLbl) then
+                        repeat
+                            project."Summarize Times for Invoice" := "Summarize Times for Invoice";
+                            project.Modify();
+                        until project.Next() = 0;
+            end;
         }
         field(30; "Summarized Description"; Text[100])
         {

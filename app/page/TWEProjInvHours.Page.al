@@ -3,11 +3,9 @@
 /// </summary>
 page 70704956 "TWE Proj. Inv. Hours"
 {
-    ApplicationArea = All;
     Caption = 'Proj. Inv. Hours';
     PageType = List;
     SourceTable = "TWE Proj. Inv. Project Hours";
-    UsageCategory = Lists;
     InsertAllowed = false;
 
     //TODO: ToolTips anpassen
@@ -49,7 +47,17 @@ page 70704956 "TWE Proj. Inv. Hours"
                 }
                 field(Agent; Rec.Agent)
                 {
-                    ToolTip = 'Specifies the value of the Agent field';
+                    ToolTip = 'Specifies the working agent';
+                    ApplicationArea = All;
+                }
+                field(Invoiced; Rec.Invoiced)
+                {
+                    ToolTip = 'Specifies whether this project hour is already invoiced';
+                    ApplicationArea = All;
+                }
+                field("Working Date"; Rec."Working Date")
+                {
+                    ToolTip = 'Working Date';
                     ApplicationArea = All;
                 }
             }

@@ -3,11 +3,12 @@
 /// </summary>
 page 70704955 "TWE Proj. Inv. Hours Subpart"
 {
-    Caption = 'Proj. Inv. Hours';
+    Caption = ' ';
     PageType = ListPart;
     SourceTable = "TWE Proj. Inv. Project Hours";
     InsertAllowed = false;
     DeleteAllowed = false;
+    SourceTableView = sorting(ID) order(ascending) where(Invoiced = filter(= false));
 
     layout
     {
@@ -15,11 +16,6 @@ page 70704955 "TWE Proj. Inv. Hours Subpart"
         {
             repeater(General)
             {
-                field(ID; Rec.ID)
-                {
-                    ToolTip = 'Specifies the value of the ID field';
-                    ApplicationArea = All;
-                }
                 field("Ticket ID"; Rec."Ticket ID")
                 {
                     ToolTip = 'Specifies the value of the Ticket ID field';
@@ -47,16 +43,50 @@ page 70704955 "TWE Proj. Inv. Hours Subpart"
                 }
                 field(Agent; Rec.Agent)
                 {
-                    ToolTip = 'Specifies the value of the Agent field';
+                    ToolTip = 'Specifies the working agent';
                     ApplicationArea = All;
                 }
                 field(Invoiced; Rec.Invoiced)
                 {
-                    ToolTip = 'Specifies the value of the Invoiced field';
+                    ToolTip = 'Specifies whether this project hour is already invoiced';
+                    ApplicationArea = All;
+                }
+                field("Working Date"; Rec."Working Date")
+                {
+                    ToolTip = 'Working Date';
                     ApplicationArea = All;
                 }
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            group(Invoice)
+            {
+                action(InvoiceSelectedOpenHours)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Invoice selected Project Hours';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    Image = CheckJournal;
+                    ToolTip = 'Creates an Invoice for the selected Project Hours';
 
+                    trigger OnAction()
+                    var
+                        projectHour: Record "TWE Proj. Inv. Project Hours";
+                        projInvProcessingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
+                    begin
+                        CurrPage.SetSelectionFilter(projectHour);
+                        if projectHour.FindSet() then
+                            projInvProcessingMgt.InvoiceProjectHours(projectHour);
+                    end;
+                }
+            }
+        }
+
+    }
 }

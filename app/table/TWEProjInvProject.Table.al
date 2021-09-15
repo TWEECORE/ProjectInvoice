@@ -90,6 +90,11 @@ table 70704954 "TWE Proj. Inv. Project"
             Caption = 'Summarized Description';
             DataClassification = CustomerContent;
         }
+        field(60; "All Hours invoiced"; Boolean)
+        {
+            Caption = 'All Hourse Invoiced';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -171,6 +176,9 @@ table 70704954 "TWE Proj. Inv. Project"
 
         if createProject then begin
             "Project Mgt System" := ProjectMgtSystem;
+            "Summarize Times for Invoice" := ProjInvSetup."Summarize Times for Invoice";
+            "Summarized Description" := ProjInvSetup."Summarized Description";
+            "All Hours invoiced" := true;
 
             customer.SetRange(Name, Name);
             if customer.FindSet() then

@@ -148,6 +148,11 @@
           <note from="Developer" annotates="general" priority="2">%1=ProjectName</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project - Method OnDelete - NamedType ValidateDeleteLbl</note>
         </trans-unit>
+        <trans-unit id="Table 1193288711 - Field 4167063113 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>All Hourse Invoiced</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project - Field All Hours invoiced - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1193288711 - Field 3641927271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>ID</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -258,6 +263,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Work Description - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2241950490 - Field 2099156127 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Working Date - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3209778417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Project Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -287,6 +297,11 @@
           <source>Summarize Times for Invoice</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field Summarize Times for Invoice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3209778417 - Field 1528559585 - Method 2126772001 - NamedType 3431431229" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Apply this change to all Project Invoice projects?</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field Summarize Times for Invoice - Method OnValidate - NamedType ChangeAllProjectsLbl</note>
         </trans-unit>
         <trans-unit id="Table 3209778417 - Field 472876867 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Summarize Description</source>
@@ -348,24 +363,19 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType ErrDataReceiveFailedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2207169053 - NamedType 1259862404" size-unit="char" translate="yes" xml:space="preserve">
+          <source>/rest/api/2/search?jql=worklogDate&gt;0</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraIssuesArgumentsLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 1432467097" size-unit="char" translate="yes" xml:space="preserve">
           <source>/rest/api/2/project</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraProjectArgumentsLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 3679624349" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/rest/api/2/issue/</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraSpecificIssueLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 3094558985" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/rest/api/2/worklog/list</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraSpecificWorkLogLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 3856204912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/rest/api/2/worklog/updated?expand=worklogs</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <source>/rest/api/2/issue/%1/worklog</source>
+          <note from="Developer" annotates="general" priority="2">%1=IssueID</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraWorkLogsArgumentsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 1667172971" size-unit="char" translate="yes" xml:space="preserve">
@@ -384,8 +394,8 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType noProjMgtApiDataErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 1603283080" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/core/3/worklogs</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <source>/core/3/worklogs/issue/%1&amp;limit=1000</source>
+          <note from="Developer" annotates="general" priority="2">%1=IssueID</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType TempoWorkLogArgumentsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 3608004397" size-unit="char" translate="yes" xml:space="preserve">
@@ -397,6 +407,11 @@
           <source>/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&amp;$skip=0&amp;$top=10000</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType YoutrackWorkitemArgumentsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2207169053 - Method 1203151128 - NamedType 3254003030" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&amp;startAt=</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method createImportLinesJIRA - NamedType startAtStringLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 3790138526" size-unit="char" translate="yes" xml:space="preserve">
           <source>Žñ</source>
@@ -468,6 +483,16 @@
           <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProject - NamedType invoicesCreatedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1413751047 - Method 437954169 - NamedType 1804062905" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project: </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProjectHours - NamedType projectLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1413751047 - Method 437954169 - NamedType 2922722252" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 invoices created</source>
+          <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProjectHours - NamedType invoicesCreatedLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 1147444577 - NamedType 1935818988" size-unit="char" translate="yes" xml:space="preserve">
           <source>There is no new data to import for Import Header = %1</source>
           <note from="Developer" annotates="general" priority="2">%1=Import Header</note>
@@ -477,6 +502,71 @@
           <source>The project management data was successfully imported</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method TransferImportedData - NamedType AllImportedLbl</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project Invoice Projects to Invoice</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Property 3863440606" size-unit="char" translate="yes" xml:space="preserve">
+          <source>project,invoice,projects,tweecore</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Property AdditionalSearchTerms</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 3641927271 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the ID field</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 4095313195 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice Type that should be used to invoice project hours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Invoice Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 2961552353 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Name field</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. of object to be invoiced</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 2394340817 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Related to Customer Name field</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Related to Customer Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 2360557153 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Related to Customer No. field</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Related to Customer No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 3636804552 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the standard hourly rate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Standard Hourly Rate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 3772724932 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Total Work Hours field</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Total Work Hours - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Control 3741490977 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if a standard hourly rate should be used for invoicing</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Control Use Standard Hourly Rate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Action 2196483591 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imports project hours from project management systems</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Action GetHours - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2363111861 - Action 2196483591 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Import Project Hours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE PI Projects to Invoice - Action GetHours - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1480190087 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Project Invoice Setup</source>
@@ -559,7 +649,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 391645917 - Control 972110707 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Agent field</source>
+          <source>Specifies the working agent</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Control Agent - Property ToolTip</note>
         </trans-unit>
@@ -578,6 +668,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Control ID - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 391645917 - Control 3015270207 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether this project hour is already invoiced</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Control Invoiced - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 391645917 - Control 949148548 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Project ID field</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -593,13 +688,18 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Control Ticket Name - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 391645917 - Control 2099156127 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Working Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours - Control Working Date - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 2754228812 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Proj. Inv. Hours</source>
+          <source> </source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2754228812 - Control 972110707 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Agent field</source>
+          <source>Specifies the working agent</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control Agent - Property ToolTip</note>
         </trans-unit>
@@ -613,13 +713,8 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control Hours to Invoice - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 2754228812 - Control 3641927271 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the ID field</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control ID - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 2754228812 - Control 3015270207 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Invoiced field</source>
+          <source>Specifies whether this project hour is already invoiced</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control Invoiced - Property ToolTip</note>
         </trans-unit>
@@ -637,6 +732,21 @@
           <source>Specifies the value of the Work Description field</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control Work Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2754228812 - Control 2099156127 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Working Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Control Working Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2754228812 - Action 2601510401 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Creates an Invoice for the selected Project Hours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Action InvoiceSelectedOpenHours - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2754228812 - Action 2601510401 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice selected Project Hours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Hours Subpart - Action InvoiceSelectedOpenHours - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3632173916 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Proj. Inv. Import Lines</source>
@@ -718,91 +828,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Import Lines - Control WorkItem ID - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 1410664882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project Invoice Imports</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 1016130111 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import Header Entry No.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control EntryNo - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 2565861275 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Date the import was executed</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control ImportDate - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 1288521132 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Time the import was executed</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control ImportTime - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 676485433 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Amount of already imported import lines</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control NoImportedEntries - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 3437820598 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Amount of all received import lines</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control NoOfEntries - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 3208180638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Defines whether all import lines were imported or not</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control Processed - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 1807904131 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Total amount of all imported hours</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control TotalHours - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Control 2138558048 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>User ID</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Control UserID - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 1630035233 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Imports project data from defined project management system</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action GetProjMgtData - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 1630035233 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import Project Data</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action GetProjMgtData - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 696711724 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Creates imported Project Mgt. System data in Business Central</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action ImportProjectData - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 696711724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Apply Import Data</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action ImportProjectData - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 696711724 - Method 1377591017 - NamedType 3264613827" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There was no entry selected.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action ImportProjectData - Method OnAction - NamedType noEntrySelectedErr</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 3230575080 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Opens Import Lines for selected Import Entry</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action OpenImportLines - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 3230575080 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Open Import Lines</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action OpenImportLines - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1410664882 - Action 3230575080 - Method 1377591017 - NamedType 639951397" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There are no Lines for %1=%2</source>
-          <note from="Developer" annotates="general" priority="2">%1=ImportHeaderIdCaption, %2=HeaderID</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Imports - Action OpenImportLines - Method OnAction - NamedType errNoLinesLbl</note>
-        </trans-unit>
         <trans-unit id="Page 3471679267 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Proj. Inv. Project Card</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -827,6 +852,11 @@
           <source>No. of object to be invoiced</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3471679267 - Control 2801282916 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the linked Project Mgt. System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Control Project Mgt. System - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3471679267 - Control 2394340817 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Related to Customer Name field</source>
@@ -863,20 +893,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Control Use Standard Hourly Rate - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3471679267 - Action 990278178 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Process Project Times</source>
+        <trans-unit id="Page 3471679267 - Action 4040952753 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Creates an Invoice for the current Project Hours</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Action InvoiceOpenHours - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Action InvoiceAllOpenHours - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3471679267 - Action 990278178 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Process Project Times</source>
+        <trans-unit id="Page 3471679267 - Action 4040952753 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice all Project Hours</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Action InvoiceOpenHours - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Project Card - Action InvoiceAllOpenHours - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 143103090 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Project Invoice Projects</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 143103090 - Property 3863440606" size-unit="char" translate="yes" xml:space="preserve">
+          <source>project,invoice,projects,tweecore</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Property AdditionalSearchTerms</note>
         </trans-unit>
         <trans-unit id="Page 143103090 - Control 3641927271 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the ID field</source>
@@ -923,6 +958,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Use Standard Hourly Rate - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 143103090 - Action 2196483591 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imports project hours from project management systems</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Action GetHours - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 143103090 - Action 2196483591 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Import Project Hours</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Action GetHours - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 143103090 - Action 3403607284 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Imports projects from project management systems</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -937,6 +982,11 @@
           <source>Project Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Setup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3209778417 - Property 3863440606" size-unit="char" translate="yes" xml:space="preserve">
+          <source>project,invoice,tweecore</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Setup - Property AdditionalSearchTerms</note>
         </trans-unit>
         <trans-unit id="Page 3209778417 - Control 4095313195 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Invoice Type that should be used to invoice project hours</source>
@@ -1038,6 +1088,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control EndDate - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 25265406 - Control 2222230414 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
+          <source>Specifies whether the oAuth data is related to a Project Mgt. System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Is Project Mgt System - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="PageExtension 25265406 - Control 4264913680 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
           <source>Specifies the value of the registered timetracking permanent token</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1052,11 +1107,6 @@
           <source>Specifies the name of the Project Mgt. System</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Project Mgt. System - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 25265406 - Control 759773373 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
-          <source>Specifies whether the oAuth data is related to a Project Mgt. System</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE PI OAuth AppCard Ext. - Control TWE Use Project Mgt System - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 25265406 - Control 3093528368 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1673813857">
           <source>Specifies whether the permanent token should be used for authentication</source>
@@ -1102,6 +1152,11 @@
           <source>Projects</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension TWE Proj. Inv. Cust. List Ext. - Action TWE Proj. Inv. Customer Projects - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3602750738 - NamedType 120719116" size-unit="char" translate="yes" xml:space="preserve" al-object-target="TableExtension 3602750738">
+          <source>https://api.tempo.io</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension TWE PI OAuth App. Extension - NamedType TempoTimeSheetEndpointLbl</note>
         </trans-unit>
         <trans-unit id="TableExtension 3602750738 - Field 3474728240 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1673813857">
           <source>Is Project Mgt. System</source>
