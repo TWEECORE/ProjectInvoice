@@ -11,7 +11,7 @@ page 70704954 "TWE Proj. Inv. Projects"
     CardPageID = "TWE Proj. Inv. Project Card";
     InsertAllowed = false;
     ModifyAllowed = false;
-    AdditionalSearchTerms = 'project,invoice,projects,tweecore';
+    AdditionalSearchTerms = 'project,invoice,projects,tweecore,proj';
 
     layout
     {

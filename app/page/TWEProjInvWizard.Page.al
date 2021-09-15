@@ -55,11 +55,6 @@ page 70704951 "TWE Proj Inv. Wizard"
                         ApplicationArea = All;
                         ToolTip = 'No. of object to be invoiced';
                     }
-                    field(NoSeries; Rec."No. Series for Proj. Invoices")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'No. Series for Imported project data';
-                    }
 
                     field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
                     {

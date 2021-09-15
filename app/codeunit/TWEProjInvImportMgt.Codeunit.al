@@ -8,18 +8,19 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         BaseMgt: Codeunit "TWE Base Mgt";
         FromDate: Date;
         ToDate: Date;
-        ErrDataReceiveFailedLbl: Label 'Could not receive data.';
-        MsgNoProjectDataFoundLbl: Label 'No new project data available.';
+        UseExternalTimetracking: Boolean;
+        FirstLine: Boolean;
         YoutrackWorkitemArgumentsLbl: Label '/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
         YoutrackProjectArgumentsLbl: Label '/youtrack/api/admin/projects?fields=$type,shortName,name&$skip=0&$top=10000';
-        TempoWorkLogArgumentsLbl: Label '/core/3/worklogs/issue/%1&limit=1000', Comment = '%1=IssueID';
-        JiraIssuesArgumentsLbl: Label '/rest/api/2/search?jql=worklogDate>0';//TODO:ORDER%20BY%20Created';
-        JiraWorkLogsArgumentsLbl: Label '/rest/api/2/issue/%1/worklog', Comment = '%1=IssueID';
+        TempoWorkLogArgumentsLbl: Label '/core/3/worklogs';
+        JiraIssuesArgumentsLbl: Label '/rest/api/2/issue/';
         JiraProjectArgumentsLbl: Label '/rest/api/2/project';
+        ErrDataReceiveFailedLbl: Label 'Could not receive data.';
+        MsgNoProjectDataFoundLbl: Label 'No new project data available.';
         NoDataToImportLbl: Label 'There is no new project data to import';
         noProjMgtApiDataErr: Label 'Did not found any Project Management API Data. Please execute the Project Invoice Assisted Setup.';
-        UseTempoTimeSheets: Boolean;
-        FirstLine: Boolean;
+        QueryLbl: Label '?';
+        ConnectorLbl: Label '&';
 
     /// <summary>
     /// GetProjectDataByDate.
@@ -92,9 +93,13 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         importItemToken: JsonToken;
         RequestInformation: Text;
         projMgtApiDataFound: Boolean;
+        fromLbl: Label 'from=';
+        toLbl: Label 'to=';
+        limitLbl: label 'limit=1000';
     begin
         success := false;
         projMgtApiDataFound := false;
+        UseExternalTimetracking := false;
 
         oAuthApp.SetRange("TWE Is Project Mgt. System", true);
         if oAuthApp.FindSet() then begin
@@ -103,15 +108,30 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             repeat
                 case oAuthApp."TWE Project Mgt. System" of
                     oAuthApp."TWE Project Mgt. System"::YoutTrack:
-                        RequestInformation := YoutrackWorkitemArgumentsLbl;
-                    else
-                        if oAuthApp."TWE Project Mgt. System" <> oAuthApp."TWE Project Mgt. System"::" " then
-                            RequestInformation := JiraIssuesArgumentsLbl;
+                        begin
+                            UseExternalTimetracking := false;
+                            RequestInformation := YoutrackWorkitemArgumentsLbl;
+                        end;
+                    oAuthApp."TWE Project Mgt. System"::"JIRA Tempo":
+                        begin
+                            UseExternalTimetracking := true;
+                            if ((FromDate = 0D) and (ToDate = 0D)) then
+                                RequestInformation := TempoWorkLogArgumentsLbl + QueryLbl + limitLbl
+                            else
+                                if ((FromDate = 0D) and (ToDate <> 0D)) then
+                                    RequestInformation := TempoWorkLogArgumentsLbl + QueryLbl + toLbl + processingMgt.DateToText(ToDate) + ConnectorLbl + limitLbl
+                                else
+                                    RequestInformation := TempoWorkLogArgumentsLbl + QueryLbl + fromLbl + processingMgt.DateToText(FromDate) + ConnectorLbl + toLbl +
+                                                        processingMgt.DateToText(ToDate) + ConnectorLbl + limitLbl;
+                        end;
+                /*oAuthApp."TWE Project Mgt. System"::JIRA:
+                    begin
+                        UseTempoTimeSheets := false;
+                        RequestInformation := JiraWorkLogsArgumentsLbl;
+                    end;*/
                 end;
 
                 if RequestInformation <> '' then begin
-                    if oAuthApp."TWE Project Mgt. System" = oAuthApp."TWE Project Mgt. System"::"JIRA Tempo" then
-                        UseTempoTimeSheets := true;
                     importItemToken := requestData(oAuthApp."TWE Project Mgt. System", RequestInformation, oAuthApp."TWE Use Permanent Token", '', true);
                     createImportData(importItemToken, oAuthApp."TWE Project Mgt. System");
                     projMgtApiDataFound := true;
@@ -139,8 +159,6 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         RequestHttpContent: HttpContent;
         RequestHeaders: HttpHeaders;
     begin
-        UseTempoTimeSheets := false;
-
         if GetMethod then
             tempArguments.RestMethod := tempArguments.RestMethod::get
         else
@@ -157,7 +175,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         end;
 
         if ProjMgtSystem <> ProjMgtSystem::" " then begin
-            initArguments(tempArguments, RequestString, ProjMgtSystem, UsePermToken, false);
+            initArguments(tempArguments, RequestString, ProjMgtSystem, UsePermToken);
 
             if not callWebService(tempArguments, ProjMgtSystem) then
                 Error('%1\\%2', ErrDataReceiveFailedLbl, tempArguments.GetResponseContentAsText());
@@ -168,49 +186,24 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 
     local procedure createImportData(WorkItemToken: JsonToken; ProjMgtSystem: Enum "TWE Project Mgt. System") success: Boolean
     var
-        jsonMethods: Codeunit "TWE JSONMethods";
         workItemArray: JsonArray;
         workItemObject: JsonObject;
         jToken: JsonToken;
-        isObject: Boolean;
     begin
         success := false;
         FirstLine := false;
 
-        if WorkItemToken.IsArray then begin
-            workItemArray := WorkItemToken.AsArray();
-            isObject := false;
-        end else begin
-            workItemObject := WorkItemToken.AsObject();
-            isObject := true;
-        end;
-
         case ProjMgtSystem of
             ProjMgtSystem::YoutTrack:
-                if not isObject then
-                    foreach jToken in WorkitemArray do begin
-                        workItemObject := jToken.AsObject();
-                        jsonMethods.SetJsonObject(workItemObject);
-                        createImportLinesYoutrack(workItemObject, FromDate, ToDate);
-                    end
-                else begin
-                    jsonMethods.SetJsonObject(workItemObject);
+                foreach jToken in WorkitemArray do begin
+                    workItemObject := jToken.AsObject();
                     createImportLinesYoutrack(workItemObject, FromDate, ToDate);
                 end;
-            else
-                if ProjMgtSystem <> ProjMgtSystem::" " then
-                    if not isObject then
-                        foreach jToken in WorkitemArray do begin
-                            workItemObject := jToken.AsObject();
-                            jsonMethods.SetJsonObject(workItemObject);
-                            createImportLinesJIRA(workItemObject, ProjMgtSystem);
-                        end
-                    else begin
-                        jsonMethods.SetJsonObject(workItemObject);
-                        createImportLinesJIRA(workItemObject, ProjMgtSystem);
-                        if UseTempoTimeSheets then
-                            getTempoTimeSheetDescription(GlobalImportHeader);
-                    end;
+            ProjMgtSystem::"JIRA Tempo":
+                begin
+                    workItemObject := WorkItemToken.AsObject();
+                    createImportLinesJIRA(workItemObject, ProjMgtSystem);
+                end;
         end;
         success := true;
     end;
@@ -272,155 +265,95 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 
     local procedure createImportLinesJIRA(IssueDataObject: JsonObject; ProjMgtSystem: Enum "TWE Project Mgt. System") success: Boolean
     var
-        tempImportLineIssues: Record "TWE Proj. Inv. Import Line" temporary;
-        tempImportLineWorkItems: Record "TWE Proj. Inv. Import Line" temporary;
+        tempImportLine: Record "TWE Proj. Inv. Import Line" temporary;
         importLine: Record "TWE Proj. Inv. Import Line";
         projectHour: Record "TWE Proj. Inv. Project Hours";
         jsonMethod: Codeunit "TWE JSONMethods";
         localJsonObject: JsonObject;
-        startAt: Integer;
-        maxResults: Integer;
-        totalResults: Integer;
         jToken: JsonToken;
         jArray: JsonArray;
         isLast: Boolean;
-        startAtStringLbl: Label '&startAt=';
+        nextTempoString: Text;
+        countAmount: integer;
     begin
         success := false;
         isLast := false;
         localJsonObject := IssueDataObject;
 
-        repeat
-            jsonMethod.SetJsonObject(localJsonObject);
-            startAt := jsonMethod.GetJsonValue('startAt').AsInteger();
-            maxResults := startAt + jsonMethod.GetJsonValue('maxResults').AsInteger();
-            totalResults := jsonMethod.GetJsonValue('total').AsInteger();
-
-            if localJsonObject.Get('issues', jToken) then
-                if jToken.IsArray then begin
-                    jArray := jToken.AsArray();
-                    foreach jToken in jArray do begin
-                        tempImportLineIssues.Init();
-                        tempImportLineIssues."Import Header ID" := GlobalImportHeader.GetLastEntryNo();
-
-                        tempImportLineIssues."Line No" := tempImportLineIssues.GetLastLineNo(tempImportLineIssues."Import Header ID") + 10000;
-
-                        tempImportLineIssues."Project Mgt. System" := ProjMgtSystem;
-                        tempImportLineIssues.Insert();
-
-                        tempImportLineIssues.PopulateFromJsonJIRA(jToken.AsObject(), "TWE Proj. Inv. ProjMgt. Objects"::issue, true);
-
-                        tempImportLineIssues.Modify();
-                    end;
-                end;
-
-            if maxResults < totalResults then begin
-                jToken := requestData(ProjMgtSystem, JiraIssuesArgumentsLbl + startAtStringLbl + Format(maxResults), true, '', true);
-                localJsonObject := jToken.AsObject();
-                isLast := false
-            end else
-                isLast := true;
-        until isLast;
-
-        isLast := false;
-        maxResults := 0;
-        tempImportLineIssues.Reset();
-        if tempImportLineIssues.FindSet() then
+        if UseExternalTimetracking then
             repeat
-                if UseTempoTimeSheets then
-                    jToken := requestData(ProjMgtSystem, StrSubstNo(JiraWorkLogsArgumentsLbl, tempImportLineIssues."Ticket No.") + startAtStringLbl + Format(maxResults), true, '', true)
+                IssueDataObject.Get('metadata', jToken);
+                localJsonObject := jToken.AsObject();
+                jsonMethod.SetJsonObject(localJsonObject);
+                countAmount := jsonMethod.GetJsonValue('count').AsInteger();
+                if countAmount < 1000 then
+                    nextTempoString := ''
                 else
-                    jToken := requestData(ProjMgtSystem, StrSubstNo(JiraWorkLogsArgumentsLbl, tempImportLineIssues."Ticket No.") + startAtStringLbl + Format(maxResults), true, '', true);
-                localJsonObject := jToken.AsObject();
+                    nextTempoString := jsonMethod.GetJsonValue('next').AsText();
 
-                repeat
-                    jsonMethod.SetJsonObject(localJsonObject);
-                    startAt := jsonMethod.GetJsonValue('startAt').AsInteger();
-                    maxResults := startAt + jsonMethod.GetJsonValue('maxResults').AsInteger();
-                    totalResults := jsonMethod.GetJsonValue('total').AsInteger();
+                if IssueDataObject.Get('results', jToken) then
+                    if jToken.IsArray then begin
+                        jArray := jToken.AsArray();
+                        foreach jToken in jArray do begin
+                            tempImportLine.Init();
+                            tempImportLine."Import Header ID" := GlobalImportHeader."Entry No.";
+                            tempImportLine."Project Mgt. System" := ProjMgtSystem;
+                            tempImportLine."Line No" := tempImportLine.GetLastLineNo(GlobalImportHeader."Entry No.") + 10000;
+                            tempImportLine.Insert();
 
-                    if localJsonObject.Get('issues', jToken) then
-                        if jToken.IsArray then begin
-                            jArray := jToken.AsArray();
-                            foreach jToken in jArray do begin
-                                tempImportLineWorkItems.Init();
-                                tempImportLineWorkItems."Import Header ID" := GlobalImportHeader.GetLastEntryNo();
+                            tempImportLine.PopulateFromJsonJIRA(jToken.AsObject(), true, true);
 
-                                tempImportLineWorkItems."Line No" := tempImportLineWorkItems.GetLastLineNo(tempImportLineWorkItems."Import Header ID") + 10000;
-
-                                tempImportLineWorkItems."Project Mgt. System" := ProjMgtSystem;
-                                tempImportLineWorkItems.Insert();
-
-                                tempImportLineWorkItems.PopulateFromJsonJIRA(jToken.AsObject(), "TWE Proj. Inv. ProjMgt. Objects"::workItem, false);
-
-                                tempImportLineWorkItems.Modify();
-                            end;
+                            tempImportLine.Modify();
                         end;
+                    end;
 
-                    if maxResults < totalResults then begin
-                        jToken := requestData(ProjMgtSystem, StrSubstNo(JiraWorkLogsArgumentsLbl, tempImportLineIssues."Ticket No.") + startAtStringLbl + Format(maxResults), true, '', true);
-                        localJsonObject := jToken.AsObject();
-                        isLast := false
-                    end else
-                        isLast := true;
+                if nextTempoString <> '' then begin
+                    jToken := requestData(ProjMgtSystem, nextTempoString, true, '', true);
+                    localJsonObject := jToken.AsObject();
+                    isLast := false
+                end else
+                    isLast := true;
+            until isLast;
 
-                until isLast;
-            until tempImportLineIssues.Next() = 0;
+        UseExternalTimetracking := false;
 
-        tempImportLineWorkItems.Reset();
-        if tempImportLineWorkItems.FindSet() then
+        if tempImportLine.FindSet() then
             repeat
-                projectHour.SetRange(ID, tempImportLineWorkItems."WorkItem ID");
+                jToken := requestData(ProjMgtSystem, JiraIssuesArgumentsLbl + tempImportLine."Ticket No.", true, '', true);
+
+                tempImportLine.PopulateFromJsonJIRA(jToken.AsObject(), true, false);
+                tempImportLine.Modify();
+            until tempImportLine.Next() = 0;
+
+        tempImportLine.Reset();
+        if tempImportLine.FindSet() then
+            repeat
+                projectHour.SetRange(ID, tempImportLine."WorkItem ID");
                 if projectHour.IsEmpty() then begin
-                    importLine := tempImportLineWorkItems;
+                    importLine := tempImportLine;
                     importLine.Insert();
                 end;
-            until tempImportLineWorkItems.Next() = 0;
+            until tempImportLine.Next() = 0;
 
         success := true;
     end;
 
-    local procedure getTempoTimeSheetDescription(ImportHeader: Record "TWE Proj. Inv. Import Header")
-    var
-        importLine: Record "TWE Proj. Inv. Import Line";
-        jSONMethods: Codeunit "TWE JSONMethods";
-        workLogToken: JsonToken;
-        workLogObject: JsonObject;
-        workLogArray: JsonArray;
-    begin
-        workLogToken := requestData(importLine."Project Mgt. System", TempoWorkLogArgumentsLbl, true, '', true);
-        if workLogToken.IsArray then begin
-            workLogArray := workLogToken.AsArray();
-            foreach workLogToken in workLogArray do begin
-                workLogObject := workLogToken.AsObject();
-                jSONMethods.SetJsonObject(workLogObject);
-                importLine.SetRange("WorkItem ID", jSONMethods.GetJsonValue('jiraWorklogId').AsText());
-                if importLine.FindFirst() then begin
-                    importLine."WorkItem Description" := CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen(importLine."WorkItem Description"));
-                    importLine.Modify();
-                end;
-            end;
-        end;
-
-    end;
-
-    local procedure initArguments(var RESTArguments: Record "TWE RESTWebServiceArguments" temporary; Method: Text; ProjMgtSystem: Enum "TWE Project Mgt. System"; UsePermToken: Boolean;
-                                                                                                                                      TimeTracking: Boolean)
+    local procedure initArguments(var RESTArguments: Record "TWE RESTWebServiceArguments" temporary; Method: Text; ProjMgtSystem: Enum "TWE Project Mgt. System"; UsePermToken: Boolean)
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
         restWebService: Codeunit "TWE RESTWebServiceCode";
     begin
-        RESTArguments.URL := getEndpoint(ProjMgtSystem, TimeTracking) + Method;
+        RESTArguments.URL := getEndpoint(ProjMgtSystem, UseExternalTimetracking) + Method;
         if UsePermToken then
-            if TimeTracking then
-                RESTArguments.UserName := CopyStr(getPermToken(ProjMgtSystem), 1, MaxStrLen(RESTArguments.UserName))
+            if UseExternalTimetracking then
+                RESTArguments.UserName := CopyStr(getPermToken(ProjMgtSystem, UseExternalTimetracking), 1, MaxStrLen(RESTArguments.UserName))
             else
                 case ProjMgtSystem of
                     ProjMgtSystem::YoutTrack:
-                        RESTArguments.UserName := CopyStr(getPermToken(ProjMgtSystem), 1, MaxStrLen(RESTArguments.UserName));
+                        RESTArguments.UserName := CopyStr(getPermToken(ProjMgtSystem, false), 1, MaxStrLen(RESTArguments.UserName));
                     else
                         if ProjMgtSystem <> ProjMgtSystem::" " then
-                            RESTArguments.UserName := CopyStr(getUserName(ProjMgtSystem) + ':' + getPermToken(ProjMgtSystem), 1, MaxStrLen(RESTArguments.UserName));
+                            RESTArguments.UserName := CopyStr(getUserName(ProjMgtSystem) + ':' + getPermToken(ProjMgtSystem, false), 1, MaxStrLen(RESTArguments.UserName));
                 end
         else begin
             //TODO TempoTimeSheets oAuth
@@ -430,15 +363,19 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         end;
     end;
 
-    local procedure getPermToken(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
+    local procedure getPermToken(ProjMgtSystem: Enum "TWE Project Mgt. System"; TimeTracking: Boolean): Text
     var
         oAuthApp: Record "TWE OAuth 2.0 Application";
     begin
         oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
         if oAuthApp.FindFirst() then
-            oAuthApp.TestField("TWE Proj. Inv. PermToken");
-
-        exit(oAuthApp."TWE Proj. Inv. PermToken");
+            if TimeTracking then begin
+                oAuthApp.TestField("TWE PI Timetracking PermToken");
+                exit(oAuthApp."TWE PI Timetracking PermToken");
+            end else begin
+                oAuthApp.TestField("TWE Proj. Inv. PermToken");
+                exit(oAuthApp."TWE Proj. Inv. PermToken");
+            end;
     end;
 
     local procedure getUserName(ProjMgtSystem: Enum "TWE Project Mgt. System"): Text
@@ -511,7 +448,10 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                     authText := StrSubstNo(strSubstBearerAuthorizationLbl, Parameters.UserName);
                 else
                     if ProjMgtSystem <> ProjMgtSystem::" " then
-                        authText := StrSubstNo(strSubstBasicAuthorizationLbl, base64Convert.ToBase64(Parameters.UserName));
+                        if UseExternalTimetracking then
+                            authText := StrSubstNo(strSubstBearerAuthorizationLbl, Parameters.UserName)
+                        else
+                            authText := StrSubstNo(strSubstBasicAuthorizationLbl, base64Convert.ToBase64(Parameters.UserName));
             end;
 
             Headers.Add('Authorization', authText);
