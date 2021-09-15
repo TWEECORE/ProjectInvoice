@@ -6,7 +6,10 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
     var
         ProjInvSetup: Record "TWE Proj. Inv. Setup";
         SalesSetup: Record "Sales & Receivables Setup";
+        Reportselections: Record "Report Selections";
+        ReportUsage: Enum "Report Selection Usage";
         NoSeriesMgt: Codeunit NoSeriesManagement;
+
 
     /// <summary>
     /// TransferImportedData.
@@ -49,6 +52,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     ticket."Ticket Name" := importLine."Ticket Name";
                     ticket."Created At" := importLine."Ticket Created at";
                     ticket."Created from" := importLine."Ticket Creator";
+                    ticket."Project Mgt. System" := importLine."Project Mgt. System";
                     ticket.Insert();
                 end;
 
@@ -125,7 +129,10 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         if projectHours.FindSet() then begin
             salesHeader.Init();
             salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
-            salesHeader."No." := NoSeriesMgt.GetNextNo(SalesSetup."Invoice Nos.", WorkDate(), true);
+            if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
+                salesHeader."No." := NoSeriesMgt.GetNextNo(ProjInvSetup."No. Series for Proj. Invoices", WorkDate(), true)
+            else
+                salesHeader."No." := NoSeriesMgt.GetNextNo(SalesSetup."Invoice Nos.", WorkDate(), true);
             salesHeader.Insert();
 
             salesHeader."Document Date" := Today;
@@ -210,6 +217,11 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         end else
             Message(noUnprocessedProjectHoursLbl, Project.Name);
 
+        projectHours.SetRange("Project ID", Project.ID);
+        projectHours.SetRange(Invoiced, false);
+
+        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
+                                                SalesHeader."Sell-to Customer No.", true);
         Message(invoicesCreatedLbl, Format(1));
     end;
 
@@ -234,13 +246,19 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             projectHours.SetRange(Invoiced, false);
             if projectHours.FindSet() then begin
                 salesHeader.Init();
-                salesHeader."Document Date" := Today;
                 salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
+                if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
+                    salesHeader."No." := NoSeriesMgt.GetNextNo(ProjInvSetup."No. Series for Proj. Invoices", WorkDate(), true)
+                else
+                    salesHeader."No." := NoSeriesMgt.GetNextNo(SalesSetup."Invoice Nos.", WorkDate(), true);
+                salesHeader.Insert();
+
+                salesHeader."Document Date" := Today;
                 salesHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
                 salesHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
                 salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
                 workDescriptionOutStream.Write(projectLbl + Project.Name);
-                salesHeader.Insert();
+                salesHeader.Modify();
                 LineNo := 0;
 
                 repeat
@@ -337,21 +355,29 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
     begin
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
+        FirstLine := true;
 
         if project.Get(ProjectHour."Project ID") then;
 
         counter := 0;
 
         salesHeader.Init();
-        salesHeader."Document Date" := Today;
+        if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
+            salesHeader."No." := NoSeriesMgt.GetNextNo(ProjInvSetup."No. Series for Proj. Invoices", WorkDate(), true)
+        else
+            salesHeader."No." := NoSeriesMgt.GetNextNo(SalesSetup."Invoice Nos.", WorkDate(), true);
         salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
+        salesHeader.Insert();
+
+        salesHeader."Document Date" := Today;
         salesHeader.Validate("Sell-to Customer No.", project."Related to Customer No.");
         salesHeader.Validate("Bill-to Customer No.", project."Related to Customer No.");
         salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
         workDescriptionOutStream.Write(projectLbl + project.Name);
-        salesHeader.Insert();
+        salesHeader.Modify();
         LineNo := 0;
 
+        if ProjectHour.FindSet() then;
         repeat
             if project."Summarize Times for Invoice" then
                 if FirstLine = true then begin
@@ -423,6 +449,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             end;
         until ProjectHour.Next() = 0;
 
+        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), ProjectHour, SalesHeader."No.",
+                                                SalesHeader."Sell-to Customer No.", true);
+
         Message(invoicesCreatedLbl, counter);
     end;
 
@@ -485,5 +514,33 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         noOfDays := DateValue - unixStartDate;
 
         exit(noOfDays * 86400);
+    end;
+
+    procedure DateToText(DateToConvert: Date) DateText: text
+    var
+        year: integer;
+        month: integer;
+        day: integer;
+        yearText: Text;
+        monthText: Text;
+        dayText: Text;
+    begin
+        year := DATE2DMY(DateToConvert, 3);
+        month := DATE2DMY(DateToConvert, 2);
+        day := DATE2DMY(DateToConvert, 1);
+
+        if day < 10 then
+            dayText := '0' + Format(day)
+        else
+            dayText := Format(day);
+
+        if month < 10 then
+            monthText := '0' + Format(month)
+        else
+            monthText := Format(month);
+
+        yearText := Format(year);
+
+        DateText := yearText + '-' + monthText + '-' + dayText;
     end;
 }

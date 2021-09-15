@@ -83,7 +83,7 @@ page 70704958 "TWE Proj. Inv. Project Card"
             {
                 part(RelatedHours; "TWE Proj. Inv. Hours Subpart")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
                     SubPageLink = "Project ID" = field(ID);
                 }
             }

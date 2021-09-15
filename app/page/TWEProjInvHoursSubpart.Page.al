@@ -3,7 +3,8 @@
 /// </summary>
 page 70704955 "TWE Proj. Inv. Hours Subpart"
 {
-    Caption = ' ';
+    Caption = 'Project Hours';
+    AutoSplitKey = true;
     PageType = ListPart;
     SourceTable = "TWE Proj. Inv. Project Hours";
     InsertAllowed = false;
@@ -63,16 +64,16 @@ page 70704955 "TWE Proj. Inv. Hours Subpart"
     {
         area(Processing)
         {
-            group(Invoice)
+            group("&Invoice")
             {
+                Caption = '&Invoice';
+                Image = Line;
                 action(InvoiceSelectedOpenHours)
                 {
                     ApplicationArea = All;
+                    Image = Line;
                     Caption = 'Invoice selected Project Hours';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    Image = CheckJournal;
+                    Ellipsis = true;
                     ToolTip = 'Creates an Invoice for the selected Project Hours';
 
                     trigger OnAction()

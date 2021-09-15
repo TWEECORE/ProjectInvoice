@@ -46,6 +46,12 @@ table 70704955 "TWE Proj. Inv. Ticket"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(25; "Project Mgt. System"; Enum "TWE Project Mgt. System")
+        {
+            Caption = 'Project Mgt. System';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys
@@ -80,5 +86,4 @@ table 70704955 "TWE Proj. Inv. Ticket"
     begin
 
     end;
-
 }

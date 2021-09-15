@@ -8,8 +8,6 @@ page 70704953 "TWE Proj. Inv. Import Lines"
     SourceTable = "TWE Proj. Inv. Import Line";
     InsertAllowed = false;
 
-    //TODO: Tooltips anpassen + Action Button Daten übernehmen
-
     layout
     {
         area(content)

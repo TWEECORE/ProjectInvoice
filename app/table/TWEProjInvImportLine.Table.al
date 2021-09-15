@@ -97,12 +97,6 @@ table 70704953 "TWE Proj. Inv. Import Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(50; "Internal Project ID"; Text[150])
-        {
-            Caption = 'Internal Project ID';
-            DataClassification = CustomerContent;
-            Editable = false;
-        }
     }
 
     keys
@@ -198,69 +192,66 @@ table 70704953 "TWE Proj. Inv. Import Line"
     /// PopulateFromJsonJIRA.
     /// </summary>
     /// <param name="jsonData">JsonObject.</param>
-    procedure PopulateFromJsonJIRA(jsonData: JsonObject; ProjMgtObject: Enum "TWE Proj. Inv. ProjMgt. Objects"; isTempoTimesheet: Boolean)
+    procedure PopulateFromJsonJIRA(jsonData: JsonObject; isTempoTimesheet: Boolean; isWorkLog: Boolean)
     var
         jSONMethods: Codeunit "TWE JSONMethods";
         processingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
         localJsonObject: JsonObject;
+        WorkLogIssueObject: JsonObject;
         helperJson: JsonObject;
         jToken: JsonToken;
     begin
         jsonMethods.SetJsonObject(jsonData);
-        case ProjMgtObject of
-            "TWE Proj. Inv. ProjMgt. Objects"::workItem:
-                if not isTempoTimesheet then begin
-                    "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('worklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
-                    "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('updatedTime').AsText());
-                    "Ticket No." := CopyStr(jSONMethods.GetJsonValue('issueID').AsText(), 1, MaxStrLen("Ticket No."));
-                    "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
-                    Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;
 
-                    jsonData.Get('author', jToken);
-                    if JToken.IsObject then begin
-                        localJsonObject := jToken.AsObject();
-                        JSONMethods.SetJsonObject(localJsonObject);
-                        Agent := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
-                    end;
-                end else begin
-                    "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('worklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
-                    "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('updatedTime').AsText());
-                    "Ticket No." := CopyStr(jSONMethods.GetJsonValue('issueID').AsText(), 1, MaxStrLen("Ticket No."));
-                    "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
-                    Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;
+        if isWorkLog then begin
+            Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;
 
-                    jsonData.Get('author', jToken);
-                    if JToken.IsObject then begin
-                        localJsonObject := jToken.AsObject();
-                        JSONMethods.SetJsonObject(localJsonObject);
-                        Agent := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
-                    end;
+            if not isTempoTimesheet then begin
+                "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("WorkItem ID"));
+                "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('started').AsText());
+                "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
+                "Ticket No." := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Ticket No."));
+            end else begin
+                "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('tempoWorklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
+                "WorkItem Created at" := jSONMethods.GetJsonValue('startDate').AsDate();
+                "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen("WorkItem Description")));
+
+                jsonData.Get('issue', jToken);
+                if JToken.IsObject then begin
+                    WorkLogIssueObject := jToken.AsObject();
+                    JSONMethods.SetJsonObject(WorkLogIssueObject);
+                    "Ticket No." := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Ticket No."));
                 end;
-            "TWE Proj. Inv. ProjMgt. Objects"::issue:
-                begin
+            end;
+
+            jsonData.Get('author', jToken);
+            if JToken.IsObject then begin
+                localJsonObject := jToken.AsObject();
+                JSONMethods.SetJsonObject(localJsonObject);
+                Agent := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
+            end;
+        end else begin
+            "Ticket No." := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Ticket No."));
+
+            jsonData.Get('fields', jToken);
+            if JToken.IsObject() then begin
+                localJsonObject := jToken.AsObject();
+
+                localJsonObject.Get('project', jToken);
+                if jToken.IsObject then begin
+                    helperJson := jToken.AsObject();
+                    jSONMethods.SetJsonObject(helperJson);
+                    "Project ID" := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Project ID"));
+                    "Project Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name")));
+                end;
+
+                localJsonObject.Get('issuetype', jToken);
+                if jToken.IsObject then begin
+                    helperJson := jToken.AsObject();
+                    jSONMethods.SetJsonObject(helperJson);
                     "Ticket Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen("Ticket Name")));
-
-                    localJsonObject.Get('attachement', jToken);
-                    if JToken.IsObject() then begin
-                        helperJson := jToken.AsObject();
-                        helperJson.Get('author', jToken);
-                        if jToken.IsObject() then begin
-                            helperJson := jToken.AsObject();
-                            JSONMethods.SetJsonObject(helperJson);
-                            "Ticket Creator" := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
-                            "Ticket Created at" := DT2Date(jSONMethods.GetJsonValue('created').AsDateTime());
-                        end
-                    end;
-
-                    localJsonObject.Get('project', jToken);
-                    if jToken.IsObject then begin
-                        helperJson := jToken.AsObject();
-                        jSONMethods.SetJsonObject(helperJson);
-                        "Internal Project ID" := CopyStr(jSONMethods.GetJsonValue('id').AsText(), 1, MaxStrLen("Internal Project ID"));
-                        "Project ID" := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Project ID"));
-                        "Project Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name")));
-                    end;
                 end;
+            end;
         end;
     end;
 
