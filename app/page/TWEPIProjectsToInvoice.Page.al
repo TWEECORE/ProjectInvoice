@@ -1,19 +1,24 @@
 /// <summary>
-/// Page TWE Proj. Inv. Project Card (ID 70704958).
+/// Page TWE Proj. Inv. Imports (ID 70704952).
 /// </summary>
-page 70704958 "TWE Proj. Inv. Project Card"
+page 70704952 "TWE PI Projects to Invoice"
 {
-
-    Caption = 'Proj. Inv. Project Card';
-    PageType = Card;
+    ApplicationArea = All;
+    Caption = 'Project Invoice Projects to Invoice';
+    PageType = List;
     SourceTable = "TWE Proj. Inv. Project";
+    UsageCategory = Lists;
     InsertAllowed = false;
+    ModifyAllowed = false;
+    SourceTableView = sorting(ID) order(ascending) where("All Hours invoiced" = filter(= false));
+    CardPageID = "TWE Proj. Inv. Project Card";
+    AdditionalSearchTerms = 'project,invoice,projects,tweecore';
 
     layout
     {
         area(content)
         {
-            group(General)
+            repeater(General)
             {
                 field(ID; Rec.ID)
                 {
@@ -50,24 +55,6 @@ page 70704958 "TWE Proj. Inv. Project Card"
                     ApplicationArea = All;
                     ToolTip = 'No. of object to be invoiced';
                 }
-                field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Defines whether all invoiced project times should be summarized';
-                }
-                field("Summarized Description"; rec."Summarized Description")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Defines summarized description';
-                }
-                field("Project Mgt. System"; rec."Project Mgt System")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the linked Project Mgt. System';
-                }
-            }
-            group(Invoicing)
-            {
                 field("Use Standard Hourly Rate"; rec."Use Standard Hourly Rate")
                 {
                     ApplicationArea = All;
@@ -78,43 +65,34 @@ page 70704958 "TWE Proj. Inv. Project Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the standard hourly rate';
                 }
-            }
-            group("Work Hours")
-            {
-                part(RelatedHours; "TWE Proj. Inv. Hours Subpart")
-                {
-                    ApplicationArea = All;
-                    SubPageLink = "Project ID" = field(ID);
-                }
+
             }
         }
     }
 
     actions
     {
-        area(Navigation)
+        area(Processing)
         {
-            group(Invoice)
+            action(GetHours)
             {
-                action(InvoiceAllOpenHours)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Invoice all Project Hours';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    Image = CheckJournal;
-                    ToolTip = 'Creates an Invoice for the current Project Hours';
+                ApplicationArea = All;
+                Caption = 'Import Project Hours';
+                ToolTip = 'Imports project hours from project management systems';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
 
-                    trigger OnAction()
-                    var
-                        projInvProcessingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
-                    begin
-                        projInvProcessingMgt.InvoiceProject(Rec);
-                    end;
-                }
+                trigger OnAction()
+                begin
+                    Report.Run(Report::"TWE Proj. Inv. Import");
+                end;
             }
         }
-
     }
+
+    trigger OnAfterGetRecord()
+    begin
+        rec.CalcFields(rec."Total Work Hours");
+    end;
 }

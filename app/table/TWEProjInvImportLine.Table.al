@@ -198,7 +198,7 @@ table 70704953 "TWE Proj. Inv. Import Line"
     /// PopulateFromJsonJIRA.
     /// </summary>
     /// <param name="jsonData">JsonObject.</param>
-    procedure PopulateFromJsonJIRA(jsonData: JsonObject; ProjMgtObject: Enum "TWE Proj. Inv. ProjMgt. Objects"; IsWorkItemList: Boolean)
+    procedure PopulateFromJsonJIRA(jsonData: JsonObject; ProjMgtObject: Enum "TWE Proj. Inv. ProjMgt. Objects"; isTempoTimesheet: Boolean)
     var
         jSONMethods: Codeunit "TWE JSONMethods";
         processingMgt: Codeunit "TWE Proj. Inv. Processing Mgt";
@@ -209,10 +209,22 @@ table 70704953 "TWE Proj. Inv. Import Line"
         jsonMethods.SetJsonObject(jsonData);
         case ProjMgtObject of
             "TWE Proj. Inv. ProjMgt. Objects"::workItem:
-                if IsWorkItemList then begin
+                if not isTempoTimesheet then begin
                     "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('worklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
                     "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('updatedTime').AsText());
+                    "Ticket No." := CopyStr(jSONMethods.GetJsonValue('issueID').AsText(), 1, MaxStrLen("Ticket No."));
+                    "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
+                    Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;
+
+                    jsonData.Get('author', jToken);
+                    if JToken.IsObject then begin
+                        localJsonObject := jToken.AsObject();
+                        JSONMethods.SetJsonObject(localJsonObject);
+                        Agent := CopyStr(processingMgt.convertUmlaute(jSONMethods.GetJsonValue('displayName').AsText()), 1, MaxStrLen(Agent));
+                    end;
                 end else begin
+                    "WorkItem ID" := CopyStr(jSONMethods.GetJsonValue('worklogId').AsText(), 1, MaxStrLen("WorkItem ID"));
+                    "WorkItem Created at" := processingMgt.getDateFromUnixTimeStamp(jSONMethods.GetJsonValue('updatedTime').AsText());
                     "Ticket No." := CopyStr(jSONMethods.GetJsonValue('issueID').AsText(), 1, MaxStrLen("Ticket No."));
                     "WorkItem Description" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('comment').AsText(), 1, MaxStrLen("WorkItem Description")));
                     Hours := jSONMethods.GetJsonValue('timeSpentSeconds').AsInteger() / 3600;

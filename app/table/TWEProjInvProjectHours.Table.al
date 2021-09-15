@@ -41,6 +41,7 @@ table 70704956 "TWE Proj. Inv. Project Hours"
         {
             DataClassification = CustomerContent;
             Caption = 'Hours';
+            Editable = false;
         }
         field(12; "Hours to Invoice"; Decimal)
         {
@@ -57,6 +58,13 @@ table 70704956 "TWE Proj. Inv. Project Hours"
         {
             DataClassification = CustomerContent;
             Caption = 'Invoiced';
+            Editable = false;
+        }
+        field(25; "Working Date"; Date)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Date';
+            Editable = false;
         }
     }
 

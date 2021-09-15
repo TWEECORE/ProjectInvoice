@@ -9,6 +9,9 @@ page 70704954 "TWE Proj. Inv. Projects"
     SourceTable = "TWE Proj. Inv. Project";
     UsageCategory = Lists;
     CardPageID = "TWE Proj. Inv. Project Card";
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    AdditionalSearchTerms = 'project,invoice,projects,tweecore';
 
     layout
     {
@@ -81,9 +84,23 @@ page 70704954 "TWE Proj. Inv. Projects"
 
                 trigger OnAction()
                 var
-                    ProjInvProcessingMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+                    ProjInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
                 begin
-                    ProjInvProcessingMgt.RequestAllProjects();
+                    ProjInvImportMgt.RequestAllProjects();
+                end;
+            }
+            action(GetHours)
+            {
+                ApplicationArea = All;
+                Caption = 'Import Project Hours';
+                ToolTip = 'Imports project hours from project management systems';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    Report.Run(Report::"TWE Proj. Inv. Import");
                 end;
             }
         }
@@ -91,26 +108,6 @@ page 70704954 "TWE Proj. Inv. Projects"
 
     trigger OnAfterGetRecord()
     begin
-        GetTotalHours();
+        rec.CalcFields(rec."Total Work Hours");
     end;
-
-    trigger OnOpenPage()
-    begin
-        rec.CalcFields("Total Work Hours");
-    end;
-
-    local procedure GetTotalHours()
-    var
-        ticket: Record "TWE Proj. Inv. Ticket";
-    begin
-        ticket.SetRange("Project ID", Rec.ID);
-        if ticket.FindSet() then begin
-            ticket.CalcFields("Total Hours");
-            rec."Total Work Hours" := ticket."Total Hours";
-            rec.Modify();
-        end;
-    end;
-
-
-
 }

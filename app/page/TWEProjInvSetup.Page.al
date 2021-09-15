@@ -8,6 +8,7 @@ page 70704950 "TWE Proj. Inv. Setup"
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "TWE Proj. Inv. Setup";
+    AdditionalSearchTerms = 'project,invoice,tweecore';
 
     layout
     {

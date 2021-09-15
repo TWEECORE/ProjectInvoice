@@ -14,11 +14,26 @@ tableextension 70704950 "TWE PI OAuth App. Extension" extends "TWE OAuth 2.0 App
         {
             Caption = 'Project Mgt. System';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "TWE Project Mgt. System" = "TWE Project Mgt. System"::"JIRA Tempo" then
+                    Validate("TWE PI Timetracking Endpoint", TWEGetTempoTimesheetEndpoint())
+                else
+                    if "TWE PI Timetracking Endpoint" <> '' then
+                        Validate("TWE PI Timetracking Endpoint", '');
+            end;
         }
         field(70704952; "TWE Proj. Inv. Endpoint"; Text[150])
         {
             Caption = 'Endpoint';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "TWE Proj. Inv. Endpoint".EndsWith('/') then
+                    "TWE Proj. Inv. Endpoint" := "TWE Proj. Inv. Endpoint".Remove("TWE Proj. Inv. Endpoint".LastIndexOf('/'));
+            end;
         }
         field(70704953; "TWE Use Permanent Token"; Boolean)
         {
@@ -39,6 +54,20 @@ tableextension 70704950 "TWE PI OAuth App. Extension" extends "TWE OAuth 2.0 App
         {
             Caption = 'Timetracking Endpoint';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "TWE PI Timetracking Endpoint".EndsWith('/') then
+                    "TWE PI Timetracking Endpoint" := "TWE PI Timetracking Endpoint".Remove("TWE PI Timetracking Endpoint".LastIndexOf('/'));
+            end;
         }
     }
+
+    local procedure TWEGetTempoTimesheetEndpoint(): Text
+    begin
+        exit(TempoTimeSheetEndpointLbl);
+    end;
+
+    var
+        TempoTimeSheetEndpointLbl: Label 'https://api.tempo.io';
 }
