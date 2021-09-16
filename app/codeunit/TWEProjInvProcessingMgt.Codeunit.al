@@ -396,6 +396,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine.Quantity := ProjectHour."Hours to Invoice";
                     salesLine.Modify();
 
+                    ProjectHour."Target Invoice" := salesLine."Document No.";
                     ProjectHour.Invoiced := true;
                     ProjectHour.Modify();
                     FirstLine := false;
@@ -403,6 +404,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine.Quantity += ProjectHour."Hours to Invoice";
                     salesLine.Modify();
 
+                    ProjectHour."Target Invoice" := salesLine."Document No.";
                     ProjectHour.Invoiced := true;
                     ProjectHour.Modify();
                 end
@@ -460,11 +462,14 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
     local procedure OnAfterInitFieldsFromRecRef(var DocumentAttachment: Record "Document Attachment"; var RecRef: RecordRef)
     var
         fRef: FieldRef;
+        docNo: Code[20];
     begin
         if recRef.Number = 70704956 then begin
             fRef := recRef.Field(21);
+            docNo := fRef.Value;
+            DocumentAttachment.Validate("Table ID", 36);
             DocumentAttachment.Validate("Document Type", Enum::"Attachment Document Type"::Invoice);
-            DocumentAttachment.Validate("No.", fRef.Value);
+            DocumentAttachment.Validate("No.", docNo);
         end;
     end;
 
