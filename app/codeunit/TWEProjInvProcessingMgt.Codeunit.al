@@ -113,6 +113,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
+        projHours: Record "TWE Proj. Inv. Project Hours" temporary;
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         FirstLine: Boolean;
@@ -215,13 +216,16 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     projectHours.Modify();
                 end;
 
+                projHours := projectHours;
+                projHours.Insert();
+
             until projectHours.Next() = 0;
             success := true;
-            projectHours.SetRange("Project ID", Project.ID);
-            projectHours.SetRange(Invoiced, false);
 
-            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
-                                                    SalesHeader."Sell-to Customer No.", true);
+            projHours.SetRange("Project ID", Project.ID);
+            projHours.FindSet();
+            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, SalesHeader."No.",
+                                                SalesHeader."Sell-to Customer No.", true);
             Message(invoicesCreatedLbl, Format(1));
         end else
             Message(noUnprocessedProjectHoursLbl, Project.Name);
@@ -232,6 +236,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
+        projHours: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         counter: integer;
@@ -243,6 +248,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
         counter := 0;
+        //TODO: need to recreate the attachment function, actually we would only create one attachment at the last Invoice over all times.
+
         repeat
             projectHours.SetRange("Project ID", Project.ID);
             projectHours.SetRange(Invoiced, false);
@@ -351,6 +358,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         project: Record "TWE Proj. Inv. Project";
+        projHours: Record "TWE Proj. Inv. Project Hours";
+        hoursFilter: Text;
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         counter: integer;
@@ -364,7 +373,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
         if project.Get(ProjectHour."Project ID") then;
 
-        counter := 0;
+        counter := 1;
 
         salesHeader.Init();
         if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
@@ -382,6 +391,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader.Modify();
         LineNo := 0;
 
+        projHours.Copy(ProjectHour);
         repeat
             if project."Summarize Times for Invoice" then
                 if FirstLine = true then begin
@@ -455,8 +465,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                 ProjectHour.Modify();
             end;
         until ProjectHour.Next() = 0;
-        
-        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), ProjectHour, SalesHeader."No.",
+
+        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, SalesHeader."No.",
                                                 SalesHeader."Sell-to Customer No.", true);
 
         Message(invoicesCreatedLbl, counter);
