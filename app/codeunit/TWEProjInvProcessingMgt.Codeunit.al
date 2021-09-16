@@ -377,7 +377,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader.Modify();
         LineNo := 0;
 
-        if ProjectHour.FindSet() then;
+        //if ProjectHour.FindSet() then;
         repeat
             if project."Summarize Times for Invoice" then
                 if FirstLine = true then begin
@@ -444,6 +444,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine."Unit Price" := project."Standard Hourly Rate";
                 salesLine.Modify();
 
+                ProjectHour."Target Invoice" := salesLine."Document No.";
                 ProjectHour.Invoiced := true;
                 ProjectHour.Modify();
             end;
@@ -453,6 +454,18 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                                                 SalesHeader."Sell-to Customer No.", true);
 
         Message(invoicesCreatedLbl, counter);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnAfterInitFieldsFromRecRef', '', true, true)]
+    local procedure OnAfterInitFieldsFromRecRef(var DocumentAttachment: Record "Document Attachment"; var RecRef: RecordRef)
+    var
+        fRef: FieldRef;
+    begin
+        if recRef.Number = 70704956 then begin
+            fRef := recRef.Field(21);
+            DocumentAttachment.Validate("Document Type", Enum::"Attachment Document Type"::Invoice);
+            DocumentAttachment.Validate("No.", fRef.Value);
+        end;
     end;
 
     procedure convertUmlaute(String: Text[150]) ConvertedString: text[150]

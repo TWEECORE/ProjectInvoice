@@ -193,6 +193,12 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         success := false;
         FirstLine := false;
 
+        if WorkItemToken.IsArray then
+            workItemArray := WorkItemToken.AsArray()
+        else
+            workItemObject := WorkItemToken.AsObject();
+
+
         case ProjMgtSystem of
             ProjMgtSystem::YoutTrack:
                 foreach jToken in WorkitemArray do begin

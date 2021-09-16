@@ -243,6 +243,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Project ID - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2241950490 - Field 2444602444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Taget Invoice</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Target Invoice - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2241950490 - Field 3821670947 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Ticket ID</source>
           <note from="Developer" annotates="general" priority="2"></note>

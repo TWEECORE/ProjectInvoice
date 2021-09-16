@@ -14,6 +14,7 @@ codeunit 70704950 "TWE Proj. Inv. Install"
     local procedure initData()
     var
         ProjInvSetup: Record "TWE Proj. Inv. Setup";
+        reportSelections: Record "Report Selections";
         BaseMgt: Codeunit "TWE Base Mgt";
         upgradeTag: Codeunit "Upgrade Tag";
         myAppInfo: ModuleInfo;
@@ -23,6 +24,14 @@ codeunit 70704950 "TWE Proj. Inv. Install"
         if myAppInfo.DataVersion = Version.Create(0, 0, 0, 0) then begin
             ProjInvSetup.GetSetup();
             BaseMgt.InstallApp("TWE Apps"::"Project Invoice", Format(myAppInfo.AppVersion));
+
+            reportSelections.Init();
+            reportSelections.Usage := reportSelections.Usage::"TWE PI Project Hours";
+            reportSelections.Sequence := '1';
+            reportSelections."Report ID" := 70704951;
+            reportSelections."Report Caption" := 'Project Invoice Service Report';
+            reportSelections."Email Body Layout Type" := reportSelections."Email Body Layout Type"::"Custom Report Layout";
+            reportSelections.Insert();
         end else
             handleReInstall();
 
