@@ -158,6 +158,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         if Project."Use Standard Hourly Rate" then
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
 
+                        projectHours."Target Invoice" := salesLine."Document No.";
                         salesLine.Quantity := projectHours."Hours to Invoice";
                         salesLine.Modify();
 
@@ -168,6 +169,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         salesLine.Quantity += projectHours."Hours to Invoice";
                         salesLine.Modify();
 
+                        projectHours."Target Invoice" := salesLine."Document No.";
                         projectHours.Invoiced := true;
                         projectHours.Modify();
                     end
@@ -208,6 +210,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         salesLine."Unit Price" := Project."Standard Hourly Rate";
                     salesLine.Modify();
 
+                    projectHours."Target Invoice" := salesLine."Document No.";
                     projectHours.Invoiced := true;
                     projectHours.Modify();
                 end;
@@ -279,6 +282,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine.Quantity := projectHours."Hours to Invoice";
                             salesLine.Modify();
 
+                            projectHours."Target Invoice" := salesLine."Document No.";
                             projectHours.Invoiced := true;
                             projectHours.Modify();
                             FirstLine := false;
@@ -286,6 +290,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine.Quantity += projectHours."Hours to Invoice";
                             salesLine.Modify();
 
+                            projectHours."Target Invoice" := salesLine."Document No.";
                             projectHours.Invoiced := true;
                             projectHours.Modify();
                         end
@@ -327,6 +332,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
                         salesLine.Modify();
 
+                        projectHours."Target Invoice" := salesLine."Document No.";
                         projectHours.Invoiced := true;
                         projectHours.Modify();
                     end;
