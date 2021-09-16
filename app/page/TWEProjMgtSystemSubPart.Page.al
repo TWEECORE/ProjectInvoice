@@ -6,7 +6,7 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
     Caption = ' ';
     PageType = ListPart;
     SourceTable = "TWE OAuth 2.0 Application";
-    SourceTableView = sorting(code) order(ascending) where("TWE Is Project Mgt. System" = filter(= true));
+    //SourceTableView = sorting(code) order(ascending) where("TWE Is Project Mgt. System" = filter(= true));
 
     layout
     {

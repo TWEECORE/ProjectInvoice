@@ -206,10 +206,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                     createImportLinesYoutrack(workItemObject, FromDate, ToDate);
                 end;
             ProjMgtSystem::"JIRA Tempo":
-                begin
-                    workItemObject := WorkItemToken.AsObject();
-                    createImportLinesJIRA(workItemObject, ProjMgtSystem);
-                end;
+                createImportLinesJIRA(workItemObject, ProjMgtSystem);
         end;
         success := true;
     end;
@@ -252,7 +249,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         tempImportLine.Modify();
 
         if ((FromDate = 0D) and (ToDate = 0D)) or ((FromDate = 0D) and (tempImportLine."WorkItem Created at" <= ToDate)) or
-            ((tempImportLine."WorkItem Created at" <= FromDate) and (tempImportLine."WorkItem Created at" <= ToDate)) then
+            ((tempImportLine."WorkItem Created at" >= FromDate) and (tempImportLine."WorkItem Created at" <= ToDate)) then
             if not projectHours.IsEmpty() then begin
                 projectHours.SetRange(ID, tempImportLine."WorkItem ID");
                 if projectHours.IsEmpty() then begin

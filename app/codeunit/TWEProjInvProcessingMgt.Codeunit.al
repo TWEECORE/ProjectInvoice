@@ -217,15 +217,14 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
             until projectHours.Next() = 0;
             success := true;
+            projectHours.SetRange("Project ID", Project.ID);
+            projectHours.SetRange(Invoiced, false);
+
+            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
+                                                    SalesHeader."Sell-to Customer No.", true);
+            Message(invoicesCreatedLbl, Format(1));
         end else
             Message(noUnprocessedProjectHoursLbl, Project.Name);
-
-        projectHours.SetRange("Project ID", Project.ID);
-        projectHours.SetRange(Invoiced, false);
-
-        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
-                                                SalesHeader."Sell-to Customer No.", true);
-        Message(invoicesCreatedLbl, Format(1));
     end;
 
     procedure InvoiceMultipleProjects(Project: Record "TWE Proj. Inv. Project") success: Boolean
@@ -347,7 +346,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         Message(invoicesCreatedLbl, counter);
     end;
 
-    procedure InvoiceProjectHours(ProjectHour: Record "TWE Proj. Inv. Project Hours")
+    procedure InvoiceProjectHours(var ProjectHour: Record "TWE Proj. Inv. Project Hours")
     var
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
@@ -383,7 +382,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader.Modify();
         LineNo := 0;
 
-        //if ProjectHour.FindSet() then;
         repeat
             if project."Summarize Times for Invoice" then
                 if FirstLine = true then begin
@@ -457,7 +455,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                 ProjectHour.Modify();
             end;
         until ProjectHour.Next() = 0;
-
+        
         ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), ProjectHour, SalesHeader."No.",
                                                 SalesHeader."Sell-to Customer No.", true);
 
