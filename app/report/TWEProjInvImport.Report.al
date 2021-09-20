@@ -7,17 +7,7 @@ report 70704950 "TWE Proj. Inv. Import"
 
     dataset
     {
-        dataitem(DataItemName; Integer)
-        {
-            DataItemTableView = where(Number = Const(1));
-            trigger OnPostDataItem()
-            var
-                projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
 
-            begin
-                projInvImportMgt.GetProjectDataByDate(FromDate, toDate);
-            end;
-        }
     }
 
     requestpage
@@ -56,4 +46,18 @@ report 70704950 "TWE Proj. Inv. Import"
         FromDate: Date;
         ToDate: Date;
         ToDateBeforeFromDateLbl: Label 'The date value in field "to date" can not be a date before the "from date"';
+
+    trigger OnInitReport()
+    var
+    begin
+        FromDate := CalcDate('<-CM>', Today);
+        ToDate := Today;
+    end;
+
+    trigger OnPreReport()
+    var
+        projInvImportMgt: Codeunit "TWE Proj. Inv. Import Mgt";
+    begin
+        projInvImportMgt.GetProjectDataByDate(FromDate, toDate);
+    end;
 }

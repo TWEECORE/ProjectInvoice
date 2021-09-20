@@ -322,10 +322,13 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
 
         if tempImportLine.FindSet() then
             repeat
-                jToken := requestData(ProjMgtSystem, JiraIssuesArgumentsLbl + tempImportLine."Ticket No.", true, '', true);
+                projectHour.SetRange(ID, tempImportLine."WorkItem ID");
+                if projectHour.IsEmpty() then begin
+                    JToken := requestData(ProjMgtSystem, JiraIssuesArgumentsLbl + tempImportLine."Ticket No.", true, '', true);
 
-                tempImportLine.PopulateFromJsonJIRA(jToken.AsObject(), true, false);
-                tempImportLine.Modify();
+                    tempImportLine.PopulateFromJsonJIRA(jToken.AsObject(), true, false);
+                    tempImportLine.Modify();
+                end;
             until tempImportLine.Next() = 0;
 
         tempImportLine.Reset();

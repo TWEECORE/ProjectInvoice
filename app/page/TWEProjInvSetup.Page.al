@@ -26,6 +26,11 @@ page 70704950 "TWE Proj. Inv. Setup"
                     ApplicationArea = All;
                     ToolTip = 'No. of object to be invoiced';
                 }
+                field("No. Series for PI Invoices"; rec."No. Series for Proj. Invoices")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Defines No. Series for Project Invoice Invoices';
+                }
                 field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
                 {
                     ApplicationArea = All;

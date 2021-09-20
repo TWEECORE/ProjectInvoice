@@ -618,6 +618,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control No. - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 1480190087 - Control 142094552 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Defines No. Series for Project Invoice Invoices</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj Inv. Wizard - Control No. Series for PI Invoices - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 1480190087 - Control 1528559585 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Defines whether all invoiced project times should be summarized</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1017,6 +1022,11 @@
           <source>No. of object to be invoiced</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Setup - Control No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3209778417 - Control 142094552 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Defines No. Series for Project Invoice Invoices</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Setup - Control No. Series for PI Invoices - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3209778417 - Control 1528559585 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Defines whether all invoiced project times should be summarized</source>
