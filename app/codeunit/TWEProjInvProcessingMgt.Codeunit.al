@@ -113,7 +113,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
-        projHours: Record "TWE Proj. Inv. Project Hours" temporary;
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         FirstLine: Boolean;
@@ -154,6 +153,29 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         salesLine."Line No." := LineNo;
                         salesLine.Insert();
 
+                        if Project."Invoice Type" = Project."Invoice Type"::" " then begin
+                            ProjInvSetup.Get();
+                            case ProjInvSetup."Invoice Type" of
+                                "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                    salesLine.Type := salesLine.Type::"G/L Account";
+                                "TWE Proj. Inv. Invoice Type"::Item:
+                                    salesLine.Type := salesLine.Type::Item;
+                                "TWE Proj. Inv. Invoice Type"::Resource:
+                                    salesLine.Type := salesLine.Type::Resource;
+                            end;
+                            salesLine.Validate("No.", ProjInvSetup."No.")
+                        end else begin
+                            case Project."Invoice Type" of
+                                "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                    salesLine.Type := salesLine.Type::"G/L Account";
+                                "TWE Proj. Inv. Invoice Type"::Item:
+                                    salesLine.Type := salesLine.Type::Item;
+                                "TWE Proj. Inv. Invoice Type"::Resource:
+                                    salesLine.Type := salesLine.Type::Resource;
+                            end;
+                            salesLine.Validate("No.", Project."No.");
+                        end;
+
                         salesLine.Description := Project."Summarized Description";
 
                         if Project."Use Standard Hourly Rate" then
@@ -163,16 +185,11 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         salesLine.Quantity := projectHours."Hours to Invoice";
                         salesLine.Modify();
 
-                        projectHours.Invoiced := true;
                         projectHours.Modify();
                         FirstLine := false;
                     end else begin
-                        salesLine.Quantity += projectHours."Hours to Invoice";
+                        salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                         salesLine.Modify();
-
-                        projectHours."Target Invoice" := salesLine."Document No.";
-                        projectHours.Invoiced := true;
-                        projectHours.Modify();
                     end
                 else begin
                     salesLine.Init();
@@ -191,7 +208,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             "TWE Proj. Inv. Invoice Type"::Resource:
                                 salesLine.Type := salesLine.Type::Resource;
                         end;
-                        salesLine."No." := ProjInvSetup."No.";
+                        salesLine.Validate("No.", ProjInvSetup."No.");
                     end else begin
                         case Project."Invoice Type" of
                             "TWE Proj. Inv. Invoice Type"::"G/L Account":
@@ -201,32 +218,31 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             "TWE Proj. Inv. Invoice Type"::Resource:
                                 salesLine.Type := salesLine.Type::Resource;
                         end;
-                        salesLine."No." := Project."No.";
+                        salesLine.Validate("No.", Project."No.");
                     end;
 
                     salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                     salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
-                    salesLine.Quantity := projectHours."Hours to Invoice";
+                    salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                     if Project."Use Standard Hourly Rate" then
                         salesLine."Unit Price" := Project."Standard Hourly Rate";
                     salesLine.Modify();
 
                     projectHours."Target Invoice" := salesLine."Document No.";
-                    projectHours.Invoiced := true;
                     projectHours.Modify();
                 end;
-
-                projHours := projectHours;
-                projHours.Insert();
-
             until projectHours.Next() = 0;
-            success := true;
 
-            projHours.SetRange("Project ID", Project.ID);
-            projHours.FindSet();
-            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, SalesHeader."No.",
+            Project."All Hours invoiced" := true;
+            Project.Modify();
+
+            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
                                                 SalesHeader."Sell-to Customer No.", true);
+
+            projectHours.ModifyAll(Invoiced, true);
+
             Message(invoicesCreatedLbl, Format(1));
+            success := true;
         end else
             Message(noUnprocessedProjectHoursLbl, Project.Name);
     end;
@@ -236,7 +252,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
-        projHours: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         counter: integer;
@@ -280,6 +295,29 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine."Line No." := LineNo;
                             salesLine.Insert();
 
+                            if Project."Invoice Type" = Project."Invoice Type"::" " then begin
+                                ProjInvSetup.Get();
+                                case ProjInvSetup."Invoice Type" of
+                                    "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                        salesLine.Type := salesLine.Type::"G/L Account";
+                                    "TWE Proj. Inv. Invoice Type"::Item:
+                                        salesLine.Type := salesLine.Type::Item;
+                                    "TWE Proj. Inv. Invoice Type"::Resource:
+                                        salesLine.Type := salesLine.Type::Resource;
+                                end;
+                                salesLine.Validate("No.", ProjInvSetup."No.");
+                            end else begin
+                                case Project."Invoice Type" of
+                                    "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                        salesLine.Type := salesLine.Type::"G/L Account";
+                                    "TWE Proj. Inv. Invoice Type"::Item:
+                                        salesLine.Type := salesLine.Type::Item;
+                                    "TWE Proj. Inv. Invoice Type"::Resource:
+                                        salesLine.Type := salesLine.Type::Resource;
+                                end;
+                                salesLine.Validate("No.", Project."No.");
+                            end;
+
                             salesLine.Description := Project."Summarized Description";
 
                             if Project."Use Standard Hourly Rate" then
@@ -289,16 +327,11 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine.Modify();
 
                             projectHours."Target Invoice" := salesLine."Document No.";
-                            projectHours.Invoiced := true;
                             projectHours.Modify();
                             FirstLine := false;
                         end else begin
-                            salesLine.Quantity += projectHours."Hours to Invoice";
+                            salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                             salesLine.Modify();
-
-                            projectHours."Target Invoice" := salesLine."Document No.";
-                            projectHours.Invoiced := true;
-                            projectHours.Modify();
                         end
                     else begin
                         salesLine.Init();
@@ -318,7 +351,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                                 "TWE Proj. Inv. Invoice Type"::Resource:
                                     salesLine.Type := salesLine.Type::Resource;
                             end;
-                            salesLine."No." := ProjInvSetup."No.";
+                            salesLine.Validate("No.", ProjInvSetup."No.");
                         end else begin
                             case Project."Invoice Type" of
                                 "TWE Proj. Inv. Invoice Type"::"G/L Account":
@@ -328,23 +361,28 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                                 "TWE Proj. Inv. Invoice Type"::Resource:
                                     salesLine.Type := salesLine.Type::Resource;
                             end;
-                            salesLine."No." := Project."No.";
+                            salesLine.Validate("No.", Project."No.");
                         end;
 
                         salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                         salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
-                        salesLine.Amount := projectHours."Hours to Invoice";
+                        salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                         if Project."Use Standard Hourly Rate" then
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
                         salesLine.Modify();
 
                         projectHours."Target Invoice" := salesLine."Document No.";
-                        projectHours.Invoiced := true;
                         projectHours.Modify();
                     end;
                 until projectHours.Next() = 0;
 
+                ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
+                                                SalesHeader."Sell-to Customer No.", true);
+
                 counter += 1;
+                projectHours.ModifyAll(Invoiced, true);
+                Project."All Hours invoiced" := true;
+                Project.Modify();
                 success := true;
             end else
                 Message(noUnprocessedProjectHoursLbl, Project.Name);
@@ -358,8 +396,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         project: Record "TWE Proj. Inv. Project";
-        projHours: Record "TWE Proj. Inv. Project Hours";
-        hoursFilter: Text;
         workDescriptionOutStream: OutStream;
         LineNo: Integer;
         counter: integer;
@@ -391,7 +427,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader.Modify();
         LineNo := 0;
 
-        projHours.Copy(ProjectHour);
         repeat
             if project."Summarize Times for Invoice" then
                 if FirstLine = true then begin
@@ -402,6 +437,29 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine."Line No." := LineNo;
                     salesLine.Insert();
 
+                    if Project."Invoice Type" = Project."Invoice Type"::" " then begin
+                        ProjInvSetup.Get();
+                        case ProjInvSetup."Invoice Type" of
+                            "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                salesLine.Type := salesLine.Type::"G/L Account";
+                            "TWE Proj. Inv. Invoice Type"::Item:
+                                salesLine.Type := salesLine.Type::Item;
+                            "TWE Proj. Inv. Invoice Type"::Resource:
+                                salesLine.Type := salesLine.Type::Resource;
+                        end;
+                        salesLine.Validate("No.", ProjInvSetup."No.");
+                    end else begin
+                        case Project."Invoice Type" of
+                            "TWE Proj. Inv. Invoice Type"::"G/L Account":
+                                salesLine.Type := salesLine.Type::"G/L Account";
+                            "TWE Proj. Inv. Invoice Type"::Item:
+                                salesLine.Type := salesLine.Type::Item;
+                            "TWE Proj. Inv. Invoice Type"::Resource:
+                                salesLine.Type := salesLine.Type::Resource;
+                        end;
+                        salesLine.Validate("No.", Project."No.");
+                    end;
+
                     salesLine.Description := project."Summarized Description";
 
                     if Project."Use Standard Hourly Rate" then
@@ -411,16 +469,11 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine.Modify();
 
                     ProjectHour."Target Invoice" := salesLine."Document No.";
-                    ProjectHour.Invoiced := true;
                     ProjectHour.Modify();
                     FirstLine := false;
                 end else begin
-                    salesLine.Quantity += ProjectHour."Hours to Invoice";
+                    salesLine.Validate(Quantity, ProjectHour."Hours to Invoice");
                     salesLine.Modify();
-
-                    ProjectHour."Target Invoice" := salesLine."Document No.";
-                    ProjectHour.Invoiced := true;
-                    ProjectHour.Modify();
                 end
             else begin
                 salesLine.Init();
@@ -440,7 +493,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         "TWE Proj. Inv. Invoice Type"::Resource:
                             salesLine.Type := salesLine.Type::Resource;
                     end;
-                    salesLine."No." := ProjInvSetup."No.";
+                    salesLine.Validate("No.", ProjInvSetup."No.");
                 end else begin
                     case Project."Invoice Type" of
                         "TWE Proj. Inv. Invoice Type"::"G/L Account":
@@ -450,24 +503,33 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         "TWE Proj. Inv. Invoice Type"::Resource:
                             salesLine.Type := salesLine.Type::Resource;
                     end;
-                    salesLine."No." := Project."No.";
+                    salesLine.Validate("No.", Project."No.");
                 end;
 
                 salesLine.Description := CopyStr(ProjectHour."Work Description", 1, MaxStrLen(salesLine.Description));
                 salesLine."Description 2" := CopyStr(ProjectHour."Ticket ID" + ' ' + ProjectHour."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
-                salesLine.Amount := ProjectHour."Hours to Invoice";
+                salesLine.Validate(Quantity, ProjectHour."Hours to Invoice");
                 if project."Use Standard Hourly Rate" then
                     salesLine."Unit Price" := project."Standard Hourly Rate";
                 salesLine.Modify();
 
                 ProjectHour."Target Invoice" := salesLine."Document No.";
-                ProjectHour.Invoiced := true;
                 ProjectHour.Modify();
             end;
         until ProjectHour.Next() = 0;
 
-        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, SalesHeader."No.",
+        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), ProjectHour, SalesHeader."No.",
                                                 SalesHeader."Sell-to Customer No.", true);
+        ProjectHour.ModifyAll(Invoiced, true);
+
+        ProjectHour.Reset();
+        ProjectHour.SetRange("Project ID", project.ID);
+        ProjectHour.SetRange(Invoiced, false);
+
+        if ProjectHour.IsEmpty() then begin
+            project."All Hours invoiced" := true;
+            project.Modify();
+        end;
 
         Message(invoicesCreatedLbl, counter);
     end;

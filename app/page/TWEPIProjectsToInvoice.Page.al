@@ -95,4 +95,22 @@ page 70704952 "TWE PI Projects to Invoice"
     begin
         rec.CalcFields(rec."Total Work Hours");
     end;
+
+    trigger OnOpenPage()
+    var
+        project: Record "TWE Proj. Inv. Project";
+        projectHour: Record "TWE Proj. Inv. Project Hours";
+    begin
+        if project.FindSet() then
+            repeat
+                projectHour.Reset();
+                projectHour.SetRange("Project ID", project.ID);
+                projectHour.SetRange(Invoiced, false);
+                if projectHour.IsEmpty() then
+                    project."All Hours invoiced" := true
+                else
+                    project."All Hours invoiced" := false;
+                project.Modify();
+            until project.Next() = 0;
+    end;
 }
