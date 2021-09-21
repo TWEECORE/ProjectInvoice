@@ -1,8 +1,7 @@
 {
     "name": "AppSource Base",
     "memoryLimit": "6G",
-    "installApps": "output/output/Apps/", <-- wenn BaseApp = Dependency 
-    "installApps": "", <-- Pipelines anpassen, wenn BaseApp <> Dependency
+    "installApps": "output/output/Apps/",
     "appFolders": "app",
     "testFolders": "test",
     "installTestRunner": true,
