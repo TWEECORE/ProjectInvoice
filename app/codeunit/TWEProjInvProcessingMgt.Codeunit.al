@@ -226,7 +226,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                         salesLine.Validate("No.", Project."No.");
                     end;
 
-                    salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
+                    if projectHours."Work Description" <> '' then
+                        salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                     salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
                     salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                     if Project."Use Standard Hourly Rate" then
@@ -241,7 +242,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             Project."All Hours invoiced" := true;
             Project.Modify();
 
-            if Project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+            if Project."Summarize Times for Invoice" or ProjInvSetup."Always Attach Service Report" then
                 ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHoursSave, salesHeader."No.",
                                                     salesHeader."Sell-to Customer No.", true);
 
@@ -373,7 +374,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine.Validate("No.", Project."No.");
                         end;
 
-                        salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
+                        if projectHours."Work Description" <> '' then
+                            salesLine.Description := CopyStr(projectHours."Work Description", 1, MaxStrLen(salesLine.Description));
                         salesLine."Description 2" := CopyStr(projectHours."Ticket ID" + ' ' + projectHours."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
                         salesLine.Validate(Quantity, projectHours."Hours to Invoice");
                         if Project."Use Standard Hourly Rate" then
@@ -385,7 +387,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     end;
                 until projectHours.Next() = 0;
 
-                if Project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+                if Project."Summarize Times for Invoice" or ProjInvSetup."Always Attach Service Report" then
                     ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHoursSave, salesHeader."No.",
                                                     salesHeader."Sell-to Customer No.", true);
 
@@ -520,7 +522,8 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     salesLine.Validate("No.", Project."No.");
                 end;
 
-                salesLine.Description := CopyStr(ProjectHour."Work Description", 1, MaxStrLen(salesLine.Description));
+                if ProjectHour."Work Description" <> '' then
+                    salesLine.Description := CopyStr(ProjectHour."Work Description", 1, MaxStrLen(salesLine.Description));
                 salesLine."Description 2" := CopyStr(ProjectHour."Ticket ID" + ' ' + ProjectHour."Ticket Name", 1, MaxStrLen(salesLine."Description 2"));
                 salesLine.Validate(Quantity, ProjectHour."Hours to Invoice");
                 if project."Use Standard Hourly Rate" then
@@ -532,7 +535,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             end;
         until ProjectHour.Next() = 0;
 
-        if project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+        if project."Summarize Times for Invoice" or ProjInvSetup."Always Attach Service Report" then
             ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, salesHeader."No.",
                                                     salesHeader."Sell-to Customer No.", true);
         ProjectHour.ModifyAll(Invoiced, true);

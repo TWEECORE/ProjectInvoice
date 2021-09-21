@@ -54,7 +54,7 @@ table 70704950 "TWE Proj. Inv. Setup"
             Caption = 'Summarize Description';
             DataClassification = CustomerContent;
         }
-        field(40; "Alway Attach Service Report"; Boolean)
+        field(40; "Always Attach Service Report"; Boolean)
         {
             Caption = 'Always attach Service Report';
             DataClassification = CustomerContent;
