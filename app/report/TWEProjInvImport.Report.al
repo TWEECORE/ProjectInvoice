@@ -45,7 +45,7 @@ report 70704950 "TWE Proj. Inv. Import"
     var
         FromDate: Date;
         ToDate: Date;
-        ToDateBeforeFromDateLbl: Label 'The date value in field "to date" can not be a date before the "from date"';
+        ToDateBeforeFromDateLbl: Label 'The date value in field "to date" can not be a date before the "from date".';
 
     trigger OnInitReport()
     var

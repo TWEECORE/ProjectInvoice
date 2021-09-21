@@ -141,7 +141,7 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
             importline.SetRange("Import Header ID", GlobalImportHeader."Entry No.");
             if importLine.IsEmpty() then begin
                 GlobalImportHeader.Delete();
-                if projMgtApiDataFound then
+                if not projMgtApiDataFound then
                     Error(noProjMgtApiDataErr)
                 else
                     Error(NoDataToImportLbl);

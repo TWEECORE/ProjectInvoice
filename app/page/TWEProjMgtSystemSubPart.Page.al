@@ -16,17 +16,17 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
             {
                 field("Code"; Rec."Code")
                 {
-                    ToolTip = 'Specifies the value of the Code field';
+                    ToolTip = 'Specifies the API Application Code.';
                     ApplicationArea = All;
                 }
                 field(Description; Rec.Description)
                 {
-                    ToolTip = 'Specifies the value of the Description field';
+                    ToolTip = 'Specifies the description of the API Application.';
                     ApplicationArea = All;
                 }
                 field("TWE Project Mgt. System"; Rec."TWE Project Mgt. System")
                 {
-                    ToolTip = 'Specifies the value of the Project Mgt. System field';
+                    ToolTip = 'Specifies the type of Project Mgt. System.';
                     ApplicationArea = All;
 
                     trigger OnValidate()
@@ -39,27 +39,27 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
                 }
                 field("TWE Proj. Inv. Endpoint"; Rec."TWE Proj. Inv. Endpoint")
                 {
-                    ToolTip = 'Specifies the value of the Endpoint field';
+                    ToolTip = 'Specifies the Endpoint URI for the API Application.';
                     ApplicationArea = All;
                 }
                 field("TWE Timetracking Endpoint"; rec."TWE PI Timetracking Endpoint")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the endpoint used to gain timetracking data from a Project Mgt. System';
+                    ToolTip = 'Specifies the Endpoint URI for a different timetracking application, if needed.';
                 }
                 field("User Name"; Rec."User Name")
                 {
-                    ToolTip = 'Specifies the value of the User Name field';
+                    ToolTip = 'Specifies the name of the user registered for the API Application.';
                     ApplicationArea = All;
                 }
                 field(Password; Rec.Password)
                 {
-                    ToolTip = 'Specifies the value of the Password field';
+                    ToolTip = 'Should contain the users password.';
                     ApplicationArea = All;
                 }
                 field("TWE Proj. Inv. PermToken"; Rec."TWE Proj. Inv. PermToken")
                 {
-                    ToolTip = 'Specifies the value of the Permanent Token field';
+                    ToolTip = 'Specifies the value of the Permanent Token generated at the API applications side.';
                     ApplicationArea = All;
                     ExtendedDatatype = Masked;
 
@@ -74,7 +74,7 @@ page 70704957 "TWE Proj. Mgt. System SubPart"
                 field("TWE PI TimeTrackingPermToken"; rec."TWE PI Timetracking PermToken")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the registered timetracking permanent token';
+                    ToolTip = 'Specifies the value of the registered timetracking permanent token generated at the Timetracking applications side.';
                     ExtendedDatatype = Masked;
                 }
             }

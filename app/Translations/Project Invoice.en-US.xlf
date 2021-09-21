@@ -993,10 +993,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Related to Customer No. - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Page 143103090 - Control 3636804552 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the standard hourly rate used for invoicing this projects working hours.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Standard Hourly Rate - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 143103090 - Control 3772724932 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the total amount of all working hours done during this project.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Total Work Hours - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 143103090 - Control 3741490977 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies if a standard hourly rate should be used for invoicing.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TWE Proj. Inv. Projects - Control Use Standard Hourly Rate - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 143103090 - Action 2196483591 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Imports specified project hours from project management systems.</source>

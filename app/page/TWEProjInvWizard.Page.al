@@ -36,7 +36,7 @@ page 70704951 "TWE Proj Inv. Wizard"
             {
                 Visible = (CurrentStep = 0);
                 Caption = 'Welcome to your Project Invoice Setup.';
-                InstructionalText = 'You have successfully installed the Project Invoice extension. Please follow the instruction on the next pages ....';
+                InstructionalText = 'You have successfully installed the Project Invoice extension. Please follow the instructions on the next pages ....';
             }
 
             group(Step1)
@@ -48,7 +48,7 @@ page 70704951 "TWE Proj Inv. Wizard"
                     field("Invoice Type"; rec."Invoice Type")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Invoice Type that should be used to invoice project hours';
+                        ToolTip = 'Object Type that should be used to invoice project hours';
                     }
                     field("No."; rec."No.")
                     {
@@ -58,7 +58,7 @@ page 70704951 "TWE Proj Inv. Wizard"
                     field("No. Series for PI Invoices"; rec."No. Series for Proj. Invoices")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Defines No. Series for Project Invoice Invoices';
+                        ToolTip = 'Defines No. Series for PI Invoices';
                     }
                     field("Summarize Times for Invoice"; rec."Summarize Times for Invoice")
                     {
@@ -69,6 +69,11 @@ page 70704951 "TWE Proj Inv. Wizard"
                     {
                         ApplicationArea = All;
                         ToolTip = 'Defines summarized description';
+                    }
+                    field("Always attach Service Report"; rec."Alway Attach Service Report")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Determines whether each PI Invoice receives a service report as an attachment';
                     }
                 }
             }

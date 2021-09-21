@@ -7,8 +7,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         ProjInvSetup: Record "TWE Proj. Inv. Setup";
         SalesSetup: Record "Sales & Receivables Setup";
         Reportselections: Record "Report Selections";
-        ReportUsage: Enum "Report Selection Usage";
         NoSeriesMgt: Codeunit NoSeriesManagement;
+        ReportUsage: Enum "Report Selection Usage";
+
 
 
     /// <summary>
@@ -113,7 +114,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
+        projHoursSave: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
+        quantity: Decimal;
         LineNo: Integer;
         FirstLine: Boolean;
         projectLbl: Label 'Project: ';
@@ -127,6 +130,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         projectHours.SetRange("Project ID", Project.ID);
         projectHours.SetRange(Invoiced, false);
         if projectHours.FindSet() then begin
+            projHoursSave.Copy(projectHours);
             salesHeader.Init();
             salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
             if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
@@ -182,13 +186,14 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             salesLine."Unit Price" := Project."Standard Hourly Rate";
 
                         projectHours."Target Invoice" := salesLine."Document No.";
-                        salesLine.Quantity := projectHours."Hours to Invoice";
+                        quantity := projectHours."Hours to Invoice";
                         salesLine.Modify();
 
                         projectHours.Modify();
                         FirstLine := false;
                     end else begin
-                        salesLine.Validate(Quantity, projectHours."Hours to Invoice");
+                        quantity += projectHours."Hours to Invoice";
+                        salesLine.Validate(Quantity, quantity);
                         salesLine.Modify();
                     end
                 else begin
@@ -236,8 +241,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             Project."All Hours invoiced" := true;
             Project.Modify();
 
-            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
-                                                SalesHeader."Sell-to Customer No.", true);
+            if Project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+                ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHoursSave, salesHeader."No.",
+                                                    salesHeader."Sell-to Customer No.", true);
 
             projectHours.ModifyAll(Invoiced, true);
 
@@ -252,7 +258,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         projectHours: Record "TWE Proj. Inv. Project Hours";
+        projHoursSave: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
+        quantity: Decimal;
         LineNo: Integer;
         counter: integer;
         FirstLine: Boolean;
@@ -263,12 +271,12 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
         counter := 0;
-        //TODO: need to recreate the attachment function, actually we would only create one attachment at the last Invoice over all times.
 
         repeat
             projectHours.SetRange("Project ID", Project.ID);
             projectHours.SetRange(Invoiced, false);
             if projectHours.FindSet() then begin
+                projHoursSave.Copy(projectHours);
                 salesHeader.Init();
                 salesHeader."Document Type" := salesHeader."Document Type"::Invoice;
                 if ProjInvSetup."No. Series for Proj. Invoices" <> '' then
@@ -323,14 +331,15 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                             if Project."Use Standard Hourly Rate" then
                                 salesLine."Unit Price" := Project."Standard Hourly Rate";
 
-                            salesLine.Quantity := projectHours."Hours to Invoice";
+                            quantity := projectHours."Hours to Invoice";
                             salesLine.Modify();
 
                             projectHours."Target Invoice" := salesLine."Document No.";
                             projectHours.Modify();
                             FirstLine := false;
                         end else begin
-                            salesLine.Validate(Quantity, projectHours."Hours to Invoice");
+                            quantity += projectHours."Hours to Invoice";
+                            salesLine.Validate(Quantity, quantity);
                             salesLine.Modify();
                         end
                     else begin
@@ -376,8 +385,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     end;
                 until projectHours.Next() = 0;
 
-                ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projectHours, SalesHeader."No.",
-                                                SalesHeader."Sell-to Customer No.", true);
+                if Project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+                    ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHoursSave, salesHeader."No.",
+                                                    salesHeader."Sell-to Customer No.", true);
 
                 counter += 1;
                 projectHours.ModifyAll(Invoiced, true);
@@ -396,7 +406,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader: Record "Sales Header";
         salesLine: Record "Sales Line";
         project: Record "TWE Proj. Inv. Project";
+        projHours: Record "TWE Proj. Inv. Project Hours";
         workDescriptionOutStream: OutStream;
+        quantity: Decimal;
         LineNo: Integer;
         counter: integer;
         FirstLine: Boolean;
@@ -406,6 +418,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
         FirstLine := true;
+        projHours.Copy(ProjectHour);
 
         if project.Get(ProjectHour."Project ID") then;
 
@@ -465,14 +478,15 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                     if Project."Use Standard Hourly Rate" then
                         salesLine."Unit Price" := project."Standard Hourly Rate";
 
-                    salesLine.Quantity := ProjectHour."Hours to Invoice";
+                    quantity := ProjectHour."Hours to Invoice";
                     salesLine.Modify();
 
                     ProjectHour."Target Invoice" := salesLine."Document No.";
                     ProjectHour.Modify();
                     FirstLine := false;
                 end else begin
-                    salesLine.Validate(Quantity, ProjectHour."Hours to Invoice");
+                    quantity += ProjectHour."Hours to Invoice";
+                    salesLine.Validate(Quantity, quantity);
                     salesLine.Modify();
                 end
             else begin
@@ -518,8 +532,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             end;
         until ProjectHour.Next() = 0;
 
-        ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), ProjectHour, SalesHeader."No.",
-                                                SalesHeader."Sell-to Customer No.", true);
+        if project."Summarize Times for Invoice" or ProjInvSetup."Alway Attach Service Report" then
+            ReportSelections.SaveAsDocumentAttachment(ReportUsage::"TWE PI Project Hours".AsInteger(), projHours, salesHeader."No.",
+                                                    salesHeader."Sell-to Customer No.", true);
         ProjectHour.ModifyAll(Invoiced, true);
 
         ProjectHour.Reset();

@@ -31,7 +31,7 @@ table 70704952 "TWE Proj. Inv. Import Header"
         }
         field(7; "Total Hours"; Decimal)
         {
-            Caption = 'Total Hourse';
+            Caption = 'Total Hours';
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = sum("TWE Proj. Inv. Import Line".Hours where("Import Header ID" = field("Entry No.")));

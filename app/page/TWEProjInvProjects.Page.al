@@ -21,50 +21,44 @@ page 70704954 "TWE Proj. Inv. Projects"
             {
                 field(ID; Rec.ID)
                 {
-                    ToolTip = 'Specifies the value of the ID field';
+                    ToolTip = 'Specifies the ID of this project.';
                     ApplicationArea = All;
                 }
                 field(Name; Rec.Name)
                 {
-                    ToolTip = 'Specifies the value of the Name field';
+                    ToolTip = 'Specifies the project name.';
                     ApplicationArea = All;
                 }
                 field("Related to Customer No."; Rec."Related to Customer No.")
                 {
-                    ToolTip = 'Specifies the value of the Related to Customer No. field';
+                    ToolTip = 'Specifies the customer no. related to this project.';
                     ApplicationArea = All;
                 }
                 field("Related to Customer Name"; Rec."Related to Customer Name")
                 {
-                    ToolTip = 'Specifies the value of the Related to Customer Name field';
+                    ToolTip = 'Specifies the customer name related to this project.';
                     ApplicationArea = All;
                 }
                 field("Total Work Hours"; Rec."Total Work Hours")
                 {
-                    ToolTip = 'Specifies the value of the Total Work Hours field';
+                    ToolTip = 'Specifies the total amount of all working hours done during this project.';
                     ApplicationArea = All;
                 }
                 field("Invoice Type"; rec."Invoice Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Invoice Type that should be used to invoice project hours';
+                    ToolTip = 'Object Type that should be used to invoice project hours';
                 }
                 field("No."; rec."No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'No. of object to be invoiced';
+                    ToolTip = 'No. of object to be invoiced.';
                 }
-                field("Use Standard Hourly Rate"; rec."Use Standard Hourly Rate")
+                field("Project Mgt. System"; rec."Project Mgt System")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies if a standard hourly rate should be used for invoicing';
+                    ToolTip = 'Specifies the linked Project Mgt. System.';
                 }
-                field("Standard Hourly Rate"; rec."Standard Hourly Rate")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the standard hourly rate';
-                }
-
             }
         }
     }
@@ -77,7 +71,7 @@ page 70704954 "TWE Proj. Inv. Projects"
             {
                 ApplicationArea = All;
                 Caption = 'Import Projects';
-                ToolTip = 'Imports projects from project management systems';
+                ToolTip = 'Imports all projects from project management systems.';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
@@ -93,7 +87,7 @@ page 70704954 "TWE Proj. Inv. Projects"
             {
                 ApplicationArea = All;
                 Caption = 'Import Project Hours';
-                ToolTip = 'Imports project hours from project management systems';
+                ToolTip = 'Imports specified project hours from project management systems.';
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
