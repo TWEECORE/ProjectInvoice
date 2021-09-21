@@ -70,7 +70,7 @@ page 70704951 "TWE Proj Inv. Wizard"
                         ApplicationArea = All;
                         ToolTip = 'Defines summarized description';
                     }
-                    field("Always attach Service Report"; rec."Alway Attach Service Report")
+                    field("Always attach Service Report"; rec."Always Attach Service Report")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Determines whether each PI Invoice receives a service report as an attachment';
