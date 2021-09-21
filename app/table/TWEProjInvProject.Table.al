@@ -92,7 +92,7 @@ table 70704954 "TWE Proj. Inv. Project"
         }
         field(60; "All Hours invoiced"; Boolean)
         {
-            Caption = 'All Hourse Invoiced';
+            Caption = 'All Hours Invoiced';
             DataClassification = CustomerContent;
         }
     }

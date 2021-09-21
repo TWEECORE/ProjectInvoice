@@ -5,3 +5,4 @@ app/.alpackages/
 test/.alpackages/
 app/.snapshots/
 test/.snapshots/
+*.app

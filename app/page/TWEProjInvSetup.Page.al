@@ -19,7 +19,7 @@ page 70704950 "TWE Proj. Inv. Setup"
                 field("Invoice Type"; rec."Invoice Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Invoice Type that should be used to invoice project hours';
+                    ToolTip = 'Object Type that should be used to invoice project hours';
                 }
                 field("No."; rec."No.")
                 {
@@ -40,6 +40,11 @@ page 70704950 "TWE Proj. Inv. Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Defines summarized description';
+                }
+                field("Always attach Service Report"; rec."Alway Attach Service Report")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Determines whether each PI Invoice receives a service report as an attachment';
                 }
             }
         }

@@ -54,6 +54,11 @@ table 70704950 "TWE Proj. Inv. Setup"
             Caption = 'Summarize Description';
             DataClassification = CustomerContent;
         }
+        field(40; "Alway Attach Service Report"; Boolean)
+        {
+            Caption = 'Always attach Service Report';
+            DataClassification = CustomerContent;
+        }
         field(100; "No. Series for Proj. Invoices"; Code[20])
         {
             Caption = 'No. Series for Project Invoices';
