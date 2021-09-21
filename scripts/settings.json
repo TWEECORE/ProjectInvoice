@@ -3,7 +3,6 @@
     "memoryLimit": "6G",
     "installApps": "output/output/Apps/",
     "appFolders": "app",
-    "testFolders": "test",
     "installTestRunner": true,
     "installTestFramework": true,
     "installTestLibraries": false,

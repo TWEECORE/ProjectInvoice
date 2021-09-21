@@ -63,7 +63,7 @@ table 70704956 "TWE Proj. Inv. Project Hours"
         field(21; "Target Invoice"; Code[20])
         {
             DataClassification = CustomerContent;
-            Caption = 'Taget Invoice';
+            Caption = 'Target Invoice';
             Editable = false;
         }
         field(25; "Working Date"; Date)

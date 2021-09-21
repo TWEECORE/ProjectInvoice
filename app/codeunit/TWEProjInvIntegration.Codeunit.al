@@ -4,9 +4,9 @@
 codeunit 70704951 "TWE Proj Inv. Integration"
 {
     var
-        SetupWizardTxt: Label 'Text displayed on Assisted Setup page';
-        BaseAppSetupTitleLbl: Label 'Project Invoice';
-        BaseAppSetupShortTitleLbl: Label 'ShortTitke of the Setup';
+        SetupWizardTxt: Label 'Set up your Project Invoice Application';
+        PISetupTitleLbl: Label 'Project Invoice Setup';
+        PISetupShortTitleLbl: Label 'Project Invoice Setup';
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Guided Experience", 'OnRegisterAssistedSetup', '', false, false)]
     local procedure Initialize()
@@ -18,7 +18,7 @@ codeunit 70704951 "TWE Proj Inv. Integration"
         if not GuidedExperience.Exists("Guided Experience Type"::"Assisted Setup", ObjectType::Page, Page::"TWE Proj Inv. Wizard") then begin
             CurrentGlobalLanguage := GlobalLanguage;
             GuidedExperience.InsertAssistedSetup(
-                BaseAppSetupTitleLbl, BaseAppSetupShortTitleLbl,
+                PISetupTitleLbl, PISetupShortTitleLbl,
                 SetupWizardTxt, 5,
                 ObjectType::Page, Page::"TWE Proj Inv. Wizard",
                 "Assisted Setup Group"::Extensions, '', "Video Category"::Uncategorized, '');
