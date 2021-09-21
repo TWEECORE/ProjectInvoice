@@ -22,13 +22,13 @@ report 70704950 "TWE Proj. Inv. Import"
                     {
                         ApplicationArea = All;
                         Caption = 'From date';
-                        ToolTip = 'Select a start date for the SumUp import';
+                        ToolTip = 'Select a start date for the Project Hour import';
                     }
                     field(EndDate; ToDate)
                     {
                         ApplicationArea = All;
                         Caption = 'To date';
-                        ToolTip = 'Select a start date for the SumUp import';
+                        ToolTip = 'Select a start date for the Project Hour import';
 
                         trigger OnValidate()
                         begin

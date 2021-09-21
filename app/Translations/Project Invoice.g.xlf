@@ -244,7 +244,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Project ID - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2241950490 - Field 2444602444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Taget Invoice</source>
+          <source>Target Invoice</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Project Hours - Field Target Invoice - Property Caption</note>
         </trans-unit>
@@ -273,10 +273,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 3209778417 - Field 7781406 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Table 3209778417 - Field 266407691 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Always attach Service Report</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field Alway Attach Service Report - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Setup - Field Always Attach Service Report - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3209778417 - Field 3641927271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Id</source>
@@ -353,18 +353,18 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TWE Proj. Inv. Ticket - Field Total Hours - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3211143068 - NamedType 909036821" size-unit="char" translate="yes" xml:space="preserve">
-          <source>ShortTitke of the Setup</source>
+        <trans-unit id="Codeunit 3211143068 - NamedType 1276893370" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType BaseAppSetupShortTitleLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType PISetupShortTitleLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3211143068 - NamedType 1112355795" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project Invoice</source>
+        <trans-unit id="Codeunit 3211143068 - NamedType 3296526624" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType BaseAppSetupTitleLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType PISetupTitleLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3211143068 - NamedType 2722763728" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Text displayed on Assisted Setup page</source>
+          <source>Set up your Project Invoice Application</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType SetupWizardTxt</note>
         </trans-unit>
@@ -1114,7 +1114,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - NamedType ToDateBeforeFromDateLbl</note>
         </trans-unit>
         <trans-unit id="Report 2054080455 - Control 2571230917 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Select a start date for the SumUp import</source>
+          <source>Select a start date for the Project Hour import</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control BeginDate - Property ToolTip</note>
         </trans-unit>
@@ -1124,7 +1124,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control BeginDate - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 2054080455 - Control 845401037 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Select a start date for the SumUp import</source>
+          <source>Select a start date for the Project Hour import</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control EndDate - Property ToolTip</note>
         </trans-unit>
