@@ -32,8 +32,8 @@ jobs:
         inputs:
           buildType: "specific"
           project: "59147b6e-02af-4f8c-8bb9-01d6b9c65756"
-          pipeline: "20"
-          buildVersionToDownload: "latest"
+          buildId: "500"
+          buildVersionToDownload: "specific"
           downloadType: "single"
           itemPattern: "output/Apps/HEPTACOM GmbH_TWEECORE Base_*.app"
           downloadPath: "."
