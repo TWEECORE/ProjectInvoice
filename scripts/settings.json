@@ -1,7 +1,7 @@
 {
     "name": "AppSource Base",
     "memoryLimit": "6G",
-    "installApps": "output/output/Apps/",
+    "installApps": "output/Apps/",
     "appFolders": "app",
     "installTestRunner": true,
     "installTestFramework": true,
