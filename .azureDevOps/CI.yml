@@ -1,77 +1,74 @@
 trigger:
- - master
- 
+  - master
+
 pool:
   name: BCServer
   demands:
-   - agent.name -equals BC
-
+    - agent.name -equals BC
 
 variables:
-- group: BuildVariables
+  - group: BuildVariables
 
 jobs:
-- job: Build
-  timeoutInMinutes: 300
-  variables:
-    build.clean: all
-    platform: x64
-    version: 'ci'
-    appVersion: '2.0'
-    appBuild: $(Build.BuildID)
-    appRevision: 0
-    skipComponentGovernanceDetection: True
+  - job: Build
+    timeoutInMinutes: 300
+    variables:
+      build.clean: all
+      platform: x64
+      version: "ci"
+      appVersion: "2.0"
+      appBuild: $(Build.BuildID)
+      appRevision: 0
+      skipComponentGovernanceDetection: True
 
-  steps:
-  - task: PowerShell@2
-    displayName: 'Set BuildNumber'
-    inputs:
-      targetType: inline
-      script: 'Write-Host "##vso[build.updatebuildnumber]$(appVersion).$(appBuild).$(appRevision)"'
+    steps:
+      - task: PowerShell@2
+        displayName: "Set BuildNumber"
+        inputs:
+          targetType: inline
+          script: 'Write-Host "##vso[build.updatebuildnumber]$(appVersion).$(appBuild).$(appRevision)"'
 
-  - task: DownloadBuildArtifacts@1
-    inputs:
-      buildType: 'specific'
-      project: '59147b6e-02af-4f8c-8bb9-01d6b9c65756'
-      pipeline: '17'
-      buildVersionToDownload: 'latest'
-      downloadType: 'specific'
-      itemPattern: 'output/Apps/HEPTACOM GmbH_TWEECORE Base_*.app'
-      downloadPath: '.'
-      
-  - task: PowerShell@2
-    displayName: 'Run Pipeline'
-    env:
-      InsiderSasToken: '$(InsiderSasToken)'
-      LicenseFile: '$(LicenseFile)'
-      CodeSignCertPfxFile: '$(CodeSignCertPfxFile)'
-      CodeSignCertPfxPassword: '$(CodeSignCertPfxPassword)'
-    inputs:
-      targetType: filePath
-      filePath: 'scripts\DevOps-Pipeline.ps1'
-      arguments: '-environment "AzureDevOps" -version "$(version)" -appBuild $(appBuild) -appRevision $(appRevision)'
-      failOnStderr: true
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: "current"
+          project: "59147b6e-02af-4f8c-8bb9-01d6b9c65756"
+          buildVersionToDownload: "latest"
+          downloadType: "single"
+          itemPattern: "output/Apps/HEPTACOM GmbH_TWEECORE Base_*.app"
+          downloadPath: "."
 
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    condition: and(succeeded(),ne(variables['TestResults'],''))
-    inputs:
-      testResultsFormat: JUnit
-      testResultsFiles: '$(testResults)'
-      failTaskOnFailedTests: false
+      - task: PowerShell@2
+        displayName: "Run Pipeline"
+        env:
+          InsiderSasToken: "$(InsiderSasToken)"
+          LicenseFile: "$(LicenseFile)"
+          CodeSignCertPfxFile: "$(CodeSignCertPfxFile)"
+          CodeSignCertPfxPassword: "$(CodeSignCertPfxPassword)"
+        inputs:
+          targetType: filePath
+          filePath: 'scripts\DevOps-Pipeline.ps1'
+          arguments: '-environment "AzureDevOps" -version "$(version)" -appBuild $(appBuild) -appRevision $(appRevision)'
+          failOnStderr: true
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifacts'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: output
+      - task: PublishTestResults@2
+        displayName: "Publish Test Results"
+        condition: and(succeeded(),ne(variables['TestResults'],''))
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: "$(testResults)"
+          failTaskOnFailedTests: false
 
-  - task: PowerShell@2
-    displayName: 'Cleanup'
-    condition: always()
-    inputs:
-      targetType: filePath
-      filePath: 'scripts\Cleanup.ps1'
-      arguments: '-environment "AzureDevOps"'
-      failOnStderr: false
+      - task: PublishBuildArtifacts@1
+        displayName: "Publish Artifacts"
+        inputs:
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+          ArtifactName: output
 
+      - task: PowerShell@2
+        displayName: "Cleanup"
+        condition: always()
+        inputs:
+          targetType: filePath
+          filePath: 'scripts\Cleanup.ps1'
+          arguments: '-environment "AzureDevOps"'
+          failOnStderr: false
