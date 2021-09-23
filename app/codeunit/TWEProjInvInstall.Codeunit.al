@@ -25,13 +25,15 @@ codeunit 70704950 "TWE Proj. Inv. Install"
             ProjInvSetup.GetSetup();
             BaseMgt.InstallApp("TWE Apps"::"Project Invoice", Format(myAppInfo.AppVersion));
 
-            reportSelections.Init();
-            reportSelections.Usage := reportSelections.Usage::"TWE PI Project Hours";
-            reportSelections.Sequence := '1';
-            reportSelections."Report ID" := 70704951;
-            reportSelections."Report Caption" := 'Project Invoice Service Report';
-            reportSelections."Email Body Layout Type" := reportSelections."Email Body Layout Type"::"Custom Report Layout";
-            reportSelections.Insert();
+            if not reportSelections.Get(reportSelections.Usage::"TWE PI Project Hours", 1) then begin
+                reportSelections.Init();
+                reportSelections.Usage := reportSelections.Usage::"TWE PI Project Hours";
+                reportSelections.Sequence := '1';
+                reportSelections."Report ID" := 70704951;
+                reportSelections."Report Caption" := 'Project Invoice Service Report';
+                reportSelections."Email Body Layout Type" := reportSelections."Email Body Layout Type"::"Custom Report Layout";
+                reportSelections.Insert();
+            end;
         end else
             handleReInstall();
 

@@ -28,7 +28,7 @@ report 70704950 "TWE Proj. Inv. Import"
                     {
                         ApplicationArea = All;
                         Caption = 'To date';
-                        ToolTip = 'Select a start date for the Project Hour import';
+                        ToolTip = 'Select a end date for the Project Hour import';
 
                         trigger OnValidate()
                         begin

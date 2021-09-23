@@ -236,6 +236,8 @@ table 70704953 "TWE Proj. Inv. Import Line"
             jsonData.Get('fields', jToken);
             if JToken.IsObject() then begin
                 localJsonObject := jToken.AsObject();
+                jSONMethods.SetJsonObject(localJsonObject);
+                "Ticket Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('summary').AsText(), 1, MaxStrLen("Ticket Name")));
 
                 localJsonObject.Get('project', jToken);
                 if jToken.IsObject then begin
@@ -243,13 +245,6 @@ table 70704953 "TWE Proj. Inv. Import Line"
                     jSONMethods.SetJsonObject(helperJson);
                     "Project ID" := CopyStr(jSONMethods.GetJsonValue('key').AsText(), 1, MaxStrLen("Project ID"));
                     "Project Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('name').AsText(), 1, MaxStrLen("Project Name")));
-                end;
-
-                localJsonObject.Get('issuetype', jToken);
-                if jToken.IsObject then begin
-                    helperJson := jToken.AsObject();
-                    jSONMethods.SetJsonObject(helperJson);
-                    "Ticket Name" := processingMgt.convertUmlaute(CopyStr(jSONMethods.GetJsonValue('description').AsText(), 1, MaxStrLen("Ticket Name")));
                 end;
             end;
         end;
