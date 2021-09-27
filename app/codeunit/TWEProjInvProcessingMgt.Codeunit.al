@@ -9,6 +9,9 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         Reportselections: Record "Report Selections";
         NoSeriesMgt: Codeunit NoSeriesManagement;
         ReportUsage: Enum "Report Selection Usage";
+        ProjectLbl: Label 'Project: ';
+        NoUnprocessedProjectHoursLbl: Label 'There were no unprocessed work hours found for project %1', Comment = '%1=Project Name';
+        InvoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
 
 
 
@@ -119,9 +122,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         quantity: Decimal;
         LineNo: Integer;
         FirstLine: Boolean;
-        projectLbl: Label 'Project: ';
-        noUnprocessedProjectHoursLbl: Label 'There were no unprocessed work hours found for project %1', Comment = '%1=Project Name';
-        invoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
     begin
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
@@ -143,7 +143,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             salesHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
             salesHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
             salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
-            workDescriptionOutStream.Write(projectLbl + Project.Name);
+            workDescriptionOutStream.Write(ProjectLbl + Project.Name);
             salesHeader.Modify();
             LineNo := 0;
 
@@ -248,10 +248,10 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
             projectHours.ModifyAll(Invoiced, true);
 
-            Message(invoicesCreatedLbl, Format(1));
+            Message(InvoicesCreatedLbl, Format(1));
             success := true;
         end else
-            Message(noUnprocessedProjectHoursLbl, Project.Name);
+            Message(NoUnprocessedProjectHoursLbl, Project.Name);
     end;
 
     procedure InvoiceMultipleProjects(Project: Record "TWE Proj. Inv. Project") success: Boolean
@@ -265,9 +265,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         LineNo: Integer;
         counter: integer;
         FirstLine: Boolean;
-        projectLbl: Label 'Project: ';
-        noUnprocessedProjectHoursLbl: Label 'There were no unprocessed work hours found for project %1', Comment = '%1=Project Name';
-        invoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
     begin
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
@@ -290,7 +287,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                 salesHeader.Validate("Sell-to Customer No.", Project."Related to Customer No.");
                 salesHeader.Validate("Bill-to Customer No.", Project."Related to Customer No.");
                 salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
-                workDescriptionOutStream.Write(projectLbl + Project.Name);
+                workDescriptionOutStream.Write(ProjectLbl + Project.Name);
                 salesHeader.Modify();
                 LineNo := 0;
 
@@ -397,10 +394,10 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
                 Project.Modify();
                 success := true;
             end else
-                Message(noUnprocessedProjectHoursLbl, Project.Name);
+                Message(NoUnprocessedProjectHoursLbl, Project.Name);
         until Project.Next() = 0;
 
-        Message(invoicesCreatedLbl, counter);
+        Message(InvoicesCreatedLbl, counter);
     end;
 
     procedure InvoiceProjectHours(var ProjectHour: Record "TWE Proj. Inv. Project Hours")
@@ -414,8 +411,6 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         LineNo: Integer;
         counter: integer;
         FirstLine: Boolean;
-        projectLbl: Label 'Project: ';
-        invoicesCreatedLbl: Label '%1 invoices created', Comment = '%1=NAmount of Invoices';
     begin
         ProjInvSetup.GetSetup();
         SalesSetup.Get();
@@ -438,7 +433,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         salesHeader.Validate("Sell-to Customer No.", project."Related to Customer No.");
         salesHeader.Validate("Bill-to Customer No.", project."Related to Customer No.");
         salesHeader."Work Description".CreateOutStream(workDescriptionOutStream);
-        workDescriptionOutStream.Write(projectLbl + project.Name);
+        workDescriptionOutStream.Write(ProjectLbl + project.Name);
         salesHeader.Modify();
         LineNo := 0;
 
@@ -549,7 +544,7 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
             project.Modify();
         end;
 
-        Message(invoicesCreatedLbl, counter);
+        Message(InvoicesCreatedLbl, counter);
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnAfterInitFieldsFromRecRef', '', true, true)]
@@ -569,13 +564,13 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
     procedure convertUmlaute(String: Text[150]) ConvertedString: text[150]
     var
-        littleAELbl: Label 'Žñ';
-        bigAELbl: Label 'Žä';
-        littleUELbl: Label 'Ž‰';
-        bigUELbl: Label 'Ž£';
-        littleOELbl: Label 'ŽÂ';
-        bigOELbl: Label 'Žû';
-        sZLbl: Label 'Žƒ';
+        littleAELbl: Label 'Žñ', Locked = true;
+        bigAELbl: Label 'Žä', Locked = true;
+        littleUELbl: Label 'Ž‰', Locked = true;
+        bigUELbl: Label 'Ž£', Locked = true;
+        littleOELbl: Label 'ŽÂ', Locked = true;
+        bigOELbl: Label 'Žû', Locked = true;
+        sZLbl: Label 'Žƒ', Locked = true;
     begin
         ConvertedString := String;
 
@@ -654,5 +649,21 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
         yearText := Format(year);
 
         DateText := yearText + '-' + monthText + '-' + dayText;
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Report Selection - Sales", 'OnInitUsageFilterOnElseCase', '', true, true)]
+    local procedure AddProjInvReportUsageOnInitUsageFilter(ReportUsage: Enum "Report Selection Usage"; var ReportUsage2: Enum "Report Selection Usage Sales")
+    begin
+        case ReportUsage of
+            "Report Selection Usage"::"TWE PI Project Hours":
+                ReportUsage2 := ReportUsage2::"TWE PI Service Report";
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Report Selection - Sales", 'OnSetUsageFilterOnAfterSetFiltersByReportUsage', '', true, true)]
+    local procedure AddProjInvReportUsageOnSetUsageFilter(var Rec: Record "Report Selections"; ReportUsage2: Option)
+    begin
+        if ReportUsage2 = 70704950 then
+            Rec.SetRange(Usage, "Report Selection Usage"::"TWE PI Project Hours");
     end;
 }

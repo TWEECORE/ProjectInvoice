@@ -10,17 +10,17 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         ToDate: Date;
         UseExternalTimetracking: Boolean;
         FirstLine: Boolean;
-        YoutrackWorkitemArgumentsLbl: Label '/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000';
-        YoutrackProjectArgumentsLbl: Label '/youtrack/api/admin/projects?fields=$type,shortName,name&$skip=0&$top=10000';
-        TempoWorkLogArgumentsLbl: Label '/core/3/worklogs';
-        JiraIssuesArgumentsLbl: Label '/rest/api/2/issue/';
-        JiraProjectArgumentsLbl: Label '/rest/api/2/project';
+        YoutrackWorkitemArgumentsLbl: Label '/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&$skip=0&$top=10000', Locked = true;
+        YoutrackProjectArgumentsLbl: Label '/youtrack/api/admin/projects?fields=$type,shortName,name&$skip=0&$top=10000', Locked = true;
+        TempoWorkLogArgumentsLbl: Label '/core/3/worklogs', Locked = true;
+        JiraIssuesArgumentsLbl: Label '/rest/api/2/issue/', Locked = true;
+        JiraProjectArgumentsLbl: Label '/rest/api/2/project', Locked = true;
         ErrDataReceiveFailedLbl: Label 'Could not receive data.';
         MsgNoProjectDataFoundLbl: Label 'No new project data available.';
         NoDataToImportLbl: Label 'There is no new project data to import';
         noProjMgtApiDataErr: Label 'Did not found any Project Management API Data. Please execute the Project Invoice Assisted Setup.';
-        QueryLbl: Label '?';
-        ConnectorLbl: Label '&';
+        QueryLbl: Label '?', Locked = true;
+        ConnectorLbl: Label '&', Locked = true;
 
     /// <summary>
     /// GetProjectDataByDate.
@@ -93,9 +93,9 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
         importItemToken: JsonToken;
         RequestInformation: Text;
         projMgtApiDataFound: Boolean;
-        fromLbl: Label 'from=';
-        toLbl: Label 'to=';
-        limitLbl: label 'limit=1000';
+        fromLbl: Label 'from=', Locked = true;
+        toLbl: Label 'to=', Locked = true;
+        limitLbl: label 'limit=1000', Locked = true;
     begin
         success := false;
         projMgtApiDataFound := false;

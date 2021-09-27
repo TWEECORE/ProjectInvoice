@@ -3,9 +3,5 @@
 /// </summary>
 enumextension 70704950 "TWE PI Report Selection Usage" extends "Report Selection Usage"
 {
-    value(70704950; "TWE PI Project Hours")
-    {
-        Caption = 'PI Project Hours';
-    }
-
+    value(70704950; "TWE PI Project Hours") { Caption = 'Project Invoice Service Report'; }
 }

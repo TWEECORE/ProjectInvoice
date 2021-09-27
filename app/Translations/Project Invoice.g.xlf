@@ -368,25 +368,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj Inv. Integration - NamedType SetupWizardTxt</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 2889380779" size-unit="char" translate="yes" xml:space="preserve">
-          <source>&amp;</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType ConnectorLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 3023241337" size-unit="char" translate="yes" xml:space="preserve">
           <source>Could not receive data.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType ErrDataReceiveFailedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 1259862404" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/rest/api/2/issue/</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraIssuesArgumentsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 1432467097" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/rest/api/2/project</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType JiraProjectArgumentsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2207169053 - NamedType 1667172971" size-unit="char" translate="yes" xml:space="preserve">
           <source>No new project data available.</source>
@@ -403,120 +388,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType noProjMgtApiDataErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 3927764532" size-unit="char" translate="yes" xml:space="preserve">
-          <source>?</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType QueryLbl</note>
+        <trans-unit id="Codeunit 1413751047 - NamedType 4192670060" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 invoices created</source>
+          <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - NamedType InvoicesCreatedLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 1603283080" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/core/3/worklogs</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType TempoWorkLogArgumentsLbl</note>
+        <trans-unit id="Codeunit 1413751047 - NamedType 1657361240" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There were no unprocessed work hours found for project %1</source>
+          <note from="Developer" annotates="general" priority="2">%1=Project Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - NamedType NoUnprocessedProjectHoursLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 3608004397" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/youtrack/api/admin/projects?fields=$type,shortName,name&amp;$skip=0&amp;$top=10000</source>
+        <trans-unit id="Codeunit 1413751047 - NamedType 341724697" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Project: </source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType YoutrackProjectArgumentsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - NamedType 1104149550" size-unit="char" translate="yes" xml:space="preserve">
-          <source>/youtrack/api/workItems?fields=$type,id,author($type,login),issue($type,idReadable,summary,created,project($type,shortName,name),reporter($type,login)),date,text,duration($type,minutes)&amp;$skip=0&amp;$top=10000</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - NamedType YoutrackWorkitemArgumentsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - Method 417226128 - NamedType 3759419072" size-unit="char" translate="yes" xml:space="preserve">
-          <source>from=</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectHourData - NamedType fromLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - Method 417226128 - NamedType 2885522451" size-unit="char" translate="yes" xml:space="preserve">
-          <source>to=</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectHourData - NamedType toLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2207169053 - Method 417226128 - NamedType 4096210241" size-unit="char" translate="yes" xml:space="preserve">
-          <source>limit=1000</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Import Mgt - Method requestProjectHourData - NamedType limitLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 3790138526" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Žñ</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType littleAELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 1353914382" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Žä</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType bigAELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 4172007338" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ž‰</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType littleUELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 1999671226" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ž£</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType bigUELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 2322939968" size-unit="char" translate="yes" xml:space="preserve">
-          <source>ŽÂ</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType littleOELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 899504816" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Žû</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType bigOELbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 2265542738 - NamedType 3192284637" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Žƒ</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method convertUmlaute - NamedType sZLbl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - NamedType ProjectLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 1857099294 - NamedType 2726611525" size-unit="char" translate="yes" xml:space="preserve">
           <source>No projects found for customer: "%1"</source>
           <note from="Developer" annotates="general" priority="2">%1=Customer Name</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceCustomerUnprocessedProjectHours - NamedType noProjectsFoundLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 299134001 - NamedType 1804062905" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project: </source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceMultipleProjects - NamedType projectLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 299134001 - NamedType 3979398712" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There were no unprocessed work hours found for project %1</source>
-          <note from="Developer" annotates="general" priority="2">%1=Project Name</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceMultipleProjects - NamedType noUnprocessedProjectHoursLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 299134001 - NamedType 2922722252" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 invoices created</source>
-          <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceMultipleProjects - NamedType invoicesCreatedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 3005496944 - NamedType 1804062905" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project: </source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProject - NamedType projectLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 3005496944 - NamedType 3979398712" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There were no unprocessed work hours found for project %1</source>
-          <note from="Developer" annotates="general" priority="2">%1=Project Name</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProject - NamedType noUnprocessedProjectHoursLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 3005496944 - NamedType 2922722252" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 invoices created</source>
-          <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProject - NamedType invoicesCreatedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 437954169 - NamedType 1804062905" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Project: </source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProjectHours - NamedType projectLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1413751047 - Method 437954169 - NamedType 2922722252" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 invoices created</source>
-          <note from="Developer" annotates="general" priority="2">%1=NAmount of Invoices</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit TWE Proj. Inv. Processing Mgt - Method InvoiceProjectHours - NamedType invoicesCreatedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1413751047 - Method 1147444577 - NamedType 1935818988" size-unit="char" translate="yes" xml:space="preserve">
           <source>There is no new data to import for Import Header = %1</source>
@@ -1124,7 +1014,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control BeginDate - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 2054080455 - Control 845401037 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Select a start date for the Project Hour import</source>
+          <source>Select a end date for the Project Hour import</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report TWE Proj. Inv. Import - Control EndDate - Property ToolTip</note>
         </trans-unit>
@@ -1294,9 +1184,14 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Project Mgt. System - EnumValue YoutTrack - Property Caption</note>
         </trans-unit>
         <trans-unit id="EnumExtension 1392962016 - EnumValue 416490603 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Enum 3528066925">
-          <source>PI Project Hours</source>
+          <source>Project Invoice Service Report</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">EnumExtension TWE PI Report Selection Usage - EnumValue TWE PI Project Hours - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="EnumExtension 3585494208 - EnumValue 190773272 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Enum 1788069285">
+          <source>Project Invoice Service Report</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">EnumExtension TWE PI Report Usage Sales - EnumValue TWE PI Service Report - Property Caption</note>
         </trans-unit>
       </group>
     </body>
