@@ -10,7 +10,6 @@ codeunit 70704950 "TWE Proj. Inv. Install"
         initData();
     end;
 
-
     local procedure initData()
     var
         ProjInvSetup: Record "TWE Proj. Inv. Setup";

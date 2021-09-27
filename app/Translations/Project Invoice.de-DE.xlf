@@ -1420,10 +1420,16 @@
           <note from="Xliff Generator" annotates="general" priority="3">Enum TWE Project Mgt. System - EnumValue YoutTrack - Property Caption</note>
         </trans-unit>
         <trans-unit id="EnumExtension 1392962016 - EnumValue 416490603 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Enum 3528066925">
-          <source>PI Project Hours</source>
-          <target state="needs-l10n">PI Projekt-Stunden</target>
+          <source>Project Invoice Service Report</source>
+          <target state="needs-l10n">Project Invoice Service Bericht</target>
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">EnumExtension TWE PI Report Selection Usage - EnumValue TWE PI Project Hours - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="EnumExtension 3585494208 - EnumValue 190773272 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Enum 1788069285">
+          <source>Project Invoice Service Report</source>
+          <target state="needs-l10n">Project Invoice Service Bericht</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">EnumExtension TWE PI Report Usage Sales - EnumValue TWE PI Service Report - Property Caption</note>
         </trans-unit>
       </group>
     </body>

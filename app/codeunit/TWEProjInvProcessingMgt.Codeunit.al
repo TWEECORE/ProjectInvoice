@@ -650,4 +650,20 @@ codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
 
         DateText := yearText + '-' + monthText + '-' + dayText;
     end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Report Selection - Sales", 'OnInitUsageFilterOnElseCase', '', true, true)]
+    local procedure AddProjInvReportUsageOnInitUsageFilter(ReportUsage: Enum "Report Selection Usage"; var ReportUsage2: Enum "Report Selection Usage Sales")
+    begin
+        case ReportUsage of
+            "Report Selection Usage"::"TWE PI Project Hours":
+                ReportUsage2 := ReportUsage2::"TWE PI Service Report";
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Report Selection - Sales", 'OnSetUsageFilterOnAfterSetFiltersByReportUsage', '', true, true)]
+    local procedure AddProjInvReportUsageOnSetUsageFilter(var Rec: Record "Report Selections"; ReportUsage2: Option)
+    begin
+        if ReportUsage2 = 70704950 then
+            Rec.SetRange(Usage, "Report Selection Usage"::"TWE PI Project Hours");
+    end;
 }
