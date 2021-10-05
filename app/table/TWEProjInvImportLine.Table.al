@@ -1,7 +1,7 @@
 /// <summary>
-/// Table TWE Proj. Inv. Import Line (ID 70704953).
+/// Table TWE Proj. Inv. Import Line (ID 50001).
 /// </summary>
-table 70704953 "TWE Proj. Inv. Import Line"
+table 50001 "TWE Proj. Inv. Import Line"
 {
     DataClassification = CustomerContent;
     Caption = 'Project Invoice Import Line';

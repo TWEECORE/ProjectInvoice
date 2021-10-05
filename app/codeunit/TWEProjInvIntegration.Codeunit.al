@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit TWE Proj Inv. Integration (ID 70704951).
+/// Codeunit TWE Proj Inv. Integration (ID 50002).
 /// </summary>
-codeunit 70704951 "TWE Proj Inv. Integration"
+codeunit 50002 "TWE Proj Inv. Integration"
 {
     var
         SetupWizardTxt: Label 'Set up your Project Invoice Application';

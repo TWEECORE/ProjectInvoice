@@ -1,4 +1,4 @@
-pageextension 70704952 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Application"
+pageextension 50000 "TWE PI OAuth AppCard Ext." extends "TWE OAuth 2.0 Application"
 {
     layout
     {

@@ -1,7 +1,7 @@
 /// <summary>
-/// Table TWE Proj. Inv. Setup (ID 70704950).
+/// Table TWE Proj. Inv. Setup (ID 50004).
 /// </summary>
-table 70704950 "TWE Proj. Inv. Setup"
+table 50004 "TWE Proj. Inv. Setup"
 {
     Caption = 'Project Invoice Setup';
     DataClassification = CustomerContent;

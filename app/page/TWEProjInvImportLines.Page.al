@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Import Lines (ID 70704953).
+/// Page TWE Proj. Inv. Import Lines (ID 50003).
 /// </summary>
-page 70704953 "TWE Proj. Inv. Import Lines"
+page 50003 "TWE Proj. Inv. Import Lines"
 {
     Caption = 'Proj. Inv. Import Lines';
     PageType = List;

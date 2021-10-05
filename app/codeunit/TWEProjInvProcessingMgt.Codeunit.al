@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit TWE Proj. Inv. Processing Mgt (ID 70704953).
+/// Codeunit TWE Proj. Inv. Processing Mgt (ID 50003).
 /// </summary>
-codeunit 70704953 "TWE Proj. Inv. Processing Mgt"
+codeunit 50003 "TWE Proj. Inv. Processing Mgt"
 {
     var
         ProjInvSetup: Record "TWE Proj. Inv. Setup";

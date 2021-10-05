@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Mgt. System SubPart (ID 70704957).
+/// Page TWE Proj. Mgt. System SubPart (ID 50008).
 /// </summary>
-page 70704957 "TWE Proj. Mgt. System SubPart"
+page 50008 "TWE Proj. Mgt. System SubPart"
 {
     Caption = ' ';
     PageType = ListPart;

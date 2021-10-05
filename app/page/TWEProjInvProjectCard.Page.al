@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Project Card (ID 70704958).
+/// Page TWE Proj. Inv. Project Card (ID 50004).
 /// </summary>
-page 70704958 "TWE Proj. Inv. Project Card"
+page 50004 "TWE Proj. Inv. Project Card"
 {
 
     Caption = 'Proj. Inv. Project Card';

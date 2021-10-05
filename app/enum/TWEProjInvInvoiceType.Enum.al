@@ -1,7 +1,7 @@
 /// <summary>
-/// Enum TWE Invoice Type (ID 70704951).
+/// Enum TWE Invoice Type (ID 50001).
 /// </summary>
-enum 70704951 "TWE Proj. Inv. Invoice Type"
+enum 50001 "TWE Proj. Inv. Invoice Type"
 {
     Extensible = true;
 

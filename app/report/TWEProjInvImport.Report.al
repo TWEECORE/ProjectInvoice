@@ -1,7 +1,7 @@
 /// <summary>
 /// Report TWE SumUp Import (ID 90100).
 /// </summary>
-report 70704950 "TWE Proj. Inv. Import"
+report 50000 "TWE Proj. Inv. Import"
 {
     ProcessingOnly = true;
 

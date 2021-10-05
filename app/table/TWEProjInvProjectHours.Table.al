@@ -1,7 +1,7 @@
 /// <summary>
-/// Table TWE Project Hours (ID 70704956).
+/// Table TWE Project Hours (ID 50003).
 /// </summary>
-table 70704956 "TWE Proj. Inv. Project Hours"
+table 50003 "TWE Proj. Inv. Project Hours"
 {
     DataClassification = CustomerContent;
     Caption = 'Project Invoice Project Hours';

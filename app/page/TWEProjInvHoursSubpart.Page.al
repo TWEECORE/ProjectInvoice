@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Hours Subpart (ID 70704955).
+/// Page TWE Proj. Inv. Hours Subpart (ID 50002).
 /// </summary>
-page 70704955 "TWE Proj. Inv. Hours Subpart"
+page 50002 "TWE Proj. Inv. Hours Subpart"
 {
     Caption = 'Project Hours';
     AutoSplitKey = true;

@@ -1,7 +1,7 @@
 /// <summary>
-/// EnumExtension TWE PI Report Selection Usage (ID 70704950) extends Record Report Selection Usage.
+/// EnumExtension TWE PI Report Selection Usage (ID 50000) extends Record Report Selection Usage.
 /// </summary>
-enumextension 70704950 "TWE PI Report Selection Usage" extends "Report Selection Usage"
+enumextension 50000 "TWE PI Report Selection Usage" extends "Report Selection Usage"
 {
-    value(70704950; "TWE PI Project Hours") { Caption = 'Project Invoice Service Report'; }
+    value(50000; "TWE PI Project Hours") { Caption = 'Project Invoice Service Report'; }
 }

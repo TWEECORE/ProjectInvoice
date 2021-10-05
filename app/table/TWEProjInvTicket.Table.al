@@ -1,7 +1,7 @@
 /// <summary>
-/// Table TWE Project Ticket (ID 70704955).
+/// Table TWE Project Ticket (ID 50005).
 /// </summary>
-table 70704955 "TWE Proj. Inv. Ticket"
+table 50005 "TWE Proj. Inv. Ticket"
 {
     DataClassification = CustomerContent;
     Caption = 'Project Invoice Project Ticket';
@@ -76,7 +76,6 @@ table 70704955 "TWE Proj. Inv. Ticket"
     var
         projectHours: Record "TWE Proj. Inv. Project Hours";
     begin
-        //TODO prüfen
         projectHours.SetRange("Ticket ID", "No.");
         if projectHours.FindSet() then
             projectHours.DeleteAll(true);

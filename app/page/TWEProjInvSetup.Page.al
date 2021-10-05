@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Setup (ID 70704950).
+/// Page TWE Proj. Inv. Setup (ID 50006).
 /// </summary>
-page 70704950 "TWE Proj. Inv. Setup"
+page 50006 "TWE Proj. Inv. Setup"
 {
     Caption = 'Project Invoice Setup';
     PageType = Card;

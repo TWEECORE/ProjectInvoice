@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj Inv. Wizard (ID 70704951).
+/// Page TWE Proj Inv. Wizard (ID 50007).
 /// </summary>
-page 70704951 "TWE Proj Inv. Wizard"
+page 50007 "TWE Proj Inv. Wizard"
 {
     PageType = NavigatePage;
     SourceTable = "TWE Proj. Inv. Setup";

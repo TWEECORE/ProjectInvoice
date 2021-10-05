@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit TWE Proj. Inv. Install (ID 70704950).
+/// Codeunit TWE Proj. Inv. Install (ID 50001).
 /// </summary>
-codeunit 70704950 "TWE Proj. Inv. Install"
+codeunit 50001 "TWE Proj. Inv. Install"
 {
     Subtype = Install;
 

@@ -1,7 +1,7 @@
 /// <summary>
-/// PageExtension TWE Proj. Inv. Cust. Card Ext. (ID 70704950) extends Record Customer Card.
+/// PageExtension TWE Proj. Inv. Cust. Card Ext. (ID 50002) extends Record Customer Card.
 /// </summary>
-pageextension 70704950 "TWE Proj. Inv. Cust. Card Ext." extends "Customer Card"
+pageextension 50002 "TWE Proj. Inv. Cust. Card Ext." extends "Customer Card"
 {
     layout
     {

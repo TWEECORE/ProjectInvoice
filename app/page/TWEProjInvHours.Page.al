@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Hours (ID 70704956).
+/// Page TWE Proj. Inv. Hours (ID 50001).
 /// </summary>
-page 70704956 "TWE Proj. Inv. Hours"
+page 50001 "TWE Proj. Inv. Hours"
 {
     Caption = 'Project Invoice ProjectHours';
     PageType = List;

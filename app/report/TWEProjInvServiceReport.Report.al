@@ -1,7 +1,7 @@
 /// <summary>
-/// Report TWE Project Invoice (ID 70704951).
+/// Report TWE Project Invoice (ID 50002).
 /// </summary>
-report 70704951 "TWE Proj. Inv. Service Report"
+report 50002 "TWE Proj. Inv. Service Report"
 {
     DefaultLayout = RDLC;
     RDLCLayout = 'ProjectInvoiceServiceReport.rdlc';

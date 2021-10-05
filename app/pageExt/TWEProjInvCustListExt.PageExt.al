@@ -1,7 +1,7 @@
 /// <summary>
-/// PageExtension TWE Proj. Inv. Cust. List Ext. (ID 70704951) extends Record Customer List.
+/// PageExtension TWE Proj. Inv. Cust. List Ext. (ID 50003) extends Record Customer List.
 /// </summary>
-pageextension 70704951 "TWE Proj. Inv. Cust. List Ext." extends "Customer List"
+pageextension 50003 "TWE Proj. Inv. Cust. List Ext." extends "Customer List"
 {
     layout
     {

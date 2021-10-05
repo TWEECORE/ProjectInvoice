@@ -1,11 +1,11 @@
 /// <summary>
-/// TableExtension TWE OAuth App. Extension (ID 70704950) extends Record TWE OAuth 2.0 Application.
+/// TableExtension TWE OAuth App. Extension (ID 50000) extends Record TWE OAuth 2.0 Application.
 /// </summary>
-tableextension 70704950 "TWE PI OAuth App. Extension" extends "TWE OAuth 2.0 Application"
+tableextension 50000 "TWE PI OAuth App. Extension" extends "TWE OAuth 2.0 Application"
 {
     fields
     {
-        field(70704950; "TWE Is Project Mgt. System"; Boolean)
+        field(50000; "TWE Is Project Mgt. System"; Boolean)
         {
             Caption = 'Is Project Mgt. System';
             DataClassification = CustomerContent;

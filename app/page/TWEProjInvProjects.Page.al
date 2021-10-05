@@ -1,7 +1,7 @@
 /// <summary>
-/// Page TWE Proj. Inv. Projects (ID 70704954).
+/// Page TWE Proj. Inv. Projects (ID 50005).
 /// </summary>
-page 70704954 "TWE Proj. Inv. Projects"
+page 50005 "TWE Proj. Inv. Projects"
 {
     ApplicationArea = All;
     Caption = 'Project Invoice Projects';

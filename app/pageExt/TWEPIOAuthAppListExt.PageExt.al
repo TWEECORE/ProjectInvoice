@@ -1,4 +1,4 @@
-pageextension 70704953 "TWE PI OAuth AppList Ext." extends "TWE OAuth 2.0 Applications"
+pageextension 50001 "TWE PI OAuth AppList Ext." extends "TWE OAuth 2.0 Applications"
 {
     layout
     {

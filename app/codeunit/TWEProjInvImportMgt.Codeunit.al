@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit TWE Proj. Inv. Import Mgt (ID 70704952).
+/// Codeunit TWE Proj. Inv. Import Mgt (ID 50000).
 /// </summary>
-codeunit 70704952 "TWE Proj. Inv. Import Mgt"
+codeunit 50000 "TWE Proj. Inv. Import Mgt"
 {
     var
         GlobalImportHeader: Record "TWE Proj. Inv. Import Header";
@@ -362,7 +362,6 @@ codeunit 70704952 "TWE Proj. Inv. Import Mgt"
                             RESTArguments.UserName := CopyStr(getUserName(ProjMgtSystem) + ':' + getPermToken(ProjMgtSystem, false), 1, MaxStrLen(RESTArguments.UserName));
                 end
         else begin
-            //TODO TempoTimeSheets oAuth
             oAuthApp.SetRange("TWE Project Mgt. System", ProjMgtSystem);
             if oAuthApp.FindFirst() then
                 restWebService.setAuthorization(RESTArguments, oAuthApp.Code);
