@@ -21,7 +21,7 @@ steps:
         #please provide your username
         $alias = 'TCMatthiasMartin:'+ "$(GithubPAT)"
         #Please make sure, you remove https from azure-repo-clone-url
-        $sourceURL = 'https://$(AzurePAT)@dev.azure.com/tweecore/PIPipelineTest/_git/PIPipelineTest'
+        $sourceURL = 'https://$(AzurePAT)@dev.azure.com/tweecore/Project%20Invoice/_git/Project%20Invoice'
         #Check if the parent directory exists and delete
         if((Test-Path -path $githubDir))
         {
@@ -32,7 +32,7 @@ steps:
           New-Item -ItemType directory -Path $githubDir
           Set-Location $githubDir
           git clone $sourceURL 
-          Set-Location .\PIPipelineTest
+          Set-Location .\ProjectInvoice
           ls
           git pull 
         }
@@ -92,9 +92,9 @@ steps:
         #please provide your username
         $alias = 'TCMatthiasMartin:'+ "$(GithubPAT)"
 
-        $sourceURL = 'https://$(AzurePAT)@dev.azure.com/tweecore/PIPipelineTest/_git/PIPipelineTest'
+        $sourceURL = 'https://$(AzurePAT)@dev.azure.com/tweecore/Project%20Invoice/_git/Project%20Invoice'
         $destURL = 'https://' + $alias + '@github.com/TWEECORE/ProjectInvoice.git'
-        $destination = $githubDir +"\"+"PIPipelineTest"
+        $destination = $githubDir +"\"+"ProjectInvoice"
 
         #Check if the parent directory exists and delete
         if((Test-Path -path $githubDir))
