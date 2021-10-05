@@ -6,7 +6,7 @@ Read more at the [product page](https://www.tweecore.de/project-invoice/).
 
 ## Contributing
 
-Thank you for considering contributing to this package! Be sure to sign the [CLA](./CLA.md) after creating the pull request.
+Thank you for considering contributing to this package! Be sure to sign the [CLA](./CLA.md) after creating the pull request. [![CLA assistant](https://cla-assistant.io/readme/badge/TWEECORE/ProjectInvoice)](https://cla-assistant.io/TWEECORE/ProjectInvoice)
 ### Steps to contribute
 
 1. Fork the repository
