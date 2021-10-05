@@ -1,23 +1,23 @@
-# AppSource Base
+# Project Invoice
 
-This is a clone - project.
-__________________________________
-Nötige Anpassungen: 
-required changes: 
-  1. app -> app.json -> Namen, idRanges
-  2. test -> app.json -> Namen, idRanges, dependencies Namen
-__________________________________
-# How to prepaire this project for AppSource
-__________________________________
-## 1. Compile the Project
-After you finished the changes on the app you need to compile the project.
-## 2. Sign the APP - File
-1. Copy the APP - File on the Remote Server "BC". Directory "C:\apps"
-2. Get the NAV - SIP
+## Description
+This is the "Project Invoice" solution for Business Central.
+Read more at the [product page](https://www.tweecore.de/project-invoice/).
 
-    Install-NAVSipCryptoProviderFromBCContainer CONTAINER-NAME
-    
-3. Open the PowerShell ISE as administrator
-4. Open the file "C:\Scripts\AzureSignTool_TWE.ps1"
-5. Change the app name at the end of the line to your App Package - Namen
-6. Run the Script. 
+## Contributing
+
+Thank you for considering contributing to this package! Be sure to sign the [CLA](./CLA.md) after creating the pull request.
+### Steps to contribute
+
+1. Fork the repository
+2. `git clone yourname/ProjectInvoice`
+3. Make your changes to master branch
+4. Create your Pull-Request
+
+## License
+
+Copyright 2021 TWEECORE by HEPTACOM GmbH
+
+Dual licensed under the [GNU Affero General Public License v3.0](./LICENSE.md) (the "License") and proprietary license; you may not use this project except in compliance with the License.
+You may obtain a copy of the AGPL License at [https://spdx.org/licenses/AGPL-3.0-or-later.html](https://spdx.org/licenses/AGPL-3.0-or-later.html).
+Contact us on [our website](https://www.tweecore.de) for further information about proprietary usage.
