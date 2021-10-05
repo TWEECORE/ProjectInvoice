@@ -32,7 +32,7 @@ steps:
           New-Item -ItemType directory -Path $githubDir
           Set-Location $githubDir
           git clone $sourceURL 
-          Set-Location .\ProjectInvoice
+          Set-Location .\Project%20Invoice
           ls
           git pull 
         }
@@ -94,7 +94,7 @@ steps:
 
         $sourceURL = 'https://$(AzurePAT)@dev.azure.com/tweecore/Project%20Invoice/_git/Project%20Invoice'
         $destURL = 'https://' + $alias + '@github.com/TWEECORE/ProjectInvoice.git'
-        $destination = $githubDir +"\"+"ProjectInvoice"
+        $destination = $githubDir +"\"+"Project%20Invoice"
 
         #Check if the parent directory exists and delete
         if((Test-Path -path $githubDir))
